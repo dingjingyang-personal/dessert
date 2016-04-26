@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class TestRemoteServiceImpl implements TestRemoteService {
 
-	@Override
-	public Map<String, Object> test(Map<String, Object> params) {
-		return new HashMap<String, Object>();
-	}
+    @Override
+    public Map<String, Object> test(Map<String, Object> params) {
+        return new HashMap<String, Object>();
+    }
 
 }

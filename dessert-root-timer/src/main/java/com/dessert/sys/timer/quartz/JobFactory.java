@@ -1,11 +1,7 @@
 package com.dessert.sys.timer.quartz;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import com.dessert.sys.common.tool.SysToolHelper;
+import com.dessert.sys.timer.model.ScheduleJob;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
@@ -16,8 +12,12 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.rhc.sys.alarmclock.model.ScheduleJob;
-import com.rhc.sys.common.tool.SysToolHelper;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 
 public class JobFactory implements Job {
 

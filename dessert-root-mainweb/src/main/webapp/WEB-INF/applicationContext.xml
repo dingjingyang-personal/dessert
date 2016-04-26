@@ -4,7 +4,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd   
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
@@ -14,13 +14,18 @@
       http://mybatis.org/schema/mybatis-spring 
 	http://mybatis.org/schema/mybatis-spring.xsd"
 	default-lazy-init="false">
+
+
+    <!--引入配置文件-->
 	<context:property-placeholder location="classpath*:/config/setting.properties" />
+
+    <!--配置静态资源-->
 	<mvc:resources location="/resources/" mapping="/resources/**" />
 
+    <!--自动扫描注入-->
 	<context:component-scan
 		base-package="com.dessert.*.service.*,com.dessert.*.*.service.*,com.dessert.*.*.*.service.*,com.dessert.*.controller,com.dessert.*.*.controller,com.dessert.*.*.*.controller" />
-	
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
 
 	<mvc:annotation-driven />
 	<tx:annotation-driven transaction-manager="transactionManager" />
@@ -80,6 +85,8 @@
 			<tx:method name="select*" propagation="SUPPORTS" />
 		</tx:attributes>
 	</tx:advice>
+
+
 	<aop:config>
 		<aop:pointcut id="pc"
 			expression="execution(* com.dessert.*.service.*.*(..)) or execution(* com.dessert.*.*.service.*.*(..)) or execution(* com.dessert.*.*.*.service.*.*(..))" />
@@ -123,12 +130,6 @@
 		</property>
 	</bean>
 
-	<!--
-	<context:component-scan
-		base-package="" />
-	<mybatis:scan
-		base-package="" />
-	-->
 
 	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxIdle" value="${redis.maxIdle}" />
@@ -151,7 +152,7 @@
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
 		p:host-name="${redis.host}" p:port="${redis.port}" p:password="123456"
 		p:pool-config-ref="poolConfig" />
-	<!-- p:password="${redis.pass}" <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"> 
+	<!-- p:password="${redis.pass}" <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
 		<property name="connectionFactory" ref="connectionFactory" /> </bean> -->
 	<bean id="redisTemplateTool"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

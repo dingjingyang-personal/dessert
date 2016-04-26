@@ -21,7 +21,6 @@ import java.util.Set;
 
 public class RemoteServiceImpl implements RemoteService {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> invokeRemoteMethod(String beanId,
 			String methodName, Map<String, Object> params) {

@@ -3,6 +3,7 @@ package com.dessert.sys.remote.service.impl;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.remote.service.RemoteHelperService;
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Service
 public class RemoteHelperServiceImpl implements RemoteHelperService {
 
 	@SuppressWarnings("unchecked")
