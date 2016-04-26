@@ -5,6 +5,6 @@
 <meta name="description" content="" />
 <#include "./default_cfg.ftl"/>
 <script type="text/javascript" src="${resPath}/common/js/jquery-1.12.3.js"></script>
-<@includeRes resType="css" resUrl=["page/css/main.css","page/css/common.css","common/css/sysui.css"] />
-<@includeRes resUrl=["common/js/sysui.js","common/js/syscommon.js","common/js/ui.js","common/js/extCtrl.js"] />
+<@includeRes resType="css" resUrl=["plugins/bootstrap/css/bootstrap.css","plugins/bootstrap/css/bootstrap-theme.css"] />
+<@includeRes resUrl=["plugins/bootstrap/js/bootrap.js","plugins/bootstrap/js/npm.js"] />
 <link rel="shortcut icon" href="${resPath}/common/images/favicon.ico" type="image/x-icon"/>

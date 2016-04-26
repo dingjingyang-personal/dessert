@@ -13,31 +13,32 @@ import java.io.UnsupportedEncodingException;
 
 
 public class CookieHelper {
+
     private static final CookieHelper COOKIE = new CookieHelper();
+
     private Logger logger = LoggerFactory.getLogger(CookieHelper.class);
 
     private CookieHelper() {
     }
+
     public static CookieHelper getInstance() {
         return COOKIE;
     }
 
     /**
-     * 
      * 设置cookie 信息
-     * 
+     *
      * @param response
      * @param cookieName
      * @see [相关类/方法]（可选）
-     * @since
      */
-    public void setCookie(HttpServletResponse response, String key, String value,String domain,int maxAge) {
+    public void setCookie(HttpServletResponse response, String key, String value, String domain, int maxAge) {
         Cookie cookie = null;
         try {
             cookie = new Cookie(key, java.net.URLEncoder.encode(value, "utf-8"));
             cookie.setPath(SysSettings.COOKIE_PATH);
-            if(StringUtils.isNotEmpty(domain)){
-            	cookie.setDomain(domain);
+            if (StringUtils.isNotEmpty(domain)) {
+                cookie.setDomain(domain);
             }
             cookie.setMaxAge(maxAge);
             response.addCookie(cookie);
@@ -46,22 +47,23 @@ public class CookieHelper {
         }
 
     }
+
     /**
      * 功能描述: 设置cookie 浏览器退出即生效
-     * author:liwm
+     *
      * @param response
      * @param key
      * @param value
      * @param domain
      * @param maxAge
      */
-    public void setCookie(HttpServletResponse response, String key, String value,String domain) {
+    public void setCookie(HttpServletResponse response, String key, String value, String domain) {
         Cookie cookie = null;
         try {
             cookie = new Cookie(key, java.net.URLEncoder.encode(value, "utf-8"));
             cookie.setPath(SysSettings.COOKIE_PATH);
-            if(StringUtils.isNotEmpty(domain)){
-            	cookie.setDomain(domain);
+            if (StringUtils.isNotEmpty(domain)) {
+                cookie.setDomain(domain);
             }
             response.addCookie(cookie);
         } catch (UnsupportedEncodingException e) {
@@ -72,11 +74,9 @@ public class CookieHelper {
 
     /**
      * 功能描述：获取cookie的值
-     * 
-     * @param request
-     *            HttpServletRequest
-     * @param cookieName
-     *            cookie的名称
+     *
+     * @param request    HttpServletRequest
+     * @param cookieName cookie的名称
      * @return
      */
     public String getCookieValue(HttpServletRequest request, String cookieName) {
@@ -99,24 +99,21 @@ public class CookieHelper {
 
     /**
      * 功能描述：清除cookie信息
-     * 
-     * @param request
-     *            HttpServletRequest
-     * @param response
-     *            HttpServletResponse
-     * @param cookieKey
-     *            要删除的cookie的key
+     *
+     * @param request   HttpServletRequest
+     * @param response  HttpServletResponse
+     * @param cookieKey 要删除的cookie的key
      */
     public void clearCookie(HttpServletRequest request, HttpServletResponse response, String key) {
         Cookie[] cookies = request.getCookies();
-        if (cookies!=null) {
+        if (cookies != null) {
             for (Cookie k : cookies) {
                 if (key.equals(k.getName())) {
                     Cookie cookie = new Cookie(k.getName(), null);
                     cookie.setMaxAge(0);
                     cookie.setPath(SysSettings.COOKIE_PATH);
-                    if(StringUtils.isNotEmpty(SysSettings.COOKIE_DOMAIN)){
-                    	cookie.setDomain(SysSettings.COOKIE_DOMAIN);
+                    if (StringUtils.isNotEmpty(SysSettings.COOKIE_DOMAIN)) {
+                        cookie.setDomain(SysSettings.COOKIE_DOMAIN);
                     }
                     response.addCookie(cookie);
                     break;
@@ -127,22 +124,20 @@ public class CookieHelper {
 
     /**
      * 功能描述：清除cookie信息,解决会话标识未更新安全问题，供登录时调用
-     * 
-     * @param request
-     *            HttpServletRequest
-     * @param response
-     *            HttpServletResponse
+     *
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
      */
     public void deleteCookie(HttpServletRequest request, HttpServletResponse response, boolean isSupplier) {
         Cookie[] cookies = request.getCookies();
-        if (cookies!=null) {
+        if (cookies != null) {
             for (Cookie k : cookies) {
                 if ("JSESSIONID".equalsIgnoreCase(k.getName())) {
                     Cookie cookie = new Cookie(k.getName(), null);
                     cookie.setMaxAge(0);
                     cookie.setPath(SysSettings.COOKIE_PATH);
-                    if(StringUtils.isNotEmpty(SysSettings.COOKIE_DOMAIN)){
-                    	cookie.setDomain(SysSettings.COOKIE_DOMAIN);
+                    if (StringUtils.isNotEmpty(SysSettings.COOKIE_DOMAIN)) {
+                        cookie.setDomain(SysSettings.COOKIE_DOMAIN);
                     }
                     response.addCookie(cookie);
                 }
@@ -152,22 +147,20 @@ public class CookieHelper {
 
     /**
      * 生成 登录 ticket cookie
-     * 
+     *
      * @param response
      * @param request
-     * @param username
-     *            用户名
+     * @param username 用户名
      * @see [相关类/方法]（可选）
      * @since [产品/模块版本] （可选）
      */
     public void setUserTicket(HttpServletResponse response, String userTicket) {
-       setCookie(response, SysConstants.TICKET_NAME, userTicket, SysSettings.COOKIE_DOMAIN);
+        setCookie(response, SysConstants.TICKET_NAME, userTicket, SysSettings.COOKIE_DOMAIN);
     }
 
     /**
-     * 
      * 功能描述：Cookie已保存username的密文，根据密文从数据缓存获取明文
-     * 
+     *
      * @param request
      * @return String
      */
