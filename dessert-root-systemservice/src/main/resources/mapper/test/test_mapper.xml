@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "http://mybatis.org/dtd/mybatis-3-mapper.dtd"  "-//mybatis.org//DTD Mapper 3.0//EN">
+<mapper namespace="com.dessert.test">
+
+	<select id="getmap" parameterType="map" resultType="map">
+		SELECT 
+		u.Host,
+		u.Password
+		FROM user u
+		<where>
+				u.Host = '127.0.0.1'
+		</where>
+	</select>
+	
+</mapper>
