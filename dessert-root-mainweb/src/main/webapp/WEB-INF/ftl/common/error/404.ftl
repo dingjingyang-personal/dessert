@@ -1,21 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<#include "/common/page/head_inc.ftl">
-<@includeRes resType="css" resUrl=["portal/login/css/login.css","portal/index/css/header_foot.css"] />
-<@includeRes resUrl=["portal/login/css/login.css"] resType="css" />
-    <title>页面没有找到</title>
-    <style>
+<!DOCTYPE html>
+<html lang="zh-CN">
 
-    </style>
+<head>
+
+<#include "/common/page/head_inc.ftl">
+    <title>迷路了</title>
+
+
+    <script type="text/javascript">
+
+        $(function(){
+            delayURL("${ctxPath}/sys/timeout.htm");
+        });
+
+        function delayURL(url) {
+            var delay = document.getElementById("time").innerHTML;
+            if (delay > 0) {
+                delay--;
+                document.getElementById("time").innerHTML = delay
+            } else {
+                window.top.location.href = url
+            }
+            setTimeout("delayURL('" + url + "')", 1000)
+        }
+
+    </script>
 
 </head>
+
 <body>
-<div class="error">
-    <div class="err_page">
-        <span>你好像迷路了</span>
-    </div>
+
+<div class="jumbotron" >
+    <h3 class="text-center">页面没有找到!</h3>
+    <p class="text-center" style="font-size: 16px"><span id="time">5</span>秒钟之后自动跳转首页</p>
 </div>
+
+
 </body>
+
 </html>

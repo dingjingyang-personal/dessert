@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "http://mybatis.org/dtd/mybatis-3-mapper.dtd"  "-//mybatis.org//DTD Mapper 3.0//EN">
+<mapper namespace="com.dessert.user">
+
+	<!--查询-->
+	<select id="getUser" parameterType="map" resultType="map">
+		SELECT
+			u.userid,
+			u.userno,
+			u.username,
+			u.loginname,
+			u.userpwd,
+			u.sex,
+			u.tel,
+			u.birthday,
+			u.status,
+			u.createdate,
+			u.update,
+			u.ip,
+			u.mac
+		FROM USER u
+		<where>
+			<if test="userid!=null and userid!=''">
+				AND u.userid =#{userid}
+			</if>
+			<if test="userno!=null and userno!=''">
+				AND u.userno =#{userno}
+			</if>
+			<if test="username!=null and username!=''">
+				AND u.username =#{username}
+			</if>
+			<if test="loginname!=null and loginname!=''">
+				AND u.loginname =#{loginname}
+			</if>
+		</where>
+		ORDER BY u.createdate DESC
+	</select>
+
+	<!--添加-->
+	<insert id="adduser" parameterType="hashmap">
+		INSERT INTO USER
+		(
+			userid     ,
+			userno     ,
+			username   ,
+			loginname  ,
+			userpwd    ,
+			sex        ,
+			tel        ,
+			birthday   ,
+			status     ,
+			createdate ,
+			ip         ,
+			mac
+
+		)
+		VALUES
+		(
+			#{userid},
+			#{userno},
+			#{username},
+			#{loginname},
+			#{userpwd},
+			#{sex},
+			#{tel},
+			#{birthday},
+			#{status},
+			now(),
+			#{ip},
+			#{mac}
+		)
+	</insert>
+
+
+	<!-- 更新	-->
+	<update id="updateuser" parameterType="hashmap">
+		UPDATE
+			USER U
+		<if test="userno!=null and userno!=''">
+			,U.userno=#{userno}
+		</if>
+		<if test="username!=null and username!=''">
+			,U.username=#{username}
+		</if>
+		<if test="loginname!=null and loginname!=''">
+			,U.loginname=#{loginname}
+		</if>
+		<if test="userpwd!=null and userpwd!=''">
+			,U.userpwd=#{userpwd}
+		</if>
+		<if test="sex!=null and sex!=''">
+			,U.sex=#{sex}
+		</if>
+		<if test="tel!=null and tel!=''">
+			,U.tel=#{tel}
+		</if>
+		<if test="birthday!=null and birthday!=''">
+			,U.birthday=#{birthday}
+		</if>
+		<if test="status!=null and status!=''">
+			,U.status=#{status}
+		</if>
+		<if test="ip!=null and ip!=''">
+			,U.ip=#{ip}
+		</if>
+		<if test="mac!=null and mac!=''">
+			,U.mac=#{mac}
+		</if>
+			U.update=now()
+		WHERE
+		U.userid =#{userid}
+	</update>
+	
+</mapper>
