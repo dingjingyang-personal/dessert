@@ -139,7 +139,7 @@ function validateLen(text,minLen,maxLen){
 function ajaxEx(options)
 {
 	if(options.showWait!==false){
-		showMask(options);
+		// showMask(options);
 	}
 	jQuery.ajax({  
         url: options.url||"",  
@@ -149,7 +149,7 @@ function ajaxEx(options)
         data:options.data||"",  
         success: function(text){
           if(options.showWait!==false){
-          	  hideMask(options);
+          	  // hideMask(options);
           }
           if(options.success)
           {
@@ -171,7 +171,7 @@ function ajaxEx(options)
         },  
         error: function(e,status,errorThrown){
           if(options.showWait!==false){
-        	  hideMask(options);
+        	  // hideMask(options);
           }
           if(options.error)
           {options.error(e);}

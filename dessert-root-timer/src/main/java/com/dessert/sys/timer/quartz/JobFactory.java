@@ -21,7 +21,6 @@ import java.util.Set;
 
 public class JobFactory implements Job {
 
-	@SuppressWarnings("unchecked")
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 
 		ScheduleJob scheduleJob = (ScheduleJob) context.getMergedJobDataMap().get("scheduleJob");

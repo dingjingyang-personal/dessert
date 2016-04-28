@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "http://mybatis.org/dtd/mybatis-3-mapper.dtd"  "-//mybatis.org//DTD Mapper 3.0//EN">
+<mapper namespace="log.service">
+<!--  -->
+<insert  id="addLog" parameterType="map">
+   INSERT INTO SYS_ERROR_LOG(LOGID,USERNAME,ITEM,ERROR,IP,userid)
+   VALUES(#{id},#{username},#{item},#{error},#{ip},#{userid}) 
+</insert>
+<select  id="selectLog" parameterType="map" resultType="map">
+   SELECT USERNAME "username",
+   ITEM "item",
+   ERROR "error",
+   IP "ip",
+   TO_CHAR(CREATEDATE,'yyyy-MM-dd hh24:mi:ss') "createdate"
+   FROM SYS_ERROR_LOG
+  <where>
+   <if test="item!=null and item!=''">
+   AND ITEM LIKE '%'||#{item}||'%'
+   </if>
+   <if test="ip!=null and ip!=''">
+   AND ip LIKE #{item}||'%'
+   </if>
+   <if test="createdatebegin!=null and createdatebegin!=''">
+   AND CREATEDATE<![CDATA[>=]]>to_date(#{createdatebegin}||' 00:00:00','yyyy-MM-dd hh24:mi:ss')
+   </if>
+   <if test="createdateend!=null and createdateend !=''">
+   AND CREATEDATE<![CDATA[<=]]>to_date(#{createdateend}||' 23:59:59','yyyy-MM-dd hh24:mi:ss')
+   </if>
+   </where>
+   ORDER BY CREATEDATE DESC
+</select>
+<delete  id="deleteLog" parameterType="map">
+   DELETE FROM  SYS_ERROR_LOG 
+   <where>
+   <if test="createdatebegin!=null and createdatebegin!=''">
+   AND CREATEDATE<![CDATA[>=]]>to_date(#{createdatebegin}||' 00:00:00','yyyy-MM-dd hh24:mi:ss')
+   </if>
+   <if test="createdateend!=null and createdateend!=''">
+   AND CREATEDATE<![CDATA[<=]]>to_date(#{createdateend}||' 23:59:59','yyyy-MM-dd hh24:mi:ss')
+   </if>
+   </where>
+   
+</delete>
+</mapper>

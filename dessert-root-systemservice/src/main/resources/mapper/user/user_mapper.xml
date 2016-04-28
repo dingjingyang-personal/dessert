@@ -5,35 +5,35 @@
 	<!--查询-->
 	<select id="getUser" parameterType="map" resultType="map">
 		SELECT
-			u.userid,
-			u.userno,
-			u.username,
-			u.loginname,
-			u.userpwd,
-			u.sex,
-			u.tel,
-			u.birthday,
-			u.status,
-			u.createdate,
-			u.update,
-			u.ip,
-			u.mac
-		FROM USER u
+			U.userid,
+			U.userno,
+			U.username,
+			U.loginname,
+			U.userpwd,
+			U.sex,
+			U.tel,
+			U.birthday,
+			U.status,
+			U.createdate,
+			U.update,
+			U.ip,
+			U.mac
+		FROM USER U
 		<where>
 			<if test="userid!=null and userid!=''">
-				AND u.userid =#{userid}
+				AND U.userid =#{userid}
 			</if>
 			<if test="userno!=null and userno!=''">
-				AND u.userno =#{userno}
+				AND U.userno =#{userno}
 			</if>
 			<if test="username!=null and username!=''">
-				AND u.username =#{username}
+				AND U.username =#{username}
 			</if>
 			<if test="loginname!=null and loginname!=''">
-				AND u.loginname =#{loginname}
+				AND U.loginname =#{loginname}
 			</if>
 		</where>
-		ORDER BY u.createdate DESC
+		ORDER BY U.createdate DESC
 	</select>
 
 	<!--添加-->

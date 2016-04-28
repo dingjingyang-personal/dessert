@@ -21,6 +21,14 @@ public interface HomeService {
      * @return
      */
     boolean loginOut(HttpServletRequest request, HttpServletResponse response);
-    
 
+
+	/**
+	 * 注册
+	 * @param params
+	 * @param request
+	 * @param response
+     * @return
+     */
+	boolean signUp(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response);
 }

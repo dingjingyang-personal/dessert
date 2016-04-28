@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> getUser(Map<String, Object> params) {
-        return daoClient.selectMap("",params);
+        return daoClient.selectMap("com.dessert.user.getUser",params);
     }
 }
 
