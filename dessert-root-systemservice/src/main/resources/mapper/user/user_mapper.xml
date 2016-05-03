@@ -5,19 +5,19 @@
 	<!--查询-->
 	<select id="getUser" parameterType="map" resultType="map">
 		SELECT
-			U.userid,
-			U.userno,
-			U.username,
-			U.loginname,
-			U.userpwd,
-			U.sex,
-			U.tel,
-			U.birthday,
-			U.status,
-			U.createdate,
-			U.update,
-			U.ip,
-			U.mac
+		U.USERID	   userid,
+		U.USERNO	   userno,
+		U.USERNAME	   username,
+		U.LOGINNAME	   loginname,
+		U.EMAIL		   email,
+		U.USERPWD	   userpwd,
+		U.SEX		   sex,
+		U.TEL		   tel,
+		U.BIRTHDAY	   birthday,
+		U.STATUS	   status,
+		U.CREATEDATE   createdate,
+		U.UPDATE	   update,
+		U.IP		   ip,
 		FROM USER U
 		<where>
 			<if test="userid!=null and userid!=''">
@@ -40,18 +40,16 @@
 	<insert id="adduser" parameterType="hashmap">
 		INSERT INTO USER
 		(
-			userid     ,
-			userno     ,
-			username   ,
-			loginname  ,
-			userpwd    ,
-			sex        ,
-			tel        ,
-			birthday   ,
-			status     ,
-			createdate ,
-			ip         ,
-			mac
+			USERID     ,
+			USERNO     ,
+			USERNAME   ,
+			LOGINNAME  ,
+			USERPWD    ,
+			SEX        ,
+			STATUS     ,
+			CREATEDATE ,
+			IP         ,
+			MAC
 
 		)
 		VALUES
@@ -62,8 +60,6 @@
 			#{loginname},
 			#{userpwd},
 			#{sex},
-			#{tel},
-			#{birthday},
 			#{status},
 			now(),
 			#{ip},

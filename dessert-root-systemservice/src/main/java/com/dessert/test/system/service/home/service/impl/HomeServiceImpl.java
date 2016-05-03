@@ -72,13 +72,15 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public boolean signUp(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-        if (!SysToolHelper.isExists(params, "username", "loginname", "userpwd", "sex", "birthday", "status", "ip", "mac")) {
+        if (!SysToolHelper.isExists(params, "username", "loginname", "userpwd", "sex", "status", "ip", "mac")) {
             return false;
         }
         String userid = SysToolHelper.readSeqBySeqKeyAndOwner("USER", "USER", true);
+        params.put("userid", userid);
+        params.put("userno", "111");
 
 
-        return daoClient.update("", params) > 0 ? true : false;
+        return daoClient.update("com.dessert.user.com.dessert.adduser", params) > 0 ? true : false;
     }
 
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-@Service
+@Service("seqService")
 public class SequenceNumServiceImpl implements SequenceNumService {
 	@Autowired
 	private DaoClient daoClient;

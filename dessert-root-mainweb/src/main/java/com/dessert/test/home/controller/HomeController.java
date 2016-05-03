@@ -3,6 +3,7 @@ package com.dessert.test.home.controller;
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.tool.CookieHelper;
 import com.dessert.sys.common.tool.SysToolHelper;
+import com.dessert.sys.common.tool.ValidateUtils;
 import com.dessert.test.system.service.home.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,9 +45,35 @@ public class HomeController {
     public void signUp(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        boolean isnull = SysToolHelper.isExists(params, "loginname", "username", "email", "userpwd", "sex");
+        if (!isnull) {
+            SysToolHelper.outputByResponse("2", response);
+            return;
+        }
 
-        SysToolHelper.outputByResponse(homeService
-                .signUp(params, request, response) ? "1" : "2", response);
+        String userpwd = SysToolHelper.getMapValue(params,"userpwd");
+        String email = SysToolHelper.getMapValue(params,"email");
+        String sex = SysToolHelper.getMapValue(params,"sex");
+
+        boolean isemail = ValidateUtils.Email(email);
+        boolean issex = ValidateUtils.Integer(sex);
+
+        if(!(isemail&&issex)){
+            SysToolHelper.outputByResponse("2", response);
+            return;
+        }
+
+        String ip = SysToolHelper.getIp(request);
+        params.put("ip", ip);
+        try {
+            params.put("mac", SysToolHelper.getMACAddress(ip));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        params.put("status","1");
+        params.put("userpwd",SysToolHelper.encryptPwd(userpwd));
+        SysToolHelper.outputByResponse(homeService.signUp(params, request, response) ? "1" : "2", response);
 
 
     }

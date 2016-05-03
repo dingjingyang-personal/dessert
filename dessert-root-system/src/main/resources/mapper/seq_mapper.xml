@@ -4,7 +4,6 @@
     <select id="selectSeq" resultType="hashmap" parameterType="hashmap">
         SELECT SEQKEY "seqkey",SEQDESC "seqdesc"
         ,TO_CHAR(CREATEDATE,'yyyy-MM-dd hh24:mi:ss') "createdate"
-        ,CREATEUSER "createuser"
         FROM SYS_SEQ_MAIN
         <where>
             <if test="seqkey!=null and seqkey!=''">
