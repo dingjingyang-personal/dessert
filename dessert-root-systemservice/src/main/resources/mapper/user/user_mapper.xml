@@ -16,24 +16,27 @@
 		U.BIRTHDAY	   birthday,
 		U.STATUS	   status,
 		U.CREATEDATE   createdate,
-		U.UPDATE	   update,
-		U.IP		   ip,
+		date_format(U.UPDATE,'%Y-%m-%d') "update",
+		U.IP		   ip
 		FROM USER U
 		<where>
 			<if test="userid!=null and userid!=''">
-				AND U.userid =#{userid}
+				AND U.USERID =#{userid}
 			</if>
 			<if test="userno!=null and userno!=''">
-				AND U.userno =#{userno}
+				AND U.USERNO =#{userno}
 			</if>
 			<if test="username!=null and username!=''">
-				AND U.username =#{username}
+				AND U.USERNAME =#{username}
 			</if>
 			<if test="loginname!=null and loginname!=''">
-				AND U.loginname =#{loginname}
+				AND U.LOGINNAME =#{loginname}
+			</if>
+			<if test="email!=null and email!=''">
+				AND U.EMAIL =#{email}
 			</if>
 		</where>
-		ORDER BY U.createdate DESC
+		ORDER BY U.CREATEDATE DESC
 	</select>
 
 	<!--添加-->
@@ -41,9 +44,9 @@
 		INSERT INTO USER
 		(
 			USERID     ,
-			USERNO     ,
 			USERNAME   ,
 			LOGINNAME  ,
+			EMAIL      ,
 			USERPWD    ,
 			SEX        ,
 			STATUS     ,
@@ -55,9 +58,9 @@
 		VALUES
 		(
 			#{userid},
-			#{userno},
 			#{username},
 			#{loginname},
+			#{email},
 			#{userpwd},
 			#{sex},
 			#{status},
@@ -73,38 +76,41 @@
 		UPDATE
 			USER U
 		<if test="userno!=null and userno!=''">
-			,U.userno=#{userno}
+			,U.USERNO=#{userno}
 		</if>
 		<if test="username!=null and username!=''">
-			,U.username=#{username}
+			,U.USERNAME=#{username}
 		</if>
 		<if test="loginname!=null and loginname!=''">
-			,U.loginname=#{loginname}
+			,U.LOGINNAME=#{loginname}
+		</if>
+		<if test="email!=null and email!=''">
+			,U.EMAIL=#{email}
 		</if>
 		<if test="userpwd!=null and userpwd!=''">
-			,U.userpwd=#{userpwd}
+			,U.USERPWD=#{userpwd}
 		</if>
 		<if test="sex!=null and sex!=''">
-			,U.sex=#{sex}
+			,U.SEX=#{sex}
 		</if>
 		<if test="tel!=null and tel!=''">
-			,U.tel=#{tel}
+			,U.TEL=#{tel}
 		</if>
 		<if test="birthday!=null and birthday!=''">
-			,U.birthday=#{birthday}
+			,U.BIRTHDAY=#{birthday}
 		</if>
 		<if test="status!=null and status!=''">
-			,U.status=#{status}
+			,U.STATUS=#{status}
 		</if>
 		<if test="ip!=null and ip!=''">
-			,U.ip=#{ip}
+			,U.IP=#{ip}
 		</if>
 		<if test="mac!=null and mac!=''">
-			,U.mac=#{mac}
+			,U.MAC=#{mac}
 		</if>
-			U.update=now()
+			U.UPDATE=now()
 		WHERE
-		U.userid =#{userid}
+		U.USERID =#{userid}
 	</update>
 	
 </mapper>

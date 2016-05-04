@@ -1,4 +1,4 @@
-package com.dessert.test.system.service.home.service;
+package com.dessert.system.service.home.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

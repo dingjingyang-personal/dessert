@@ -3,15 +3,36 @@
 <mapper namespace="log.service">
 <!--  -->
 <insert  id="addLog" parameterType="map">
-   INSERT INTO SYS_ERROR_LOG(LOGID,USERNAME,ITEM,ERROR,IP,userid)
-   VALUES(#{id},#{username},#{item},#{error},#{ip},#{userid}) 
+    INSERT INTO USER
+    (
+        LOGID,
+        ITEM,
+        ERROR,
+        IP,
+        CREATEDATE,
+        USERID,
+        USERNAME
+    )
+    VALUES
+    (
+        #{logid},
+        #{item},
+        #{error},
+        #{ip},
+        now(),
+        #{userid},
+        #{username}
+    )
 </insert>
 <select  id="selectLog" parameterType="map" resultType="map">
-   SELECT USERNAME "username",
-   ITEM "item",
-   ERROR "error",
-   IP "ip",
-   TO_CHAR(CREATEDATE,'yyyy-MM-dd hh24:mi:ss') "createdate"
+   SELECT
+     LOGID      logid,
+     ITEM       item,
+     ERROR      error,
+     IP         ip,
+     CREATEDATE createdate,
+     USERID     userid,
+     USERNAME   username
    FROM SYS_ERROR_LOG
   <where>
    <if test="item!=null and item!=''">
@@ -21,24 +42,13 @@
    AND ip LIKE #{item}||'%'
    </if>
    <if test="createdatebegin!=null and createdatebegin!=''">
-   AND CREATEDATE<![CDATA[>=]]>to_date(#{createdatebegin}||' 00:00:00','yyyy-MM-dd hh24:mi:ss')
+   AND CREATEDATE<![CDATA[>=]]>str_to_date(#{createdatebegin},'%Y-%m-%d')
    </if>
    <if test="createdateend!=null and createdateend !=''">
-   AND CREATEDATE<![CDATA[<=]]>to_date(#{createdateend}||' 23:59:59','yyyy-MM-dd hh24:mi:ss')
+   AND CREATEDATE<![CDATA[<=]]>str_to_date(#{createdateend},'%Y-%m-%d')
    </if>
    </where>
    ORDER BY CREATEDATE DESC
 </select>
-<delete  id="deleteLog" parameterType="map">
-   DELETE FROM  SYS_ERROR_LOG 
-   <where>
-   <if test="createdatebegin!=null and createdatebegin!=''">
-   AND CREATEDATE<![CDATA[>=]]>to_date(#{createdatebegin}||' 00:00:00','yyyy-MM-dd hh24:mi:ss')
-   </if>
-   <if test="createdateend!=null and createdateend!=''">
-   AND CREATEDATE<![CDATA[<=]]>to_date(#{createdateend}||' 23:59:59','yyyy-MM-dd hh24:mi:ss')
-   </if>
-   </where>
-   
-</delete>
+
 </mapper>

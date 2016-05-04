@@ -1,7 +1,7 @@
-package com.dessert.test.system.service.home.manager.service.impl;
+package com.dessert.system.service.home.manager.service.impl;
 
 import com.dessert.sys.common.dao.DaoClient;
-import com.dessert.test.system.service.home.manager.service.UserService;
+import com.dessert.system.service.home.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

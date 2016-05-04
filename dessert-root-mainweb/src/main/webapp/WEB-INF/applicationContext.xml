@@ -150,7 +150,7 @@
 
 	<bean id="connectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-		p:host-name="${redis.host}" p:port="${redis.port}" p:password="123456"
+		p:host-name="${redis.host}" p:port="${redis.port}" p:password=""
 		p:pool-config-ref="poolConfig" />
 	<!-- p:password="${redis.pass}" <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
 		<property name="connectionFactory" ref="connectionFactory" /> </bean> -->

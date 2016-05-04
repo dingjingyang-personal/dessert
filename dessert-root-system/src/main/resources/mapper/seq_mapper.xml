@@ -3,7 +3,7 @@
 <mapper namespace="SequenceNumService">
     <select id="selectSeq" resultType="hashmap" parameterType="hashmap">
         SELECT SEQKEY "seqkey",SEQDESC "seqdesc"
-        ,TO_CHAR(CREATEDATE,'yyyy-MM-dd hh24:mi:ss') "createdate"
+        ,date_format(CREATEDATE,'%Y-%m-%d') "createdate"
         FROM SYS_SEQ_MAIN
         <where>
             <if test="seqkey!=null and seqkey!=''">
@@ -30,7 +30,8 @@
         SELECT SEQKEY "seqkey"
         ,SEQOWNER "seqowner"
         ,SEQVALUE "seqvalue"
-        ,TO_CHAR(CREATEDATE,'yyyy-MM-dd hh24:mi:ss') "createdate" FROM SYS_SEQ_VALUE
+        ,date_format(CREATEDATE,'%Y-%m-%d') "createdate"
+        FROM SYS_SEQ_VALUE
         where SEQKEY=#{seqkey}
         <if test="seqowner!=null and seqowner!=''">
             AND SEQOWNER=#{seqowner}
@@ -40,11 +41,12 @@
         UPDATE SYS_SEQ_VALUE SET SEQVALUE=#{seqvalue} WHERE SEQKEY=#{seqkey} AND SEQOWNER=#{seqowner}
     </update>
     <select id="getSetting" resultType="hashmap" parameterType="hashmap">
-        SELECT SEQID "seqid"
-        ,SEQTYPE "seqtype"
-        ,SEQORDER "seqorder"
-        ,SEQTYPEVALUE "seqtypevalue"
-        ,SEQKEY "seqkey"
+        SELECT
+            SEQID "seqid",
+            SEQTYPE "seqtype",
+            SEQORDER "seqorder",
+            SEQTYPEVALUE "seqtypevalue",
+            SEQKEY "seqkey"
         FROM SYS_SEQ_SETTING
         <where>
             <if test="seqtype!=null and seqtype!=''">
@@ -69,12 +71,13 @@
         SELECT
         A.SEQKEY "seqkey"
         ,A.SEQDESC "seqdesc"
-        ,TO_CHAR(A.CREATEDATE,'yyyy-MM-dd hh24:mi:ss') "createdate"
+        ,date_format(A.CREATEDATE,'%Y-%m-%d') "createdate"
         ,(SELECT B.SEQVALUE FROM SYS_SEQ_VALUE B
         WHERE B.SEQKEY=A.SEQKEY
         <if test="seqowner!=null and seqowner!=''">
             AND B.SEQOWNER=#{seqowner}
-        </if>) "seqvalue" FROM SYS_SEQ_MAIN A
+        </if>) "seqvalue"
+        FROM SYS_SEQ_MAIN A
         WHERE A.SEQKEY=#{seqkey}
     </select>
     <insert id="addSeqVal" parameterType="hashmap">
@@ -82,7 +85,9 @@
         VALUES(#{seqkey},#{seqowner},0,now())
     </insert>
     <update id="updateSeqNum" parameterType="hashmap">
-        UPDATE SYS_SEQ_VALUE A SET A.SEQVALUE=A.SEQVALUE+1
+        UPDATE SYS_SEQ_VALUE A
+        SET
+            A.SEQVALUE=A.SEQVALUE+1
         WHERE A.SEQKEY=#{seqkey}
         <if test="seqowner!=null and seqowner!=''">
             AND A.SEQOWNER=#{seqowner}
@@ -92,9 +97,13 @@
         </if>
     </update>
     <select id="getSeqSetting" resultType="hashmap" parameterType="hashmap">
-        SELECT (CASE WHEN A.SEQTYPE='1' THEN A.SEQTYPEVALUE
-        WHEN A.SEQTYPE='2' THEN (SELECT TO_CHAR(SYSDATE,A.SEQTYPEVALUE) FROM DUAL)
-        WHEN A.SEQTYPE='3' THEN (SELECT LPAD(${seqvalue},A.SEQTYPEVALUE,'0') FROM DUAL) END) "itemValue"
+        SELECT (
+            CASE
+                WHEN A.SEQTYPE='1' THEN A.SEQTYPEVALUE
+                WHEN A.SEQTYPE='2' THEN (SELECT date_format(SYSDATE,A.SEQTYPEVALUE) FROM DUAL)
+                WHEN A.SEQTYPE='3' THEN (SELECT LPAD(${seqvalue},A.SEQTYPEVALUE,'0') FROM DUAL)
+            END
+                ) "itemValue"
         FROM SYS_SEQ_SETTING A
         WHERE A.SEQKEY=#{seqkey}
         ORDER BY A.SEQORDER ASC

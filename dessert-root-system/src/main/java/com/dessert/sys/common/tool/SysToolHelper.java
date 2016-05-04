@@ -1,6 +1,5 @@
 package com.dessert.sys.common.tool;
 
-import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.constants.SysSettings;
 import com.dessert.sys.remote.service.RemoteService;
@@ -174,6 +173,7 @@ public class SysToolHelper {
 
     /**
      * 获取mac地址
+     *
      * @param ip
      * @return
      * @throws Exception
@@ -1193,58 +1193,4 @@ public class SysToolHelper {
     }
 
 
-    /**
-     * 功能描述:获取登陆员工
-     * @param request
-     * @return
-     */
-    public static User getEmployeeCache(HttpServletRequest request) {
-
-        String ticket = CookieHelper.getInstance().getUserTicket(request);
-        if (!StringUtils.isEmpty(ticket)) {
-            Object object = SysRedisTool.getObject(ticket);
-            if (object != null && (object instanceof User)) {
-                return (User) object;
-            }
-        }
-        return null;
-    }
-
-    /**
-     *
-     * 〈将user对象存入缓存〉 〈功能详细描述〉
-     *
-     * @param request
-     * @param user
-     * @see [相关类/方法]（可选）
-     * @since [产品/模块版本] （可选）
-     */
-    public static void setUserCache(HttpServletRequest request, HttpServletResponse response, User user) {
-        if (user == null) {
-            return;
-        }
-        String uuid = SysToolHelper.getUuid();
-
-        String ticket = CookieHelper.getInstance().getUserTicket(request);
-        if (StringUtils.isEmpty(ticket)) {
-            ticket = combineString(user.getUserno(), uuid);
-        }
-        CookieHelper.getInstance().setUserTicket(response, ticket);
-        SysRedisTool.setCacheData(ticket, user);
-    }
-
-    /**
-     * 功能描述: 清楚登陆用户
-     * author:liwm
-     * @param request
-     * @param response
-     */
-    public static void removeUserCache(HttpServletRequest request, HttpServletResponse response) {
-        removeValueInSession(request, SysConstants.EMPLOYEE_KEY);
-        String ticketName = CookieHelper.getInstance().getUserTicket(request);
-        if (!StringUtils.isEmpty(ticketName)) {
-            CookieHelper.getInstance().clearCookie(request, response, SysConstants.TICKET_NAME);
-            SysRedisTool.delete(ticketName);
-        }
-    }
 }

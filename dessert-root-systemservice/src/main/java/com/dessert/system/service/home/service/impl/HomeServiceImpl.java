@@ -1,4 +1,4 @@
-package com.dessert.test.system.service.home.service.impl;
+package com.dessert.system.service.home.service.impl;
 
 import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.constants.SysConstants;
@@ -6,14 +6,17 @@ import com.dessert.sys.common.constants.SysSettings;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.CookieHelper;
 import com.dessert.sys.common.tool.SysToolHelper;
-import com.dessert.test.system.service.home.manager.service.UserService;
-import com.dessert.test.system.service.home.service.HomeService;
+import com.dessert.sys.common.tool.UserTool;
+import com.dessert.system.service.home.manager.service.UserService;
+import com.dessert.system.service.home.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+
+import static com.dessert.sys.common.tool.SysToolHelper.encryptPwd;
 
 /**
  * 登陆、首页类
@@ -43,8 +46,8 @@ public class HomeServiceImpl implements HomeService {
             params.put("error", "用户名不存在");
             return false;
         }
-        String userPwd = SysToolHelper.encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
-        if (!SysToolHelper.equal(userMap, "loginpwd", userPwd)) {
+        String userPwd = encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
+        if (!SysToolHelper.equal(userMap, "userpwd", userPwd)) {
             params.put("error", "密码不正确");
             return false;
         }
@@ -57,30 +60,31 @@ public class HomeServiceImpl implements HomeService {
 
         Map<String, Object> tempMap = userMap;
 
-        SysToolHelper.setUserCache(request, response, user);
+        UserTool.setUserCache(request, response, user);
         CookieHelper.getInstance().setCookie(response, SysConstants.COOKIE_USERNO, user.getUserno(), SysSettings.COOKIE_DOMAIN, SysConstants.WEEK_SECONDS);
         return true;
     }
 
 
     @Override
-    public boolean loginOut(HttpServletRequest request,
-                            HttpServletResponse response) {
-        SysToolHelper.removeUserCache(request, response);
+    public boolean loginOut(HttpServletRequest request, HttpServletResponse response) {
+        UserTool.removeUserCache(request, response);
         return true;
     }
 
     @Override
     public boolean signUp(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-        if (!SysToolHelper.isExists(params, "username", "loginname", "userpwd", "sex", "status", "ip", "mac")) {
+        if (!SysToolHelper.isExists(params, "username", "loginname", "userpwd", "sex",  "ip", "mac")) {
             return false;
         }
         String userid = SysToolHelper.readSeqBySeqKeyAndOwner("USER", "USER", true);
-        params.put("userid", userid);
-        params.put("userno", "111");
+        params.put("userid", SysToolHelper.getUuid());
+        String userpwd=SysToolHelper.encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
+        params.put("userpwd",userpwd);
+        params.put("status","1");
 
 
-        return daoClient.update("com.dessert.user.com.dessert.adduser", params) > 0 ? true : false;
+        return daoClient.update("com.dessert.user.adduser", params) > 0 ? true : false;
     }
 
 }

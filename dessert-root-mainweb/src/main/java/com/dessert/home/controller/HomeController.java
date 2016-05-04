@@ -1,10 +1,12 @@
-package com.dessert.test.home.controller;
+package com.dessert.home.controller;
 
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.tool.CookieHelper;
 import com.dessert.sys.common.tool.SysToolHelper;
+import com.dessert.sys.common.tool.UserTool;
 import com.dessert.sys.common.tool.ValidateUtils;
-import com.dessert.test.system.service.home.service.HomeService;
+import com.dessert.system.service.home.manager.service.UserService;
+import com.dessert.system.service.home.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,9 @@ public class HomeController {
     @Autowired
     private HomeService homeService;
 
+    @Autowired
+    private UserService userService;
+
 
     /**
      * 注册页面
@@ -34,6 +39,25 @@ public class HomeController {
 
         return "/home/signuppage";
     }
+
+
+    /**
+     * 校验登录名或邮箱
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/validateLoginNameOrEmail.htm")
+    public void validateLoginName(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        Map<String, Object> userMap = userService.getUser(params);
+        if (!(userMap == null || userMap.isEmpty())) {
+            SysToolHelper.outputByResponse("true", response);
+        } else {
+            SysToolHelper.outputByResponse("false", response);
+        }
+    }
+
 
     /**
      * 注册
@@ -51,14 +75,13 @@ public class HomeController {
             return;
         }
 
-        String userpwd = SysToolHelper.getMapValue(params,"userpwd");
-        String email = SysToolHelper.getMapValue(params,"email");
-        String sex = SysToolHelper.getMapValue(params,"sex");
+        String email = SysToolHelper.getMapValue(params, "email");
+        String sex = SysToolHelper.getMapValue(params, "sex");
 
         boolean isemail = ValidateUtils.Email(email);
         boolean issex = ValidateUtils.Integer(sex);
 
-        if(!(isemail&&issex)){
+        if (!(isemail && issex)) {
             SysToolHelper.outputByResponse("2", response);
             return;
         }
@@ -71,8 +94,7 @@ public class HomeController {
             e.printStackTrace();
         }
 
-        params.put("status","1");
-        params.put("userpwd",SysToolHelper.encryptPwd(userpwd));
+
         SysToolHelper.outputByResponse(homeService.signUp(params, request, response) ? "1" : "2", response);
 
 
@@ -87,7 +109,7 @@ public class HomeController {
      */
     @RequestMapping("/showLoginPage.htm")
     public String showLoginPage(HttpServletRequest request) {
-        if (SysToolHelper.getEmployeeCache(request) != null) {
+        if (UserTool.getUserCache(request) != null) {
             return "redirect:showIndex.htm";
         }
         request.setAttribute("username", CookieHelper.getInstance().getCookieValue(request, SysConstants.COOKIE_USERNO));

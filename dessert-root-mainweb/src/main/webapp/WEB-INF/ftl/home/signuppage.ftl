@@ -112,6 +112,24 @@
                         required: true,
                         minlength: 2,
                         maxlength: 10,
+                        remote: {
+                            url: "${ctxPath}/home/validateLoginNameOrEmail.htm",     //后台处理程序
+                            type: "post",               //数据发送方式
+                            dataType: "html",           //接受数据格式
+                            data: {                     //要传递的数据
+                                loginname: function() {
+                                    return $("#loginname").val();
+                                }
+                            },
+                            dataFilter: function (data) {　　　　//判断控制器返回的内容
+                                if (data == "true") {
+                                    return true;
+                                }
+                                else {
+                                    return false;
+                                }
+                            }
+                        }
                     },
                     username: {
                         required: true,
@@ -141,7 +159,8 @@
                     loginname: {
                         required: "请输入登录名",
                         minlength: "登录名最少 2 个字符",
-                        maxlength: "登录名最多 10 个字符"
+                        maxlength: "登录名最多 10 个字符",
+                        remote:"此登录名已存在"
                     },
                     username: {
                         required: "请输入姓名",
