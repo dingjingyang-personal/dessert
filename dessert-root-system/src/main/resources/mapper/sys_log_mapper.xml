@@ -9,9 +9,7 @@
         ITEM,
         ERROR,
         IP,
-        CREATEDATE,
-        USERID,
-        USERNAME
+        CREATEDATE
     )
     VALUES
     (
@@ -19,9 +17,7 @@
         #{item},
         #{error},
         #{ip},
-        now(),
-        #{userid},
-        #{username}
+        now()
     )
 </insert>
 <select  id="selectLog" parameterType="map" resultType="map">
@@ -30,9 +26,7 @@
      ITEM       item,
      ERROR      error,
      IP         ip,
-     CREATEDATE createdate,
-     USERID     userid,
-     USERNAME   username
+     CREATEDATE createdate
    FROM SYS_ERROR_LOG
   <where>
    <if test="item!=null and item!=''">

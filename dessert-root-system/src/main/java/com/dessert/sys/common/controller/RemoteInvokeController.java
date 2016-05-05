@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 public class RemoteInvokeController {
 	@Autowired
 	private RemoteHelperService remoteHelperService;
+
 	/**
-	 * 功能描述: 调用bean
-	 * author:liwm
+	 * 调用bean
 	 * @param request
 	 * @param response
-	 */
+     */
 	@RequestMapping("/invokeMethod.htm")
    public void invokeMethod(HttpServletRequest request,HttpServletResponse response) {
 	   remoteHelperService.parseRemoteMethod(request, response);

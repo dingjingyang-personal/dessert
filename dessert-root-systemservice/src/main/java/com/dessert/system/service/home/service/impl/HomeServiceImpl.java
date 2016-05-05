@@ -7,8 +7,8 @@ import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.CookieHelper;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.common.tool.UserTool;
-import com.dessert.system.service.home.manager.service.UserService;
 import com.dessert.system.service.home.service.HomeService;
+import com.dessert.system.service.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +36,15 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public boolean login(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-        if (!SysToolHelper.isExists(params, "loginname", "userpwd")) {
+
+        if (!SysToolHelper.isExists(params, "loginname", "userpwd") && !SysToolHelper.isExists(params, "email", "userpwd")) {
             return false;
         }
 
-        Map<String, Object> userMap = userService.getUser(params);
+        Map<String, Object> userMap = userService.getUserMap(params);
 
         if (SysToolHelper.isEmptyMap(userMap)) {
-            params.put("error", "用户名不存在");
+            params.put("error", "用户不存在");
             return false;
         }
         String userPwd = encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
@@ -74,17 +75,27 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public boolean signUp(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-        if (!SysToolHelper.isExists(params, "username", "loginname", "userpwd", "sex",  "ip", "mac")) {
+        if (!SysToolHelper.isExists(params, "username", "loginname", "userpwd", "sex", "ip", "mac")) {
             return false;
         }
         String userid = SysToolHelper.readSeqBySeqKeyAndOwner("USER", "USER", true);
         params.put("userid", SysToolHelper.getUuid());
-        String userpwd=SysToolHelper.encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
-        params.put("userpwd",userpwd);
-        params.put("status","1");
+        String userpwd = SysToolHelper.encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
+        params.put("userpwd", userpwd);
+        params.put("status", "1");
 
 
         return daoClient.update("com.dessert.user.adduser", params) > 0 ? true : false;
+    }
+
+    @Override
+    public boolean setLoginUserInfo(HttpServletRequest request, HttpServletResponse response) {
+        User user=UserTool.getUserCache(request);
+        if(user==null){
+            return false;
+        }
+        UserTool.setUserCache(request, response, user);
+        return true;
     }
 
 }

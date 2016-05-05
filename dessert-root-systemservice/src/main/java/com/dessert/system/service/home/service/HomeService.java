@@ -31,4 +31,12 @@ public interface HomeService {
      * @return
      */
 	boolean signUp(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response);
+
+	/**
+	 * 设置登录用户信息
+	 * @param request
+	 * @param response
+     * @return
+     */
+	boolean setLoginUserInfo(HttpServletRequest request, HttpServletResponse response);
 }

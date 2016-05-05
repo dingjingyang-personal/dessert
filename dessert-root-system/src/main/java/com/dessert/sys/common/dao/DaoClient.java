@@ -30,8 +30,7 @@ public class DaoClient extends SqlSessionDaoSupport {
      * @param params
      * @return
      */
-    public List<Map<String, Object>> selectList(String sqlId,
-                                                Map<String, Object> params) {
+    public List<Map<String, Object>> selectList(String sqlId, Map<String, Object> params) {
         return this.getSqlSession().selectList(sqlId, params);
     }
 
@@ -42,11 +41,14 @@ public class DaoClient extends SqlSessionDaoSupport {
      * @param params
      * @return
      */
-    public Map<String, Object> selectMap(String sqlId,
-                                         Map<String, Object> params) {
+    public Map<String, Object> selectMap(String sqlId, Map<String, Object> params) {
         List<Map<String, Object>> list = selectList(sqlId, params);
         if (list != null && !list.isEmpty()) {
-            return list.get(0);
+            if(list.size()==1){
+                return list.get(0);
+            }else{
+                return null;
+            }
         }
         return null;
     }
@@ -54,44 +56,47 @@ public class DaoClient extends SqlSessionDaoSupport {
 
     /**
      * 分页查询
+     *
      * @param sqlId
      * @param params
      * @return
      */
-    public Page<?> selectPage(String sqlId,String countSqlId, Map<String, Object> params) {
+    public Page<?> selectPage(String sqlId, String countSqlId, Map<String, Object> params) {
         params.put("countSql", countSqlId);
         return selectPage(sqlId, params);
     }
+
     /**
      * 分页查询
+     *
      * @param sqlId
      * @param params
      * @return
      */
     public Page<?> selectPage(String sqlId, Map<String, Object> params) {
-        String sqlString = getSql(sqlId,params);
-        if(StringUtils.isEmpty(sqlString)){
+        String sqlString = getSql(sqlId, params);
+        if (StringUtils.isEmpty(sqlString)) {
             return null;
         }
         params.put("sql_clause", sqlString);
-        String countSqlId = SysToolHelper.getMapValue(params,"countSql", "dao.pageCount");
-        int currentPage=SysToolHelper.getIntValue(params, SysConstants.CURRENT_PAGE_KEY,SysConstants.CURRENT_PAGE_INEX);
-        int pageSize=SysToolHelper.getIntValue(params,SysConstants.PAGE_SIZE_KEY,SysConstants.PAGER_SIZE);
-        currentPage=currentPage<=0?1:currentPage;
-        pageSize=pageSize<=0?SysConstants.PAGER_SIZE:pageSize;
+        String countSqlId = SysToolHelper.getMapValue(params, "countSql", "dao.pageCount");
+        int currentPage = SysToolHelper.getIntValue(params, SysConstants.CURRENT_PAGE_KEY, SysConstants.CURRENT_PAGE_INEX);
+        int pageSize = SysToolHelper.getIntValue(params, SysConstants.PAGE_SIZE_KEY, SysConstants.PAGER_SIZE);
+        currentPage = currentPage <= 0 ? 1 : currentPage;
+        pageSize = pageSize <= 0 ? SysConstants.PAGER_SIZE : pageSize;
         params.put("isCount", "1");
         Map<String, Object> countMap = selectMap(countSqlId, params);
         params.remove("isCount");
-        int count =SysToolHelper.getIntValue(countMap,"count",0);
+        int count = SysToolHelper.getIntValue(countMap, "count", 0);
         Page<Map<String, Object>> page = new Page<Map<String, Object>>();
-        if(count>0){
-            sqlString="dao.page";
+        if (count > 0) {
+            sqlString = "dao.page";
             List<Map<String, Object>> list;
-            if(count<=pageSize){
+            if (count <= pageSize) {
                 list = selectList(sqlId, params);
-            }else {
-                params.put("maxRownum", (currentPage)*pageSize);
-                params.put("minRownum", (currentPage-1)*pageSize+1);
+            } else {
+                params.put("maxRownum", (currentPage) * pageSize);
+                params.put("minRownum", (currentPage - 1) * pageSize + 1);
                 list = selectList(sqlString, params);
             }
             page.setPageList(list);

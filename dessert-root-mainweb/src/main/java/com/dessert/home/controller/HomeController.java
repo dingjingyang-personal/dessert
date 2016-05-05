@@ -5,8 +5,8 @@ import com.dessert.sys.common.tool.CookieHelper;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.common.tool.UserTool;
 import com.dessert.sys.common.tool.ValidateUtils;
-import com.dessert.system.service.home.manager.service.UserService;
 import com.dessert.system.service.home.service.HomeService;
+import com.dessert.system.service.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,11 +50,21 @@ public class HomeController {
     @RequestMapping("/validateLoginNameOrEmail.htm")
     public void validateLoginName(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        Map<String, Object> userMap = userService.getUser(params);
-        if (!(userMap == null || userMap.isEmpty())) {
+        Map<String, Object> userMap = userService.getUserMap(params);
+
+        String loginname = SysToolHelper.getMapValue(params, "loginname");
+        String email = SysToolHelper.getMapValue(params, "email");
+
+        if (userMap == null || userMap.isEmpty()) {
             SysToolHelper.outputByResponse("true", response);
         } else {
-            SysToolHelper.outputByResponse("false", response);
+            String userLoginName = SysToolHelper.getMapValue(userMap, "loginname");
+            String userEmail = SysToolHelper.getMapValue(userMap, "email");
+            if (loginname.equals(userLoginName) || email.equals(userEmail)) {
+                SysToolHelper.outputByResponse("false", response);
+            } else {
+                SysToolHelper.outputByResponse("true", response);
+            }
         }
     }
 
@@ -125,6 +135,13 @@ public class HomeController {
     @RequestMapping("/login.htm")
     public void login(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        String loginNameOrEmail = SysToolHelper.getMapValue(params, "loginnameoremail");
+        if (ValidateUtils.Email(loginNameOrEmail)) {
+            params.put("email", loginNameOrEmail);
+        } else {
+            params.put("loginname", loginNameOrEmail);
+        }
+
         SysToolHelper.outputByResponse(homeService
                 .login(params, request, response) ? "1" : SysToolHelper.getMapValue(params, "error", "2"), response);
     }
@@ -150,6 +167,9 @@ public class HomeController {
     @RequestMapping("/showIndex.htm")
     public String showIndex(HttpServletRequest request, HttpServletResponse response) {
 
+        if(homeService.setLoginUserInfo(request,response)){
+            return "/home/index";
+        }
         return "redirect:showLoginPage.htm";
     }
 

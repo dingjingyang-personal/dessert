@@ -4,7 +4,7 @@
 <head>
 
 <#include "/common/page/head_inc.ftl">
-    <title>登陆</title>
+    <title>用户登录</title>
 
     <style type="text/css">
 
@@ -24,21 +24,21 @@
 
             $("#logina").html("正在登录,请稍后...");
 
-            var loginname = $.trim($("#loginname").val());
+            var loginnameoremail = $.trim($("#loginnameoremail").val());
             var userpwd = $.trim($("#userpwd").val());
-            if (loginname.length == 0 && userpwd.length == 0) {
+            if (loginnameoremail.length == 0 && userpwd.length == 0) {
                 showError("请输入登录名密码");
                 return;
             }
-            if (loginname.length == 0) {
-                showError("请输入登录名");
+            if (loginnameoremail.length == 0) {
+                showError("请输入登录名或邮箱");
                 return;
             }
             if (userpwd.length == 0) {
                 showError("请输入密码");
                 return;
             }
-            var data = {loginname: loginname, userpwd: userpwd, mac: (window.mac || '')};
+            var data = {loginnameoremail: loginnameoremail, userpwd: userpwd, mac: (window.mac || '')};
             ajaxEx({
                 url: "${ctxPath}/home/login.htm", isText: true, data: data, success: function (data) {
                     if (data == "1") {
@@ -84,7 +84,7 @@
             <div class="modal-body">
                 <form class="form col-md-12 center-block">
                     <div class="form-group">
-                        <input type="text" class="form-control input-lg" id="loginname" placeholder="登录名">
+                        <input type="text" class="form-control input-lg" id="loginnameoremail" placeholder="登录名或邮箱">
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control input-lg" id="userpwd" placeholder="登录密码">

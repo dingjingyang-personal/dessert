@@ -113,12 +113,14 @@
 	<aop:config>
 		<aop:aspect id="alog" ref="log">
 			<aop:pointcut
-				expression="execution(* com.dessert.*.*.*.service.*.*(..)) or execution(* com.dessert.*.*.service.*.*(..))"
-				id="logPoint" />
-			<aop:after-throwing method="afterThrowingException"
-				pointcut-ref="logPoint" throwing="e" />
+					expression="execution(* com.dessert.*.*.*.service.*.*(..)) or
+								execution(* com.dessert.*.*.service.*.*(..))"
+					id="logPoint" />
+			<aop:after-throwing method="afterThrowingException" pointcut-ref="logPoint" throwing="e" />
 		</aop:aspect>
 	</aop:config>
+
+	<!--
 	<bean id="loggingInitialization"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="ch.qos.logback.ext.spring.LogbackConfigurer" />
@@ -129,7 +131,7 @@
 			</list>
 		</property>
 	</bean>
-
+	-->
 
 	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxIdle" value="${redis.maxIdle}" />

@@ -1,11 +1,10 @@
 package com.dessert.system.service.user.service.impl;
 
-import com.dessert.system.service.user.service.UserService;
 import com.dessert.sys.common.dao.DaoClient;
+import com.dessert.system.service.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,8 +19,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Map<String, Object> getUserMap(Map<String,Object> params) {
+    public Map<String, Object> getUserMap(Map<String, Object> params) {
 
-        return daoClient.selectMap("com.dessert.user.getUser",new HashMap<String, Object>());
+        return daoClient.selectMap("com.dessert.user.getUser", params);
     }
 }
