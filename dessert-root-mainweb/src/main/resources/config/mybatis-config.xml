@@ -4,5 +4,7 @@
 <configuration>
     <settings>
         <setting name="lazyLoadingEnabled" value="false" />
+        <setting name="logImpl" value="LOG4J2"/>
+        <setting name="logPrefix" value="---***---mybatis----***---"/>
     </settings>
 </configuration>

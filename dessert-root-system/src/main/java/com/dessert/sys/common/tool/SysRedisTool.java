@@ -42,7 +42,6 @@ public class SysRedisTool {
         redisTemplate.delete(key);
     }
 
-    @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> getCacheList(String key) {
         Object object = redisTemplate.opsForHash().get(key, "market");
         if (object != null) {

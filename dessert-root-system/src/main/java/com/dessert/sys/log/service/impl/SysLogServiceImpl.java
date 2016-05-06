@@ -1,9 +1,11 @@
 package com.dessert.sys.log.service.impl;
 
 import com.dessert.sys.common.bean.Page;
+import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.StringUtil;
 import com.dessert.sys.common.tool.SysToolHelper;
+import com.dessert.sys.common.tool.UserTool;
 import com.dessert.sys.log.service.SysLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +21,11 @@ public class SysLogServiceImpl implements SysLogService {
 
     private DaoClient daoClient;
 
-    @Autowired(required = false)
+    @Autowired(required=false)
     public void setDaoClient(DaoClient daoClient) {
         this.daoClient = daoClient;
     }
+
 
     private Logger logger = LoggerFactory.getLogger(SysLogServiceImpl.class);
 
@@ -58,8 +61,7 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
-    public void error(String errorItem, Exception e, String username,
-                      String userIp) {
+    public void error(String errorItem, Exception e, String username, String userIp) {
         error(errorItem, getExceptionDesc(e), username, userIp, "");
 
     }
@@ -108,18 +110,19 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Override
     public void error(HttpServletRequest request, Exception e) {
-//		String item;
-//		if (e != null && e.getStackTrace() != null
-//				&& e.getStackTrace().length > 0) {
-//			item = e.getStackTrace()[0].toString();
-//		} else {
-//			item = "未知";
-//		}
-//		String username;
-//		Employee employee=SysToolHelper.getUserCache(request);
-//		username=employee==null?"未登录":employee.getUserName();
-//		String userid=employee==null?"未登录":employee.getId();
-//		error(item, String.valueOf(e), username, SysToolHelper.getIp(request),userid);
+        String item;
+        if (e != null && e.getStackTrace() != null
+                && e.getStackTrace().length > 0) {
+            item = e.getStackTrace()[0].toString();
+        } else {
+            item = "未知";
+        }
+        String username;
+        User user = UserTool.getUserCache(request);
+        username = user == null ? "未登录" : user.getUserName();
+        String userid = user == null ? "未登录" : user.getUserid();
+        error(item, String.valueOf(e), username, SysToolHelper.getIp(request), userid);
     }
+
 
 }

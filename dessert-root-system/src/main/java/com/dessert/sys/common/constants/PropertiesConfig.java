@@ -16,8 +16,9 @@ public class PropertiesConfig {
     }
 
     public String getPropByKey(String key, String def) {
+        String temp;
         try {
-            String temp = resourceBundle.getString(key);
+            temp = resourceBundle.getString(key);
             return StringUtils.isEmpty(temp) ? def : temp;
         } catch (RuntimeException e) {
             e.printStackTrace();
