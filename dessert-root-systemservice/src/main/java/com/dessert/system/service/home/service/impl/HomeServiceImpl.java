@@ -4,7 +4,9 @@ import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.constants.SysSettings;
 import com.dessert.sys.common.dao.DaoClient;
+import com.dessert.sys.common.enm.DateStyle;
 import com.dessert.sys.common.tool.CookieHelper;
+import com.dessert.sys.common.tool.DateUtil;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.common.tool.UserTool;
 import com.dessert.system.service.home.service.HomeService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.Map;
 
 import static com.dessert.sys.common.tool.SysToolHelper.encryptPwd;
@@ -79,7 +82,7 @@ public class HomeServiceImpl implements HomeService {
             return false;
         }
         String userid = SysToolHelper.readSeqBySeqKeyAndOwner("USER", "USER", true);
-        params.put("userid", SysToolHelper.getUuid());
+        params.put("userid", DateUtil.getDateForFormat(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_SSS.getValue()) + userid);
         String userpwd = SysToolHelper.encryptPwd(SysToolHelper.getMapValue(params, "userpwd"));
         params.put("userpwd", userpwd);
         params.put("status", "1");
@@ -90,8 +93,8 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public boolean setLoginUserInfo(HttpServletRequest request, HttpServletResponse response) {
-        User user=UserTool.getUserCache(request);
-        if(user==null){
+        User user = UserTool.getUserCache(request);
+        if (user == null) {
             return false;
         }
         UserTool.setUserCache(request, response, user);

@@ -18,15 +18,20 @@ public class UserTool {
 
     /**
      * 获取登录用户
+     *
      * @param request
      * @return
      */
-    public static User getUserCache(HttpServletRequest request){
+    public static User getUserCache(HttpServletRequest request) {
         String ticket = CookieHelper.getInstance().getUserTicket(request);
         if (!StringUtils.isEmpty(ticket)) {
-            Object object = SysRedisTool.getObject(ticket);
-            if (object != null && (object instanceof User)) {
-                return (User) object;
+            try {
+                Object object = SysRedisTool.getObject(ticket);
+                if (object != null && (object instanceof User)) {
+                    return (User) object;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return null;
@@ -34,6 +39,7 @@ public class UserTool {
 
     /**
      * 将USER对象存入缓存
+     *
      * @param request
      * @param response
      * @param user
@@ -54,6 +60,7 @@ public class UserTool {
 
     /**
      * 清除登录用户
+     *
      * @param request
      * @param response
      */

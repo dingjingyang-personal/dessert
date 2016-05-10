@@ -5,14 +5,12 @@ import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.StringUtil;
 import com.dessert.sys.common.tool.SysToolHelper;
-import com.dessert.sys.common.tool.UserTool;
 import com.dessert.sys.log.service.SysLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ public class SysLogServiceImpl implements SysLogService {
             return;
         }
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id", SysToolHelper.getUuid());
+        map.put("logid", SysToolHelper.getUuid());
         map.put("item", item);
         map.put("error", content);
         map.put("ip", ip == null ? "" : ip);
@@ -55,6 +53,7 @@ public class SysLogServiceImpl implements SysLogService {
         try {
             daoClient.update(sql, map);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             logger.error(e.getMessage());
         }
         logger.error(item + ":" + content);
@@ -109,7 +108,7 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
-    public void error(HttpServletRequest request, Exception e) {
+    public void error(User user, String ip ,Exception e) {
         String item;
         if (e != null && e.getStackTrace() != null
                 && e.getStackTrace().length > 0) {
@@ -118,10 +117,9 @@ public class SysLogServiceImpl implements SysLogService {
             item = "未知";
         }
         String username;
-        User user = UserTool.getUserCache(request);
         username = user == null ? "未登录" : user.getUserName();
         String userid = user == null ? "未登录" : user.getUserid();
-        error(item, String.valueOf(e), username, SysToolHelper.getIp(request), userid);
+        error(item, String.valueOf(e), username, ip, userid);
     }
 
 

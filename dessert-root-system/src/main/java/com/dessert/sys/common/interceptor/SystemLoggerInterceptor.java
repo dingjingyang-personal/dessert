@@ -1,18 +1,14 @@
 package com.dessert.sys.common.interceptor;
 
-import com.dessert.sys.log.service.SysLogService;
 import org.aspectj.lang.JoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class SystemLoggerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(SystemLoggerInterceptor.class);
 
-    @Autowired
-    private SysLogService sysLogService ;
 
     /**
      * 异常抛出执行方法

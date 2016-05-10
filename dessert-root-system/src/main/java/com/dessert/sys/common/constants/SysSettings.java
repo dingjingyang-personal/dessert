@@ -13,14 +13,6 @@ package com.dessert.sys.common.constants;
 import org.apache.commons.lang.StringUtils;
 
 
-/** 
- * 功能描述: <一句话描述> <br/> 
- * 
- * date: 2014年9月12日 下午4:46:58 <br/> 
- * 
- * @author Administrator 
- * @version  
- */
 
 public class SysSettings {
 	public static final String FTP_IP;
@@ -29,14 +21,13 @@ public class SysSettings {
 	public static final String FTP_PWD;
 	public static final Integer TERMINAL_KEY=10;
 	public static final String REMOTE_INVOKE_URL;
-	/**
-	 * cookie路径
-	 */
+
+
+	//cookie路径
 	public static final String COOKIE_PATH;
 	public static final String COOKIE_DOMAIN;
-	/**
-	 * 图片引用根路径
-	 */
+
+	//图片引用根路径
 	public static final String IMGSERVERE_PATH;
 	
 

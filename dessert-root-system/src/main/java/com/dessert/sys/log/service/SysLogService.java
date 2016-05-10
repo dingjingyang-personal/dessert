@@ -1,8 +1,8 @@
 package com.dessert.sys.log.service;
 
 import com.dessert.sys.common.bean.Page;
+import com.dessert.sys.common.bean.User;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -17,7 +17,7 @@ public interface SysLogService {
 
 	void error(String errorItem, Exception e, String userId, String userIp);
 	
-	void error(HttpServletRequest request, Exception ex);
+	void error(User user,String ip, Exception ex);
 
 	/**
 	 * 
