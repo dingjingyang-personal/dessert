@@ -40,7 +40,10 @@
             }
             var data = {loginnameoremail: loginnameoremail, userpwd: userpwd, mac: (window.mac || '')};
             ajaxEx({
-                url: "${ctxPath}/home/login.htm", isText: true, data: data, success: function (data) {
+                url: "${ctxPath}/home/login.htm",
+                isText: true,
+                data: data,
+                success: function (data) {
                     if (data == "1") {
                         window.location.replace("${ctxPath}/home/showIndex.htm");
                     } else if (data == "2") {
@@ -48,7 +51,8 @@
                     } else {
                         showError(data);
                     }
-                }, error: function () {
+                },
+                error: function () {
                     showError("系统异常，请稍后重试");
                 }
             });

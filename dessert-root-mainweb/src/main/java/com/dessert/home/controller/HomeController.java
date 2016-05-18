@@ -79,19 +79,19 @@ public class HomeController {
     public void signUp(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        boolean isnull = SysToolHelper.isExists(params, "loginname", "username", "email", "userpwd", "sex");
+        boolean isnull = SysToolHelper.isExists(params, "loginname", "email", "userpwd");
         if (!isnull) {
             SysToolHelper.outputByResponse("2", response);
             return;
         }
 
         String email = SysToolHelper.getMapValue(params, "email");
-        String sex = SysToolHelper.getMapValue(params, "sex");
+//        String sex = SysToolHelper.getMapValue(params, "sex");
 
         boolean isemail = ValidateUtils.Email(email);
-        boolean issex = ValidateUtils.Integer(sex);
+//        boolean issex = ValidateUtils.Integer(sex);
 
-        if (!(isemail && issex)) {
+        if (!(isemail)) {
             SysToolHelper.outputByResponse("2", response);
             return;
         }

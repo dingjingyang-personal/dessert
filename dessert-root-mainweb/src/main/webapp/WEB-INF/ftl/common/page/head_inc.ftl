@@ -5,6 +5,5 @@
 <meta name="description" content="" />
 <#include "./default_cfg.ftl"/>
 <script type="text/javascript" src="${resPath}/common/js/jquery-1.12.3.js"></script>
-<script type="text/javascript" src="${resPath}/common/js/syscommon.js"></script>
 <@includeRes resType="css" resUrl=["plugins/bootstrap/css/bootstrap.css","plugins/bootstrap/css/bootstrap-theme.css"] />
 <@includeRes resUrl=["plugins/bootstrap/js/bootstrap.js"] />

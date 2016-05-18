@@ -5,11 +5,25 @@
 
 <#include "/common/page/head_inc.ftl">
 <@includeRes resType="css" resUrl=["common/css/signup/signup-form-elements.css","common/css/signup/signup-style.css","plugins/bootstrap/css/bootstrap-select.css"] />
-<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","plugins/bootstrap/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js"] />
+<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js"] />
 
     <title>用户注册</title>
 
     <style type="text/css">
+
+        .form-bottom{
+            opacity:0.8;
+        }
+
+
+        input.error { border: 1px solid red; }
+        label.error {
+            background:url("") no-repeat 0px 0px;
+            padding-left: 15px;
+            padding-bottom: 2px;
+            font-weight: normal;
+            color: #ea301e;
+        }
 
     </style>
 
@@ -22,7 +36,7 @@
             /*
                 背景图片
             */
-            $.backstretch("/dessert-root-mainweb/resources/common/images/signup/1.jpg");
+            $.backstretch("/dessert-root-mainweb/resources/common/images/signup/background001.jpg");
 
             $('#top-navbar-1').on('shown.bs.collapse', function () {
                 $.backstretch("resize");
@@ -31,73 +45,7 @@
                 $.backstretch("resize");
             });
 
-            /*
-                Form
-            */
-            $('.registration-form fieldset:first-child').fadeIn('slow');
 
-            $('.registration-form input[type="text"], .registration-form input[type="password"], .registration-form textarea').on('focus', function () {
-                $(this).removeClass('input-error');
-            });
-
-            // 下一步
-            $('.registration-form .btn-next').on('click', function () {
-
-                var parent_fieldset = $(this).parents('fieldset');
-                var next_step = true;
-
-                parent_fieldset.find('input[type="text"], input[type="password"], textarea').each(function () {
-                    if ($(this).val() == "") {
-                        $(this).addClass('input-error');
-                        next_step = false;
-                    }
-                    else {
-                        $(this).removeClass('input-error');
-                    }
-                });
-
-
-                var validator = $("#signupForm").validate();
-                var nodes = $(this).parent().find('input[type=text],input[type=hidden],input[type=password],select');
-                var iselement = true;
-                for (var i = 0; i < nodes.length; i++) {
-                    var boo = validator.element(nodes[i]);
-                    iselement = iselement && boo;
-                }
-                if (!iselement) {
-                    return;
-                }
-
-
-                if (next_step) {
-                    parent_fieldset.fadeOut(400, function () {
-                        $(this).next().fadeIn();
-                    });
-                }
-
-            });
-
-            // previous step
-            $('.registration-form .btn-previous').on('click', function () {
-                $(this).parents('fieldset').fadeOut(400, function () {
-                    $(this).prev().fadeIn();
-                });
-            });
-
-            // submit
-            $('.registration-form').on('submit', function (e) {
-
-                $(this).find('input[type="text"], input[type="password"], textarea').each(function () {
-                    if ($(this).val() == "") {
-                        e.preventDefault();
-                        $(this).addClass('input-error');
-                    }
-                    else {
-                        $(this).removeClass('input-error');
-                    }
-                });
-
-            });
 
 
         });
@@ -106,8 +54,26 @@
         $().ready(function () {
             // 在键盘按下并释放及提交后验证提交表单
             $("#signupForm").validate({
-                rules: {
 
+                submitHandler: function(form)
+                {
+                    $(".btnsign").html("正在处理,请稍后...");
+                    $(form).ajaxSubmit({
+                        type:"post",
+                        isText: true,
+                        success: function (data) {
+                            if (data == "1") {
+                                window.location.replace("${ctxPath}/home/showLoginPage.htm");
+                            } else {
+                                $(".btnsign").html("系统异常,请稍后重试");
+                            }
+                        },
+
+                    });
+                },
+
+
+                rules: {
                     loginname: {
                         required: true,
                         minlength: 2,
@@ -130,11 +96,6 @@
                                 }
                             }
                         }
-                    },
-                    username: {
-                        required: true,
-                        minlength: 2,
-                        maxlength: 10,
                     },
                     email: {
                         required: true,
@@ -169,9 +130,6 @@
                         maxlength: 30,
                         equalTo: "#userpwd"
                     },
-                    sex: {
-                        required: true,
-                    },
                 },
                 messages: {
                     loginname: {
@@ -179,11 +137,6 @@
                         minlength: "登录名最少 2 个字符",
                         maxlength: "登录名最多 10 个字符",
                         remote:"此登录名已存在"
-                    },
-                    username: {
-                        required: "请输入姓名",
-                        minlength: "姓名最少 2 个字符",
-                        maxlength: "姓名最多 10 个字符"
                     },
                     email: {
                         required:"请输入邮箱",
@@ -201,11 +154,10 @@
                         maxlength: "密码长度不能大于 30 个字母",
                         equalTo: "两次密码输入不一致"
                     },
-                    sex: "请选择性别",
                 }
+
             });
         });
-
 
 
 
@@ -239,43 +191,13 @@
                     <form role="form" id="signupForm" action="${ctxPath}/home/signup.htm" method="post" class="registration-form">
 
                         <fieldset>
-                            <div class="form-top">
-                                <div class="form-top-left">
-                                    <h3>步骤 1 / 3</h3>
-                                    <p>请填写信息:</p>
-                                </div>
-                                <div class="form-top-right">
-                                    <i class="fa fa-user"></i>
-                                </div>
-                            </div>
                             <div class="form-bottom">
                                 <div class="form-group">
                                     <label class="sr-only" for="form-first-name">登录名</label>
                                     <input type="text" name="loginname" placeholder="登录名..." class="form-first-name form-control"
                                            id="loginname">
                                 </div>
-                                <div class="form-group">
-                                    <label class="sr-only" for="form-last-name">姓名</label>
-                                    <input type="text" name="username" placeholder="姓名..." class="form-last-name form-control"
-                                           id="username">
-                                </div>
 
-
-                                <button type="button" class="btnsign btn-next">下一步</button>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <div class="form-top">
-                                <div class="form-top-left">
-                                    <h3>步骤 2 / 3</h3>
-                                    <p>请填写信息:</p>
-                                </div>
-                                <div class="form-top-right">
-                                    <i class="fa fa-key"></i>
-                                </div>
-                            </div>
-                            <div class="form-bottom">
                                 <div class="form-group">
                                     <label class="sr-only" for="form-email">Email</label>
                                     <input type="text" name="email" placeholder="Email..." class="form-email form-control" id="email">
@@ -290,31 +212,9 @@
                                     <input type="password" name="repeatuserpwd" placeholder="确认密码..."
                                            class="form-repeat-password form-control" id="repeatuserpwd">
                                 </div>
-                                <button type="button" class="btnsign btn-previous">上一步</button>
-                                <button type="button" class="btnsign btn-next">下一步</button>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <div class="form-top">
-                                <div class="form-top-left">
-                                    <h3>步骤 3 / 3</h3>
-                                    <p>请填写信息:</p>
-                                </div>
-                                <div class="form-top-right">
-                                    <i class="fa fa-twitter"></i>
-                                </div>
-                            </div>
-                            <div class="form-bottom">
                                 <div class="form-group">
-                                    <select id="sex" name="sex" class="selectpicker" data-live-search="false" data-live-search-style="begins"
-                                            title="选择性别">
-                                        <option value="1">男</option>
-                                        <option value="2">女</option>
-                                    </select>
+                                    <button  class="btnsign">现在加入</button>
                                 </div>
-                                <button type="button" class="btnsign btn-previous">上一步</button>
-                                <button type="submit" class="btnsign">现在加入</button>
                             </div>
                         </fieldset>
 

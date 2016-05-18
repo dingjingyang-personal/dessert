@@ -167,7 +167,7 @@ ul.navbar-nav {
 
 .form-bottom {
 	padding: 25px 25px 30px 25px;
-	background: #eee;
+	background: #ffffff;
 	-moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
 	text-align: left;
 }
@@ -184,9 +184,9 @@ form .form-bottom .input-error {
 	border-color: #19b9e7;
 }
 
-form.registration-form fieldset {
-	display: none;
-}
+/*form.registration-form fieldset {*/
+	/*display: none;*/
+/*}*/
 
 
 /***** Media queries *****/
