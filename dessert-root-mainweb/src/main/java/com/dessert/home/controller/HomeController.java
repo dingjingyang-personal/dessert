@@ -37,6 +37,7 @@ public class HomeController {
     @RequestMapping("/showSignUpPage.htm")
     public String showSignUpPage(HttpServletRequest request, HttpServletResponse response) {
 
+        System.out.println();
         return "/home/signuppage";
     }
 
