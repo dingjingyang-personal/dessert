@@ -8,4 +8,6 @@ import java.util.Map;
 public interface UserService {
 
     public Map<String,Object> getUserMap(Map<String,Object> params);
+
+    public boolean updateUser(Map<String,Object> params);
 }

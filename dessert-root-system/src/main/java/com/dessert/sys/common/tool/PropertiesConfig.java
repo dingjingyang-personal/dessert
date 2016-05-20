@@ -1,11 +1,13 @@
 package com.dessert.sys.common.tool;
 
-import java.util.ResourceBundle;
-
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ResourceBundle;
+
 public class PropertiesConfig {
+
 	private ResourceBundle  resourceBundle;
+
 	public PropertiesConfig(String file){
 		resourceBundle=ResourceBundle.getBundle(file);
 	}

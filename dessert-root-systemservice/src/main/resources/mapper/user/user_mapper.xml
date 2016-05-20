@@ -17,7 +17,10 @@
 		U.STATUS	   status,
 		U.CREATEDATE   createdate,
 		date_format(U.UPDATE,'%Y-%m-%d') "update",
-		U.IP		   ip
+		U.IP		   ip,
+		U.STATE			state,
+		U.ACTICODE		acticode,
+		date_format(U.ACTIVATIONDATE,'%Y-%m-%d') "activationdate"
 		FROM USER U
 		<where>
 			<if test="userid!=null and userid!=''">
@@ -52,7 +55,10 @@
 			STATUS     ,
 			CREATEDATE ,
 			IP         ,
-			MAC
+			MAC			,
+			STATE		,
+			ACTICODE	,
+			ACTIVATIONDATE
 
 		)
 		VALUES
@@ -66,7 +72,10 @@
 			#{status},
 			now(),
 			#{ip},
-			#{mac}
+			#{mac},
+			#{state},
+			#{acticode},
+			#{activationdate}
 		)
 	</insert>
 
@@ -75,38 +84,48 @@
 	<update id="updateuser" parameterType="hashmap">
 		UPDATE
 			USER U
+		SET
 		<if test="userno!=null and userno!=''">
-			,U.USERNO=#{userno}
+			U.USERNO=#{userno},
 		</if>
 		<if test="username!=null and username!=''">
-			,U.USERNAME=#{username}
+			U.USERNAME=#{username},
 		</if>
 		<if test="loginname!=null and loginname!=''">
-			,U.LOGINNAME=#{loginname}
+			U.LOGINNAME=#{loginname},
 		</if>
 		<if test="email!=null and email!=''">
-			,U.EMAIL=#{email}
+			U.EMAIL=#{email},
 		</if>
 		<if test="userpwd!=null and userpwd!=''">
-			,U.USERPWD=#{userpwd}
+			U.USERPWD=#{userpwd},
 		</if>
 		<if test="sex!=null and sex!=''">
-			,U.SEX=#{sex}
+			U.SEX=#{sex},
 		</if>
 		<if test="tel!=null and tel!=''">
-			,U.TEL=#{tel}
+			U.TEL=#{tel},
 		</if>
 		<if test="birthday!=null and birthday!=''">
-			,U.BIRTHDAY=#{birthday}
+			U.BIRTHDAY=#{birthday},
 		</if>
 		<if test="status!=null and status!=''">
-			,U.STATUS=#{status}
+			U.STATUS=#{status},
 		</if>
 		<if test="ip!=null and ip!=''">
-			,U.IP=#{ip}
+			U.IP=#{ip},
 		</if>
 		<if test="mac!=null and mac!=''">
-			,U.MAC=#{mac}
+			U.MAC=#{mac},
+		</if>
+		<if test="state!=null and state!=''">
+			U.STATE=#{state},
+		</if>
+		<if test="acticode!=null and acticode=='null'">
+			U.ACTICODE=null,
+		</if>
+		<if test="activationdate!=null and activationdate=='null'">
+			U.ACTIVATIONDATE=null,
 		</if>
 			U.UPDATE=now()
 		WHERE

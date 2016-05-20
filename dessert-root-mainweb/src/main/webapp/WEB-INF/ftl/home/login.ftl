@@ -12,6 +12,7 @@
             font-family: 'microsoft yahei', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #2b669a;
         }
 
 
