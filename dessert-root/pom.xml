@@ -570,23 +570,6 @@
             </build>
         </profile>
         <profile>
-            <id>sit</id>
-            <build>
-                <filters>
-                    <filter>../${project.parent.artifactId}/env_files/properties/sit.properties</filter>
-                </filters>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>2.3</version>
-                        <configuration>
-                            <warName>${project.artifactId}-sit-${buildNumber}</warName>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
             <id>pre</id>
             <build>
                 <filters>

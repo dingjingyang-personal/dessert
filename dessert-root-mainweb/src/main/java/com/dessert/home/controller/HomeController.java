@@ -154,6 +154,7 @@ public class HomeController {
 
     /**
      * 重新发送注册邮件
+     *
      * @param request
      * @param response
      * @throws Exception
@@ -162,14 +163,14 @@ public class HomeController {
     public void resendmail(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        Map<String,Object> userMap = userService.getUserMap(params);
-        if(userMap==null&&userMap.isEmpty()){
-            SysToolHelper.outputByResponse("2",response);
-        }else {
-            userMap.put("activationdate", DateUtil.addDay(new Date(),2));
+        Map<String, Object> userMap = userService.getUserMap(params);
+        if (userMap == null && userMap.isEmpty()) {
+            SysToolHelper.outputByResponse("2", response);
+        } else {
+            userMap.put("activationdate", DateUtil.addDay(new Date(), 2));
             userService.updateUser(userMap);
             homeService.processregister(userMap);
-            SysToolHelper.outputByResponse("1",response);
+            SysToolHelper.outputByResponse("1", response);
         }
 
     }
