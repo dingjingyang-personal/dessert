@@ -48,7 +48,7 @@
         <property name="maxActive" value="${jdbc.maxActive}"/>
         <property name="maxIdle" value="${jdbc.maxIdle}"/>
         <property name="maxWait" value="${jdbc.maxWait}"/>
-        <property name="maxOpenPreparedStatements" value="300"/>
+        <property name="maxOpenPreparedStatements" value="${jdbc.maxOpenPreparedStatements}"/>
     </bean>
 
     <!--mybatis配置-->
