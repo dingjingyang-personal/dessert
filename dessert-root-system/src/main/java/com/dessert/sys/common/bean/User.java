@@ -2,6 +2,7 @@ package com.dessert.sys.common.bean;
 
 import java.io.Serializable;
 
+
 /**
  * Created by ding-Admin on 2016/4/22.
  */
@@ -18,6 +19,8 @@ public class User implements Serializable{
     private String birthday;
     private int sex;
     private String tel;
+
+    private Boolean locked = Boolean.FALSE;
 
     public String getUserid() {
         return userid;
@@ -82,4 +85,14 @@ public class User implements Serializable{
     public void setTel(String tel) {
         this.tel = tel;
     }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
+
 }

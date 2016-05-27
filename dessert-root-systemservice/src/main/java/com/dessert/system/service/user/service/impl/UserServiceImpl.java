@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ding-Admin on 2016/4/21.
@@ -32,6 +33,17 @@ public class UserServiceImpl implements UserService {
         }
         return daoClient.update("com.dessert.user.updateuser",params)>0?true : false;
     }
+
+    @Override
+    public Set<String> findRoles(String username) {
+        return null;
+    }
+
+    @Override
+    public Set<String> findPermissions(String username) {
+        return null;
+    }
+
 
 
 }
