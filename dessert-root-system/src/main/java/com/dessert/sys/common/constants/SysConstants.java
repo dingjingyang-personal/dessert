@@ -1,0 +1,30 @@
+package com.dessert.sys.common.constants;
+
+public interface SysConstants {
+String SEQ_STATIC="1";
+String SEQ_DATE="2";
+String SEQ_SERIAL="3";
+String CURRENT_PAGE_KEY="currentPage";
+String PAGE_SIZE_KEY="pageSize";
+int CURRENT_PAGE_INEX=1;
+int PAGER_SIZE=10;
+String TICKET_NAME="SYS_USERNAME";
+String USER_COOKIE_KEY="SYS_USERNAME";
+String CACHE_USERNAME_KEY_PRE="U_";
+String VALIDATE_CODE_KEY="VALIDATE_CODE_KEY";
+String ENCODER_GBK="GBK";
+String ENCODER_ISO="ISO-8859";
+String ENCODER_UTF_8="UTF-8";
+String REQUEST_USER="user";
+String EMPLOYEE_KEY="EMPLOYEE_KEY";
+String SEQ_SYS_KEY = "SYSSEQ";
+String SEQ_SYS_KEY_NO_PREFIX = "NOPREFIX";
+String LANGUAGECODE = "languagecode";
+String USER_MENU="EMPLOY_MENU";
+String SYSTEM_MENU="SYSTEM_MENU";
+
+String TEMPLATE_CARD_RECHARGE="CARD_RECHARGE";
+String TEMPLATE_CARD_OPEN="CARD_OPEN";
+String COOKIE_USERNO = "COOKIE_USERNO";
+int WEEK_SECONDS=3600*24*7;//一周
+}

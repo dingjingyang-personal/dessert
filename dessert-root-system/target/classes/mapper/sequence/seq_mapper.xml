@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SequenceNumService">
+    <select id="selectSeq" resultType="hashmap" parameterType="hashmap">
+        SELECT SEQKEY "seqkey",SEQDESC "seqdesc"
+        ,date_format(CREATEDATE,'%Y-%m-%d') "createdate"
+        FROM SYS_SEQ_MAIN
+        <where>
+            <if test="seqkey!=null and seqkey!=''">
+                AND SEQKEY=#{seqkey}
+            </if>
+        </where>
+        ORDER BY CREATEDATE DESC
+    </select>
+    <insert id="addSeq" parameterType="hashmap">
+        INSERT INTO SYS_SEQ_MAIN(SEQKEY,SEQDESC,CREATEDATE) VALUES(#{seqkey},#{seqdesc},now())
+    </insert>
+    <update id="updateSeq" parameterType="hashmap">
+        UPDATE SYS_SEQ_MAIN SET SEQDESC=#{seqdesc} WHERE SEQKEY=#{seqkey}
+    </update>
+    <insert id="addSetting" parameterType="hashmap">
+        INSERT INTO SYS_SEQ_SETTING(SEQID,SEQKEY,SEQTYPE,SEQORDER,SEQTYPEVALUE)
+        VALUES(SEQ_SETTING_ID.NEXTVAL,#{seqkey},#{seqtype},#{seqorder},#{seqtypevalue})
+    </insert>
+    <update id="updateSetting" parameterType="hashmap">
+        UPDATE SYS_SEQ_SETTING SET SEQTYPE=#{seqtype},SEQORDER=#{seqorder},SEQTYPEVALUE=#{seqtypevalue}
+        WHERE SEQID=#{seqid}
+    </update>
+    <select id="getValuePage" resultType="hashmap" parameterType="hashmap">
+        SELECT SEQKEY "seqkey"
+        ,SEQOWNER "seqowner"
+        ,SEQVALUE "seqvalue"
+        ,date_format(CREATEDATE,'%Y-%m-%d') "createdate"
+        FROM SYS_SEQ_VALUE
+        where SEQKEY=#{seqkey}
+        <if test="seqowner!=null and seqowner!=''">
+            AND SEQOWNER=#{seqowner}
+        </if>
+    </select>
+    <update id="updateValue" parameterType="hashmap">
+        UPDATE SYS_SEQ_VALUE SET SEQVALUE=#{seqvalue} WHERE SEQKEY=#{seqkey} AND SEQOWNER=#{seqowner}
+    </update>
+    <select id="getSetting" resultType="hashmap" parameterType="hashmap">
+        SELECT
+            SEQID "seqid",
+            SEQTYPE "seqtype",
+            SEQORDER "seqorder",
+            SEQTYPEVALUE "seqtypevalue",
+            SEQKEY "seqkey"
+        FROM SYS_SEQ_SETTING
+        <where>
+            <if test="seqtype!=null and seqtype!=''">
+                AND SEQTYPE=#{seqtype}
+            </if>
+            <if test="seqorder!=null and seqorder!=''">
+                AND SEQORDER=#{seqorder}
+            </if>
+            <if test="seqtypevalue!=null and seqtypevalue!=''">
+                AND SEQTYPEVALUE=#{seqtypevalue}
+            </if>
+            <if test="seqkey!=null and seqkey!=''">
+                AND SEQKEY=#{seqkey}
+            </if>
+            <if test="seqid!=null and seqid!=''">
+                AND SEQID=#{seqid}
+            </if>
+        </where>
+        ORDER BY SEQORDER ASC
+    </select>
+    <select id="getSeqNum" resultType="hashmap" parameterType="hashmap">
+        SELECT
+        A.SEQKEY "seqkey",
+        A.SEQDESC "seqdesc",
+        date_format(A.CREATEDATE,'%Y-%m-%d') "createdate",
+        (SELECT B.SEQVALUE FROM SYS_SEQ_VALUE B
+        WHERE B.SEQKEY=A.SEQKEY
+        <if test="seqowner!=null and seqowner!=''">
+            AND B.SEQOWNER=#{seqowner}
+        </if>) "seqvalue"
+        FROM SYS_SEQ_MAIN A
+        WHERE A.SEQKEY=#{seqkey}
+    </select>
+    <insert id="addSeqVal" parameterType="hashmap">
+        INSERT INTO SYS_SEQ_VALUE(SEQKEY,SEQOWNER,SEQVALUE,CREATEDATE)
+        VALUES(#{seqkey},#{seqowner},0,now())
+    </insert>
+    <update id="updateSeqNum" parameterType="hashmap">
+        UPDATE SYS_SEQ_VALUE A
+        SET
+            A.SEQVALUE=A.SEQVALUE+1
+        WHERE A.SEQKEY=#{seqkey}
+        <if test="seqowner!=null and seqowner!=''">
+            AND A.SEQOWNER=#{seqowner}
+        </if>
+        <if test="seqnum!=null and seqnum!=''">
+            AND A.SEQVALUE=#{seqnum}
+        </if>
+    </update>
+    <select id="getSeqSetting" resultType="hashmap" parameterType="hashmap">
+        SELECT (
+            CASE
+                WHEN A.SEQTYPE='1' THEN A.SEQTYPEVALUE
+                WHEN A.SEQTYPE='2' THEN (SELECT date_format(now(),A.SEQTYPEVALUE) FROM DUAL)
+                WHEN A.SEQTYPE='3' THEN (SELECT LPAD(${seqvalue},A.SEQTYPEVALUE,'0') FROM DUAL)
+            END
+                ) "itemValue"
+        FROM SYS_SEQ_SETTING A
+        WHERE A.SEQKEY=#{seqkey}
+        ORDER BY A.SEQORDER ASC
+    </select>
+</mapper>
