@@ -1,5 +1,6 @@
 package com.dessert.system.service.user.service;
 
+import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.bean.User;
 
 import java.util.Map;
@@ -30,9 +31,16 @@ public interface UserService {
 
 
     /**
-     * 查询用户
+     * 查询单个用户
      * @param userAccunt
      * @return
      */
     User findUser(Map<String, Object> userAccunt);
+
+    /**
+     * 查询用户页面
+     * @param params
+     * @return
+     */
+    Page findUsersPage(Map<String, Object> params);
 }

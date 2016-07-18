@@ -205,14 +205,14 @@ public class HomeController {
      * @param response
      */
     @RequestMapping("/login.htm")
-    public void login(HttpServletRequest request, HttpServletResponse response,Model model) {
+    public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
 
-        String msg ;
+        String msg;
 
         String loginNameOrEmail = getMapValue(params, "loginnameoremail");
-        String password = SysToolHelper.getMapValue(params,"userpwd");
+        String password = SysToolHelper.getMapValue(params, "userpwd");
 
         UsernamePasswordToken token = new UsernamePasswordToken(loginNameOrEmail, password);
 //        token.setRememberMe(true);
@@ -222,14 +222,14 @@ public class HomeController {
             if (subject.isAuthenticated()) {
                 Session session = SecurityUtils.getSubject().getSession();
                 User user = (User) session.getAttribute("userSession");
-                if(user!=null){
+                if (user != null) {
                     UserTool.setUserCache(request, response, user);
-                    CookieHelper.getInstance().setCookie(response, SysConstants.COOKIE_USERNO, user.getUserno(), SysSettings.COOKIE_DOMAIN,SysConstants.WEEK_SECONDS);
+                    CookieHelper.getInstance().setCookie(response, SysConstants.COOKIE_USERNO, user.getUserno(), SysSettings.COOKIE_DOMAIN, SysConstants.WEEK_SECONDS);
                 }
-                SysToolHelper.outputByResponse("1",response);
+                SysToolHelper.outputByResponse("1", response);
                 return;
             } else {
-                SysToolHelper.outputByResponse("2",response);
+                SysToolHelper.outputByResponse("2", response);
                 return;
             }
         } catch (IncorrectCredentialsException e) {
@@ -249,9 +249,7 @@ public class HomeController {
         }
 
 
-
-
-        SysToolHelper.outputByResponse(msg,response);
+        SysToolHelper.outputByResponse(msg, response);
     }
 
     /**
@@ -275,7 +273,7 @@ public class HomeController {
     @RequestMapping("/showIndex.htm")
     public String showIndex(HttpServletRequest request, HttpServletResponse response) {
 
-        if (homeService.setLoginUserInfo(request,response)) {
+        if (homeService.setLoginUserInfo(request, response)) {
             return "/home/index";
         }
         return "redirect:showLoginPage.htm";

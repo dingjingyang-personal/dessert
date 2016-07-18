@@ -1,5 +1,6 @@
 package com.dessert.system.service.home.service.impl;
 
+import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.home.service.RoleService;
@@ -19,16 +20,21 @@ public class RoleServiceImpl implements RoleService {
     private DaoClient daoClient;
 
     @Override
+    public Page findRolesPage(Map<String, Object> params) {
+        return daoClient.selectPage("com.dessert.role.selectRoles",params);
+    }
+
+    @Override
     public List<Map<String, Object>> findRoles(Map<String, Object> params) {
 
-        return daoClient.selectList("com.dessert.system_roleMapper.selectByPrimaryKey",params);
+        return daoClient.selectList("com.dessert.role.selectRoles",params);
     }
 
 
     @Override
     public Map<String, Object> findRole(Map<String, Object> params) {
 
-        return daoClient.selectMap("",params);
+        return daoClient.selectMap("com.dessert.role.selectRoles",params);
     }
 
     @Override

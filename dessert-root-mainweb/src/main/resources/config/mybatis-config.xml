@@ -5,6 +5,6 @@
     <settings>
         <setting name="lazyLoadingEnabled" value="false" />
         <setting name="logImpl" value="LOG4J2"/>
-        <setting name="logPrefix" value="----------mybatis-----------"/>
+        <setting name="logPrefix" value="|-- >SQL -->|"/>
     </settings>
 </configuration>

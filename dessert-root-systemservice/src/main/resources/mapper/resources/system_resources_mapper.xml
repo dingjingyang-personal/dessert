@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dessert.resources" >
+
+
+  <select id="selectResources" resultType="hashmap" parameterType="map" >
+    select
+      M.MENUID          menuid,
+      M.MENUNAME        menuname,
+      M.MENUTYPE        menutype,
+      M.MENUORDER       menuorder,
+      M.PARENTID        parentid,
+      M.MENULEVEL       menulevel,
+      M.ACTION          action,
+      M.STATUS          status,
+      M.CREATEDATE      createdate,
+      M.UPDATEDATE      updatedate
+    FROM SYSTEM_RESOURCES M
+    <where>
+        <if test="menuid!=null and menuid!=''">
+          AND M.MENUID =#{menuid}
+        </if>
+        <if test="menuname!=null and menuname!=''">
+          AND M.MENUNAME =#{menuname}
+        </if>
+        <if test="menutype!=null and menutype!=''">
+          AND M.menuid =#{menutype}
+        </if>
+        <if test="menuorder!=null and menuorder!=''">
+          AND M.MENUORDER =#{menuorder}
+        </if>
+        <if test="parentid!=null and parentid!=''">
+          AND M.PARENTID =#{parentid}
+        </if>
+        <if test="menulevel!=null and menulevel!=''">
+          AND M.MENULEVEL =#{menulevel}
+        </if>
+        <if test="status!=null and status!=''">
+          AND M.STATUS =#{status}
+        </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from SYSTEM_RESOURCES
+    where MENUID = #{menuid}
+  </delete>
+
+
+
+  <insert id="insertSelective" parameterType="map" >
+    insert into SYSTEM_RESOURCES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuid != null" >
+        MENUID,
+      </if>
+      <if test="menuname != null" >
+        MENUNAME,
+      </if>
+      <if test="menutype != null" >
+        MENUTYPE,
+      </if>
+      <if test="menuorder != null" >
+        MENUORDER,
+      </if>
+      <if test="parentid != null" >
+        PARENTID,
+      </if>
+      <if test="menulevel != null" >
+        MENULEVEL,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+        CREATEDATE
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuid != null" >
+        #{menuid},
+      </if>
+      <if test="menuname != null" >
+        #{menuname},
+      </if>
+      <if test="menutype != null" >
+        #{menutype},
+      </if>
+      <if test="menuorder != null" >
+        #{menuorder},
+      </if>
+      <if test="parentid != null" >
+        #{parentid},
+      </if>
+      <if test="menulevel != null" >
+        #{menulevel},
+      </if>
+      <if test="action != null" >
+        #{action},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+        now()
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="map" >
+    update SYSTEM_RESOURCES
+    <set >
+      <if test="menuname != null" >
+        MENUNAME = #{menuname},
+      </if>
+      <if test="menutype != null" >
+        MENUTYPE = #{menutype},
+      </if>
+      <if test="menuorder != null" >
+        MENUORDER = #{menuorder},
+      </if>
+      <if test="parentid != null" >
+        PARENTID = #{parentid},
+      </if>
+      <if test="menulevel != null" >
+        MENULEVEL = #{menulevel},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+        UPDATEDATE = now()
+    </set>
+    where MENUID = #{menuid}
+  </update>
+
+</mapper>

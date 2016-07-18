@@ -1,5 +1,6 @@
 package com.dessert.home.controller;
 
+import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.home.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by admin-ding on 2016/6/22.
  */
-@RequestMapping("system/role")
 @Controller
+@RequestMapping("system/role")
 public class RoleController {
 
 
@@ -24,7 +24,7 @@ public class RoleController {
 
 
     /**
-     * 查询角色
+     * 查询角色页面
      *
      * @param request
      * @param response
@@ -32,13 +32,21 @@ public class RoleController {
      */
     @RequestMapping("findRoles.htm")
     public String findRoles(HttpServletRequest request, HttpServletResponse response) {
+        return "system/role/roleManageMain";
+    }
+
+
+    /**
+     * 返回页面数据
+     * @param request
+     * @param response
+     */
+    @RequestMapping("findRolesJson.htm")
+    public void findRolesJson(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-
-        List<Map<String, Object>> roleList = roleService.findRoles(params);
-        request.setAttribute("roleList", roleList);
-        request.setAttribute("params", params);
-        return "role/roleMain";
+        Page rolePage= roleService.findRolesPage(params);
+        SysToolHelper.outputByResponse(SysToolHelper.getJsonOfObject(rolePage),response);
     }
 
     /**
@@ -54,7 +62,7 @@ public class RoleController {
         if(!SysToolHelper.isEmptyMap(roleMap)){
             request.setAttribute("roleMap",roleMap);
         }
-        return "role/addOrUpdateRolePage";
+        return "system/role/addOrUpdateRolePage";
     }
 
 

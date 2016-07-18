@@ -1,6 +1,7 @@
 package com.dessert.sys.common.dao;
 
 import com.dessert.sys.common.bean.Page;
+import com.dessert.sys.common.constants.PropertiesConfig;
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.tool.SysToolHelper;
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +22,15 @@ import java.util.WeakHashMap;
 
 
 public class DaoClient extends SqlSessionDaoSupport {
+
+    public static final String databaseType;
+
+    static {
+        PropertiesConfig config = new PropertiesConfig("config/setting");
+        databaseType = config.getPropByKey("jdbc.driver");
+    }
+
+
     private WeakHashMap<String, SqlNode> sqlsMap = new WeakHashMap<String, SqlNode>();
 
     /**
@@ -44,9 +54,9 @@ public class DaoClient extends SqlSessionDaoSupport {
     public Map<String, Object> selectMap(String sqlId, Map<String, Object> params) {
         List<Map<String, Object>> list = selectList(sqlId, params);
         if (list != null && !list.isEmpty()) {
-            if(list.size()==1){
+            if (list.size() == 1) {
                 return list.get(0);
-            }else{
+            } else {
                 return null;
             }
         }
@@ -88,15 +98,30 @@ public class DaoClient extends SqlSessionDaoSupport {
         Map<String, Object> countMap = selectMap(countSqlId, params);
         params.remove("isCount");
         int count = SysToolHelper.getIntValue(countMap, "count", 0);
+
+        int pageCount = 1;
+        if (count % pageSize == 0) {
+            pageCount = count / pageSize;
+        } else {
+            pageCount = count / pageSize + 1;
+        }
+
         Page<Map<String, Object>> page = new Page<Map<String, Object>>();
         if (count > 0) {
-            sqlString = "dao.page";
             List<Map<String, Object>> list;
             if (count <= pageSize) {
                 list = selectList(sqlId, params);
             } else {
-                params.put("maxRownum", (currentPage) * pageSize);
-                params.put("minRownum", (currentPage - 1) * pageSize + 1);
+                if (databaseType.contains("mysql")) {//数据库为mysql
+                    sqlString = "dao.mysqlpage";
+                    int startIndex = (currentPage - 1) * pageSize;
+                    params.put("startIndex", startIndex);
+                    params.put("pageSize", pageSize);
+                } else {//数据库为oracle
+                    sqlString = "dao.oraclepage";
+                    params.put("maxRownum", (currentPage) * pageSize);
+                    params.put("minRownum", (currentPage - 1) * pageSize + 1);
+                }
                 list = selectList(sqlString, params);
             }
             page.setPageList(list);
@@ -104,6 +129,7 @@ public class DaoClient extends SqlSessionDaoSupport {
         page.setStatisMap(countMap);
         page.setRecordCount(count);
         page.setCurrentPage(currentPage);
+        page.setPageCount(pageCount);
         page.setPageSize(pageSize);
         return page;
     }

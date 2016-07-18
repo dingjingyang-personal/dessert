@@ -484,3 +484,13 @@ function reLogin(){
 	}
 	win.location.replace(getWebRoot()+'/home/showLoginPage.htm');
 }
+
+
+
+
+
+    /*获取jqgrid一行数据*/
+    function getGridData(id) {
+        var n = $("#"+id).jqGrid("getGridParam", "selrow");
+        return n ? $("#"+id).jqGrid("getRowData", n) : null;
+    }

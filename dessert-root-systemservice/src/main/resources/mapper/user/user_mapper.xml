@@ -3,7 +3,7 @@
 <mapper namespace="com.dessert.user">
 
 	<!--查询-->
-	<select id="getUser" parameterType="map" resultType="map">
+	<select id="getUser" parameterType="hashmap" resultType="map">
 		SELECT
 		U.USERID	   userid,
 		U.USERNO	   userno,

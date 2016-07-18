@@ -1,5 +1,6 @@
 package com.dessert.system.service.user.service.impl;
 
+import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.SysToolHelper;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
-
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
 
 /**
  * Created by ding-Admin on 2016/4/21.
@@ -73,6 +72,11 @@ public class UserServiceImpl implements UserService {
         user.setActivationdate(SysToolHelper.getMapValue(userMap,"activationdate"));
 
         return user;
+    }
+
+    @Override
+    public Page findUsersPage(Map<String, Object> params) {
+        return daoClient.selectPage("com.dessert.user.getUser",params);
     }
 
 

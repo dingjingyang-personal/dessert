@@ -31,7 +31,7 @@
    <#if currentPage?int <=0>
      <#assign currentPage=1>
    </#if>
-   <div class="snPages" style='margin-top:10px;'>
+   <div class="snPages" >
      <#list RequestParameters?keys as key>
        <#if (key!="currentPage"&&(key!='pageSize') && RequestParameters[key]??)>
           <input type="hidden" name="${key}" value="${RequestParameters[key]?html}"/>

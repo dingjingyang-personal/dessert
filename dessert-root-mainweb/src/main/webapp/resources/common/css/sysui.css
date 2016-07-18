@@ -1,0 +1,82 @@
+@charset "utf-8";
+
+/*a标签去除下划线*/
+a:link { text-decoration: none;}
+a:active { text-decoration:none}
+a:hover { text-decoration:none;}
+a:visited { text-decoration: none;}
+
+
+
+/*分页样式*/
+.snPages{float:right;padding-bottom:10px; padding-right:10px;margin-top:10px;}
+.snPages a,.snPages a:visited,.snPages span,.snPages div{position:relative;display:inline;float:left;margin-right:4px;color:#333;font-size:12px;}
+.snPages span{font-size:12px;}
+.snPages div{line-height:24px;padding-left:30px;overflow:hidden;}
+.snPages a,.snPages a:visited{height:24px;line-height:24px;padding:0 8px;text-align:center;background:#fff;border:1px solid #d7d7d7;border-radius:4px 4px 4px 4px;}
+.snPages a.current{color:#f60;}
+.snPages a.current:visited{_color:#f60;}
+.snPages a.next,.snPages a.prev,.snPages a.next:visited{display:inline-block;width:68px;height:24px;line-height:24px;line-height:28px\9;_line-height:24px;padding:0;overflow:hidden;}
+.snPages a.prev,.snPages span.prev{text-indent:6px;}
+.snPages a.next,.snPages span.next{text-indent:-6px;}
+.snPages span.prev,.snPages span.next{display:inline;float:left;width:68px;height:24px;line-height:24px;line-height:28px\9;_line-height:24px;color:#b1b1b1;text-align:center;background:#fff;border:1px solid #d7d7d7;border-radius:4px 4px 4px 4px;}
+.snPages b{position:absolute;width:0;height:0;line-height:0;margin-top:-2px;+margin-top:-3px;font-size:0;border-width:5px;border-style:solid;border-color:#fff #333 #fff #fff;}
+.snPages a.prev b{left:1px;top:10px;}
+.snPages a.next b{right:1px;top:10px;border-color:#fff #fff #fff #333;}
+.snPages span.prev b{left:1px;top:10px;border-color:#fff #b1b1b1 #fff #fff;}
+.snPages span.next b{right:1px;top:10px;border-color:#fff #fff #fff #b1b1b1;}
+.snPages div input{width:32px;height:24px;line-height:24px;margin:0 3px;text-align:center;+vertical-align:middle;border:1px solid #d7d7d7;}
+.snPages div input.pagesubmit{cursor:pointer;width:45px;height:26px;color:#333;line-height:26px;_line-height:20px;background:#fff;border-radius:4px 4px 4px 4px;}
+.snPages a:hover{color:#f60;}
+.snpage-container{ margin-top:20px;}
+
+
+
+
+
+
+
+
+/*页面布局*/
+.ibox {
+    clear: both;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.ibox-title {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #fff;
+    border-color: #e7eaec;
+    -webkit-border-image: none;
+    -o-border-image: none;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 4px 0 0;
+    color: inherit;
+    margin-bottom: 0;
+    padding: 14px 15px 7px;
+    min-height: 48px;
+}
+
+.ibox-content {
+    clear: both;
+}
+
+.ibox-content {
+    background-color: #fff;
+    color: inherit;
+    padding: 15px 20px 20px;
+    border-color: #e7eaec;
+    -webkit-border-image: none;
+    -o-border-image: none;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
+}
+
+/*按钮*/

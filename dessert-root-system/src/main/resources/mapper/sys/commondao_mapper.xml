@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao">
+    <!-- oracle分页查询 -->
+    <select id="oraclepage" resultType="hashmap" parameterType="hashmap" >
+       SELECT * FROM (select rownum rownum_,t$t$.*
+      from (${sql_clause} ) t$t$)
+      where rownum_ <![CDATA[<=]]>${maxRownum} and rownum_<![CDATA[>=]]>${minRownum}
+    </select>
+
+
+    <!--mysql分页查询-->
+    <select id="mysqlpage" resultType="hashmap" parameterType="hashmap" >
+
+        ${sql_clause}
+        LIMIT
+        <if test="startIndex!=null and startIndex!=''">
+          ${startIndex},
+        </if>
+        <if test="startIndex==null or startIndex==''">
+          0,
+        </if>
+          ${pageSize}
+
+
+
+    </select>
+
+    <select id="pageCount" resultType="hashmap" parameterType="hashmap" >
+       select count(*) "count" <if test="sumFields!=null and sumFields!=''">,${sumFields} </if> from (${sql_clause} ) AS pageCount
+    </select>
+</mapper>

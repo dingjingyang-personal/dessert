@@ -12,8 +12,6 @@
 
 
     <!-- log4j2-begin -->
-
-
     <listener>
         <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
     </listener>
@@ -74,10 +72,6 @@
 
 
 
-
-
-
-
     <!-- SpringMVC核心分发器 -->
     <servlet>
         <servlet-name>appServlet</servlet-name>
@@ -99,10 +93,6 @@
     <welcome-file-list>
         <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
-
-
-
-
 
 
     <error-page>

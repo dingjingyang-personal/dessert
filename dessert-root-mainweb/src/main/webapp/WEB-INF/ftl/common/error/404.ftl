@@ -10,7 +10,7 @@
     <script type="text/javascript">
 
         $(function(){
-            delayURL("${ctxPath}/sys/timeout.htm");
+            delayURL("${ctxPath}/home/showIndex.htm");
         });
 
         function delayURL(url) {
@@ -32,7 +32,7 @@
 
 <div class="jumbotron" >
     <h3 class="text-center">页面没有找到!</h3>
-    <p class="text-center" style="font-size: 16px"><span id="time">5</span>秒钟之后自动跳转首页</p>
+    <p class="text-center" style="font-size: 16px"><span id="time">10</span>秒钟之后自动跳转首页</p>
 </div>
 
 
