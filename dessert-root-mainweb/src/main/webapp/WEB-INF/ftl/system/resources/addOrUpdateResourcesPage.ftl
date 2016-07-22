@@ -9,8 +9,8 @@
 
     <title></title>
 
-    <style type="text/css">
 
+    <style type="text/css">
 
         .col-sm-1 {
             width: 22%;
@@ -24,7 +24,7 @@
 
         .addOrUpdate{
             margin-top: 20px;
-            margin-left: 30px;
+            margin-left: 60px;
         }
 
 
@@ -36,12 +36,12 @@
         $(function(){
 
             var url;
-            if("${(roleMap.roleid)!''}"==null||"${(roleMap.roleid)!''}"==''){
-                url = "${ctxPath}/system/role/addRole.htm";
+            if("${(resourcesMap.menuid)!''}"==null||"${(resourcesMap.menuid)!''}"==''){
+                url = "${ctxPath}/system/resources/addResources.htm";
             }else {
-                url = "${ctxPath}/system/role/updateRole.htm?roleid="+"${(roleMap.roleid)!''}";
-                $("#roletype").val("${(roleMap.roletype)!''}");
-                $("#status").val("${(roleMap.status)!''}");
+                url = "${ctxPath}/system/resources/updateResources.htm?menuid="+"${(resourcesMap.menuid)!''}";
+                $("#roletype").val("${(resourcesMap.menutype)!''}");
+                $("#status").val("${(resourcesMap.status)!''}");
             }
 
             $("#addOrUpdateForm").attr("action", url);
@@ -79,24 +79,26 @@
 
 
                 rules: {
-                    rolename: {
+                    menuname: {
                         required: true,
                         minlength: 2,
                         maxlength: 10,
 
                     },
 
-                    roledescription: {
+                    action: {
+                        url:true,
                         maxlength: 100,
                     },
                 },
                 messages: {
-                    loginname: {
-                        required: "请输入角色名",
-                        minlength: "角色名最少 2 个字符!",
-                        maxlength: "角色名最多 10 个字符!",
+                    menuname: {
+                        required: "请输入菜单名",
+                        minlength: "菜单名最少 2 个字符!",
+                        maxlength: "菜单名最多 10 个字符!",
                     },
-                    roledescription: {
+                    action: {
+                        url:"请输入正确的URL",
                         maxlength: "最多输入100个字符!",
                     },
                 }
@@ -127,25 +129,40 @@
 
             <fieldset>
                 <div class="form-bottom">
+
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-1 control-label">角色名</label>
+                        <label for="firstname" class="col-sm-1 control-label">上级菜单</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="rolename" name="rolename" value="${(roleMap.rolename)!''}">
+                            <span>${(resourcesMap.rolename)!''}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="menuname" class="col-sm-1 control-label">菜单名称</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="menuname" name="menuname" value="${(resourcesMap.menuname)!''}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="action" class="col-sm-1 control-label">页面链接</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="action" name="action" value="${(resourcesMap.action)!''}">
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label for="name" class="col-sm-1 control-label">角色类型</label>
+                        <label for="menutype" class="col-sm-1 control-label">菜单类型</label>
                         <div class="col-sm-2">
-                            <select class="form-control" id="roletype" name="roletype">
-                                <option value="1">管理员</option>
-                                <option value="2" selected="selected">普通</option>
+                            <select class="form-control" id="menutype" name="menutype">
+                                <option value="1" selected="selected">菜单</option>
+                                <option value="2" >按钮</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="col-sm-1 control-label">有效状态</label>
+                        <label for="status" class="col-sm-1 control-label">菜单状态</label>
                         <div class="col-sm-2">
                             <select class="form-control" id="status" name="status">
                                 <option value="1" selected="selected">有效</option>
@@ -153,14 +170,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="name" class="col-sm-1 control-label">描述</label>
-                        <div class="col-sm-2">
-                            <textarea class="form-control" rows="3"  id="roledescription" name="roledescription" >${(roleMap.roledescription)!''}</textarea>
-                        </div>
-                    </div>
 
-                    <div class="form-group" style="position: relative;top:20px;left: 55%;">
+                    <div class="form-group" style="position: relative;top:20px;left: 61%;">
                         <button class="btn btn-success">提交</button>
                         <button class="btn btn-info" onclick="closeFrame()">关闭</button>
                     </div>

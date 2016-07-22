@@ -43,4 +43,11 @@ public interface ResourcesService {
      * @return
      */
     List<Map<String,Object>> findResources(Map<String, Object> params);
+
+    /**
+     * 查询单个资源
+     * @param params
+     * @return
+     */
+    Map<String,Object> findResource(Map<String, Object> params);
 }

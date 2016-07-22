@@ -114,38 +114,35 @@
             <div id="jquery-accordion-menu" class="jquery-accordion-menu red">
                 <ul id="demo-list">
 
-                    <li class="active"><a href="#">Home </a></li>
-                    <li><a href="#">Events </a></li>
-                    <li><a href="#">Gallery </a><span
-                            class="jquery-accordion-menu-label">
-				12 </span></li>
-                    <li><a href="#">Services </a>
+                    <li class="active"><a href="#">一级菜单1 </a></li>
+                    <li><a href="#">一级菜单2 </a></li>
+                    <li><a href="#">一级菜单3 </a></li>
+                    <li><a href="#">一级菜单4 </a>
                         <ul class="submenu">
-                            <li><a href="#">Web Design </a></li>
-                            <li><a href="#">Hosting </a></li>
-                            <li><a href="#">Design </a>
+                            <li><a href="#">二级菜单A1 </a></li>
+                            <li><a href="#">二级菜单A2 </a></li>
+                            <li><a href="#">二级菜单A3 </a>
                                 <ul class="submenu">
-                                    <li><a href="#">Graphics </a></li>
-                                    <li><a href="#">Vectors </a></li>
-                                    <li><a href="#">Photoshop </a></li>
-                                    <li><a href="#">Fonts </a></li>
+                                    <li><a href="#">三级菜单A </a></li>
+                                    <li><a href="#">三级菜单 </a></li>
+                                    <li><a href="#">三级菜单 </a></li>
+                                    <li><a href="#">三级菜单 </a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">Consulting </a></li>
+                            <li><a href="#">二级菜单A4 </a></li>
                         </ul>
                     </li>
-                    <li><a href="#">系统管理 </a></li>
-                    <li><a href="#">Portfolio </a>
+                    <li><a href="#">一级菜单5 </a></li>
+                    <li><a href="#">一级菜单6 </a>
                         <ul class="submenu">
-                            <li><a href="#">Web Design </a></li>
-                            <li><a href="#">Graphics </a><span class="jquery-accordion-menu-label">10 </span>
-                            </li>
-                            <li><a href="#">Photoshop </a></li>
-                            <li><a href="#">Programming </a></li>
+                            <li><a href="#">二级菜单</a></li>
+                            <li><a href="#">二级菜单 </a></li>
+                            <li><a href="#">二级菜单 </a></li>
+                            <li><a href="#">二级菜单 </a></li>
                         </ul>
                     </li>
-                    <li><a href="#">About </a></li>
-                    <li><a href="#">Contact </a></li>
+                    <li><a href="#">一级菜单7 </a></li>
+                    <li><a href="#">一级菜单8 </a></li>
 
                 </ul>
                 <div class="jquery-accordion-menu-footer">

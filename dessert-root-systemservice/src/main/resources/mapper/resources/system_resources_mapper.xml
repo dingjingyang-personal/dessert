@@ -39,6 +39,7 @@
           AND M.STATUS =#{status}
         </if>
     </where>
+    ORDER BY M.MENUORDER ASC
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="map" >

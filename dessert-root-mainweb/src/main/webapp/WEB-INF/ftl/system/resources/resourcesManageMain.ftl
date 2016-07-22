@@ -13,78 +13,28 @@
     <style type="text/css">
 
 
-        /*.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {*/
-        /*border: 1px solid #28a4c9;*/
-        /*height: 35px;*/
-        /*text-align: center;*/
-        /*}*/
-
         .ui-jqgrid-bdiv {
             overflow: hidden !important
         }
 
 
-        /*.ui-widget.ui-widget-content {*/
-        /*border: 0px*/
-        /*}*/
-
-        /*.ui-jqgrid .ui-jqgrid-btable {*/
-        /*border-left: 1px solid;*/
-        /*}*/
-
-        /*.ui-jqgrid{width:auto;}*/
-        /*.ui-jqgrid TR.jqgrow TD {padding:0 0 0 10px;border:1px solid #e3e3e3;word-break:break-all;height:30px;}*/
-        /*.ui-widget-content{background:none;border:none}*/
-        /*.ui-widget{font:12px/1.5 arial,tahoma,宋体,color:#333}*/
-        /*.ui-jqgrid .ui-jqgrid-view{font-size:13px;}*/
-        /*tr{height:28px;}*/
-        /*tr:hover{background:#f5f5f5;}*/
-        /*.manage-panelBd{padding:5px;}*/
-        /*.ui-widget-content .ui-state-default{border-bottom:0px;background:none}*/
-        /*.ui-jqgrid .ui-jqgrid-htable TH.ui-th-ltr{}*/
-        /*.ui-jqgrid .ui-jqgrid-htable TH.ui-th-column{border-left:1px solid #e3e3e3;border-top:1px solid #e3e3e3;border-right:1px solid #e3e3e3;padding-right:3px;}*/
-        /*.ui-jqgrid .ui-jqgrid-htable TH{height:30px;padding-left:0px;}*/
-        /*.ui-jqgrid-bdiv{overflow:hidden!important}*/
-        /*.ui-jqgrid{margin:0 auto!important;}*/
-
-
     </style>
 
     <script type="text/javascript">
-        function parseMenu(pid, menuChild, menusArray) {
-            var temp;
-            var arr;
-            for (var i = 0; i < menusArray.length; i++) {
-                var temp = menusArray[i];
-                if (temp.parentid == pid) {
-                    if (temp.action) {
-                        menuChild.push(temp);
-                        continue;
-                    }
-                    arr = [];
-                    parseMenu(temp.menuid, arr, menusArray);
-                    temp.child = arr;
-                    menuChild.push(temp);
-                }
-            }
-        }
-        var selectMenuId;
+
         $(document).ready(function () {
             var topicjson = {
                         "response": getMenuTree()
                     },
-                    grid;
 
-
-            var lastsel;
-            grid = jQuery("#treegrid");
+                    grid = jQuery("#treegrid");
             grid.jqGrid({
                 styleUI: 'Bootstrap',
                 viewrecords: true,
                 datastr: topicjson,
                 datatype: "jsonstring",
-                caption : "菜单列表",
-                autowidth:true,
+                caption: "菜单列表",
+                autowidth: true,
                 height: "auto",
                 loadui: "disable",
                 treeGrid: true,
@@ -135,16 +85,9 @@
 
         });
 
-        function appendArr(arr, obj) {
-            arr.push(obj);
-            if (!obj.child || obj.child.length == 0) {
-                return;
-            }
-            for (var i = 0; i < obj.child.length; i++) {
-                appendArr(arr, obj.child[i]);
-            }
-        }
-        var menuMap, menuRoot;
+        var selectMenuId;
+        var menuMap;
+        var menuRoot;
         function getMenuTree() {
             var menuTree = ${(resourcesList)!''};
             menuRoot = [];
@@ -177,6 +120,25 @@
             return menuTree;
         }
 
+        function parseMenu(pid, menuChild, menusArray) {
+            var temp;
+            var arr;
+            for (var i = 0; i < menusArray.length; i++) {
+                temp = menusArray[i];
+                if (temp.parentid == pid) {
+                    if (temp.action) {
+                        menuChild.push(temp);
+                        continue;
+                    }
+                    arr = [];
+                    parseMenu(temp.menuid, arr, menusArray);
+                    temp.child = arr;
+                    menuChild.push(temp);
+                }
+            }
+        }
+
+
         function menuTreeToMap(Tree) {
             var temp = {};
             var menu;
@@ -186,6 +148,17 @@
             }
             return temp;
         }
+
+        function appendArr(arr, obj) {
+            arr.push(obj);
+            if (!obj.child || obj.child.length == 0) {
+                return;
+            }
+            for (var i = 0; i < obj.child.length; i++) {
+                appendArr(arr, obj.child[i]);
+            }
+        }
+
         //打开新增菜单页面
         function createmenu(flag) {
             if (!selectMenuId) {
@@ -207,13 +180,23 @@
                 alert("链接节点不能新增菜单");
                 return;
             }
-            var url = "${ctxPath}/menumanager/toAddMenuPage.action";
-            parent.showDlg({
-                url: url,
+            var url = "${ctxPath}/system/resources/addOrUpdateResourcesPage.htm";
+//            parent.showDlg({
+//                url: url,
+//                title: (flag == "A" ? "新增" : "修改"),
+//                width: 460,
+//                height: (flag == "A" ? 360 : 380),
+//                id: "createMenuPager",
+//                data: {supmenuid: menu.menuid, flag: flag, menucount: count}
+//            });
+
+
+            layer.open({
                 title: (flag == "A" ? "新增" : "修改"),
-                width: 460,
-                height: (flag == "A" ? 360 : 380),
-                id: "createMenuPager",
+                type: 2,
+                closeBtn: 0,
+                area: ['550px', '450px'],
+                content: [url, 'no'],
                 data: {supmenuid: menu.menuid, flag: flag, menucount: count}
             });
         }
@@ -432,14 +415,14 @@
         </div>
         <div class="ibox-content">
             <div class="form-group">
-                <button id="btnAdd" type="button" class="btn btn-primary" onclick="addModel()"><i
-                        class="fa fa-plus"></i>&nbsp;添加
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="createmenu('A')"><i
+                        class="fa fa-plus"></i>&nbsp;&nbsp;<span>添加</span>
                 </button>
-                <button id="btnEdit" type="button" class="btn btn-success" onclick="editModel()"><i
-                        class="fa fa-pencil-square-o"></i> 编辑
+                <button id="btnEdit" type="button" class="btn btn-success" onclick="createmenu('M')"><i
+                        class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span>编辑</span>
                 </button>
-                <button id="btnDel" type="button" class="btn btn-danger" onclick="delData()">
-                    <i class="fa fa-trash"></i>&nbsp;&nbsp;<span class="bold">删除</span>
+                <button id="btnDel" type="button" class="btn btn-danger" onclick="deleteMenu('D')">
+                    <i class="fa fa-trash"></i>&nbsp;&nbsp;<span >删除</span>
                 </button>
             </div>
 
@@ -452,7 +435,7 @@
                 </div>
             </div>
 
-            <div class="jqGrid_wrapper" >
+            <div class="jqGrid_wrapper">
                 <table id="treegrid"></table>
                 <div id="jqGridPager"></div>
             </div>

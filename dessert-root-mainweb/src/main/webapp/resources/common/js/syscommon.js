@@ -494,3 +494,9 @@ function reLogin(){
         var n = $("#"+id).jqGrid("getGridParam", "selrow");
         return n ? $("#"+id).jqGrid("getRowData", n) : null;
     }
+
+    /*关闭窗口*/
+    function closeFrame(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }

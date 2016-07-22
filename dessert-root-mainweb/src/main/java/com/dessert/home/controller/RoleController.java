@@ -2,7 +2,7 @@ package com.dessert.home.controller;
 
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.tool.SysToolHelper;
-import com.dessert.system.service.home.service.RoleService;
+import com.dessert.system.service.role.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,7 +99,7 @@ public class RoleController {
     @RequestMapping("deleteRole.htm")
     public void deleteRole(HttpServletRequest request,HttpServletResponse response){
         Map<String,Object> params = SysToolHelper.getRequestParams(request);
-        SysToolHelper.outputByResponse(roleService.deleteRole(params)?"1":"2",response);
+        SysToolHelper.outputByResponse(roleService.deleteRole(params)?"1":"删除失败，请稍后重试!",response);
     }
 }
 

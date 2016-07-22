@@ -99,32 +99,78 @@
                     });
 
         }
-        
-        
-        
 
 
+        //添加
+        function addModel() {
+            layer.open({
+                title: '添加角色',
+                type: 2,
+                closeBtn: 0,
+                area: ['400px', '450px'],
+                content: ['${ctxPath}/system/role/addOrUpdateRolePage.htm','no']
+            });
+        }
 
-        function editModel() {//编辑
+
+        //编辑
+        function editModel() {
             var row = getGridData("pagelist");
             if (row != null) {
                 var roleid = row.roleid;
                 layer.open({
-                    title: '修改',
+                    title: '修改角色',
                     type: 2,
-                    area: ['60%', '70%'],
-                    content: ['${ctxPath}/system/role/addOrUpdateRolePage.htm?roleid='+roleid,'no']
+                    closeBtn: 0,
+                    area: ['400px', '450px'],
+                    content: ['${ctxPath}/system/role/addOrUpdateRolePage.htm?roleid=' + roleid, 'no']
                 });
             } else {
-                layer.msg('请选择要编辑的数据');
+                layer.msg('请选择一条数据!');
             }
         }
 
 
+        function delModel() {
+
+            var row = getGridData("pagelist");
+            if (row != null) {
+
+                var roleid = row.roleid;
+                var url = '${ctxPath}/system/role/deleteRole.htm';
+                var data = {};
+                data.roleid = roleid;
+                //询问框
+                layer.confirm('确定要删除此条数据？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    layer.load(1);
+                    ajaxEx({url:url,isText:true,data:data,success:function(data){
+                        layer.closeAll('loading');
+                        if(data==="1"){
+                            parent.layer.msg('删除成功!  2秒后窗口关闭',{
+                                time:2000,
+                                icon: 1,
+                                shade:0.3,
+                                shadeClose:false
+                            },function(){
+                                window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+                                closeFrame();//关闭窗口
+                            });
+                        }
+                        else{
+                            layer.alert(data, {icon: 5});
+                        }
+                    }});
+
+                    }
+                );
 
 
-
-
+            } else {
+                layer.msg('请选择一条数据!');
+            }
+        }
 
 
     </script>
@@ -148,7 +194,7 @@
                 <button id="btnEdit" type="button" class="btn btn-success" onclick="editModel()"><i
                         class="fa fa-pencil-square-o"></i> 编辑
                 </button>
-                <button id="btnDel" type="button" class="btn btn-danger" onclick="delData()">
+                <button id="btnDel" type="button" class="btn btn-danger" onclick="delModel()">
                     <i class="fa fa-trash"></i>&nbsp;&nbsp;<span class="bold">删除</span>
                 </button>
             </div>

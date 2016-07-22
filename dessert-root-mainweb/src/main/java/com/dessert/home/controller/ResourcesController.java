@@ -31,8 +31,26 @@ public class ResourcesController {
     public String findResources(HttpServletRequest  request , HttpServletResponse response ){
         Map<String,Object> params = SysToolHelper.getRequestParams(request);
         List<Map<String,Object>> resourcesList= resourcesService.findResources(params);
-        request.setAttribute("resourcesList",SysToolHelper.getJsonOfCollection(resourcesList));
+        String obj = SysToolHelper.getJsonOfCollection(resourcesList);
+        request.setAttribute("resourcesList",obj);
         return "system/resources/resourcesManageMain";
+    }
+
+
+    /**
+     * 准备添加或修改菜单
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("addOrUpdateResourcesPage.htm")
+    public String  addOrUpdateResourcesPage(HttpServletRequest request ,HttpServletResponse response ){
+        Map<String,Object> params = SysToolHelper.getRequestParams(request);
+
+        Map<String,Object> resourcesMap = resourcesService.findResource(params);
+        request.setAttribute("resourcesMap",resourcesMap);
+        return "system/resources/addOrUpdateResourcesPage";
+
     }
 
     /**
@@ -45,6 +63,7 @@ public class ResourcesController {
         Map<String,Object> params = SysToolHelper.getRequestParams(request);
         SysToolHelper.outputByResponse(resourcesService.addResources(params)?"1":"2",response);
     }
+
 
 
     /**

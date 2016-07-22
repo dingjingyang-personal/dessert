@@ -4,7 +4,7 @@
 
 
   <select id="selectRoles" parameterType="map" resultType="map" >
-    select 
+    select
       R.ROLEID             roleid,
       R.ROLENAME           rolename,
       R.ROLEDESCRIPTION    roledescription,
@@ -42,7 +42,9 @@
     (
       ROLEID,
       ROLENAME,
+    <if test="roledescription != null" >
       ROLEDESCRIPTION,
+    </if>
       ROLETYPE,
       STATUS,
       CREATEDATE
@@ -51,54 +53,17 @@
     (
       #{roleid},
       #{rolename},
+    <if test="roledescription != null" >
       #{roledescription},
+    </if>
       #{roletype},
       #{status},
       now()
     )
   </insert>
 
-  <insert id="insertSelective" parameterType="hashmap" >
-    insert into system_role
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="roleid != null" >
-        ROLEID,
-      </if>
-      <if test="rolename != null" >
-        ROLENAME,
-      </if>
-      <if test="roledescription != null" >
-        ROLEDESCRIPTION,
-      </if>
-      <if test="roletype != null" >
-        ROLETYPE,
-      </if>
-      <if test="status != null" >
-        STATUS,
-      </if>
-        CREATEDATE
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="roleid != null" >
-        #{roleid},
-      </if>
-      <if test="rolename != null" >
-        #{rolename},
-      </if>
-      <if test="roledescription != null" >
-        #{roledescription},
-      </if>
-      <if test="roletype != null" >
-        #{roletype},
-      </if>
-      <if test="status != null" >
-        #{status},
-      </if>
-      now()
-    </trim>
-  </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="hashmap" >
+  <update id="update" parameterType="hashmap" >
     update system_role
     <set >
       <if test="rolename != null" >
