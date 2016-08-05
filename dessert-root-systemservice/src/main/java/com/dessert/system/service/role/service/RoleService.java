@@ -53,5 +53,18 @@ public interface RoleService {
     boolean deleteRole(Map<String, Object> params);
 
 
+    /**
+     * 查询相关角色所拥有的资源
+     * @param params
+     * @return
+     */
+    List<Map<String,Object>> findResourcessByRole(Map<String, Object> params);
+
+    /**
+     * 授权或取消授权
+     * @param params
+     * @return
+     */
+    boolean addOrDeletePermissions(Map<String, Object> params);
 
 }

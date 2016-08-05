@@ -83,4 +83,30 @@
     where ROLEID = #{roleid}
   </update>
 
+
+  <select id="findResourcessByRole" parameterType="map" resultType="map">
+    SELECT
+      RR.RMLINKID rmlinkid,
+      R.MENUID menuid,
+      R.MENUNAME menuname,
+      R.MENUTYPE menutype,
+      R.MENUORDER menuorder,
+      R.PARENTID parentid,
+      R.MENULEVEL menulevel,
+    (SELECT MENUORDER FROM system_resources R1 WHERE R1.MENUID=(SELECT PARENTID FROM system_resources R2 WHERE R2.MENUID=R.PARENTID)) fatherorder,
+    (CASE  WHEN menulevel='1' THEN 'true'
+    WHEN menulevel='2' THEN 'true' END) open
+    FROM SYSTEM_ROLE_RES RR
+    LEFT JOIN system_resources R ON R.MENUID = RR.MENUID
+    <where>
+      <if test="roleid!=null and roleid!=''">
+        AND RR.ROLEID =#{roleid}
+      </if>
+      <if test="menuid!=null and menuid!=''">
+        AND RR.MENUID =#{menuid}
+      </if>
+    </where>
+    ORDER BY fatherorder ASC
+  </select>
+
 </mapper>

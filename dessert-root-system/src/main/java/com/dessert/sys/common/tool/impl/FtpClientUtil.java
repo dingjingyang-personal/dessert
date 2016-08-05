@@ -3,7 +3,7 @@ package com.dessert.sys.common.tool.impl;
 
 import com.dessert.sys.common.constants.SysSettings;
 import com.dessert.sys.common.tool.FileUpload;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;

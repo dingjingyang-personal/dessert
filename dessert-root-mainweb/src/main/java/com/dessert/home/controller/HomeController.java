@@ -61,7 +61,7 @@ public class HomeController {
     @RequestMapping("/validateLoginNameOrEmail.htm")
     public void validateLoginName(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        Map<String, Object> userMap = userService.getUserMap(params);
+        Map<String, Object> userMap = userService.findUserMap(params);
 
         String loginname = getMapValue(params, "loginname");
         String email = getMapValue(params, "email");
@@ -171,7 +171,7 @@ public class HomeController {
     public void resendmail(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        Map<String, Object> userMap = userService.getUserMap(params);
+        Map<String, Object> userMap = userService.findUserMap(params);
         if (userMap == null && userMap.isEmpty()) {
             SysToolHelper.outputByResponse("2", response);
         } else {

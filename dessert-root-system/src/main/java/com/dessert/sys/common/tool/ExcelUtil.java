@@ -1,6 +1,6 @@
 package com.dessert.sys.common.tool;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -413,7 +413,7 @@ public class ExcelUtil {
      * @param title
      * @param fields
      * @param data
-     * @param response
+     * @param outputStream
      */
     public void writeExcel(String sheetName, String[] title, String[] fields, List<Map<String, Object>> data,
                            OutputStream outputStream) {
@@ -469,7 +469,7 @@ public class ExcelUtil {
     /**
      * 多个工作表导出
      *
-     * @param sheetName
+     * @param sheetNameList
      * @param titleList
      * @param fieldsList
      * @param data

@@ -22,7 +22,7 @@
             float: left;
         }
 
-        .addOrUpdate{
+        .addOrUpdate {
             margin-top: 20px;
             margin-left: 30px;
         }
@@ -33,51 +33,15 @@
     <script type="text/javascript">
 
 
-        $(function(){
+        $(function () {
 
-            var url;
-            if("${(roleMap.roleid)!''}"==null||"${(roleMap.roleid)!''}"==''){
-                url = "${ctxPath}/system/role/addRole.htm";
-            }else {
-                url = "${ctxPath}/system/role/updateRole.htm?roleid="+"${(roleMap.roleid)!''}";
-                $("#roletype").val("${(roleMap.roletype)!''}");
-                $("#status").val("${(roleMap.status)!''}");
-            }
-
-            $("#addOrUpdateForm").attr("action", url);
-
+            $("#roletype").val("${(roleMap.roletype)!'2'}");
+            $("#status").val("${(roleMap.status)!'1'}");
 
             // 在键盘按下并释放及提交后验证提交表单
             $("#addOrUpdateForm").validate({
 
-                submitHandler: function(form)
-                {
-                    layer.load(1);
-                    $(form).ajaxSubmit({
-                        type:"post",
-                        isText: true,
-                        success: function (data) {
-                            layer.closeAll('loading');
-                            if (data == "1") {
-                                parent.layer.msg('保存成功!  2秒后窗口关闭',{
-                                    time:2000,
-                                    icon: 1,
-                                    shade:0.3,
-                                    shadeClose:false
-                                },function(){
-                                    window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
-                                    closeFrame();//关闭窗口
-                                });
-
-                            } else {
-                                parent.layer.alert('系统异常,请稍后重试!', {icon: 5});
-                            }
-                        },
-
-                    });
-                },
-
-
+                debug: true,
                 rules: {
                     rolename: {
                         required: true,
@@ -107,30 +71,68 @@
         });
 
 
+        //保存
+        function saveRole() {
+            var isValidate = $("#addOrUpdateForm").valid();
+            if (isValidate) {
 
+                var data = getAllInputValue("#addOrUpdateForm");
+                var url;
 
+                <#if roleMap??&&roleMap.roleid??>
+                    data.roleid='${(roleMap.roleid)!''}';
+                    url="${ctxPath}/system/role/updateRole.htm";
+                <#else>
+                    url="${ctxPath}/system/role/addRole.htm";
+                </#if>
+
+                layer.load(1);
+                ajaxEx({url:url,isText:true,data:data,success:function(data){
+                    layer.closeAll('loading');
+                    if(data==="1"){
+                        parent.layer.msg('保存成功!  2秒后窗口关闭', {
+                            time: 2000,
+                            icon: 1,
+                            shade: 0.3,
+                            shadeClose: false
+                        }, function () {
+                            window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+                            closeFrame();//关闭窗口
+                        });
+                    }
+                    else{
+                        parent.layer.alert('系统异常,请稍后重试!', {icon: 5});
+                    }
+                }});
+
+            }else {
+                return;
+            }
+
+        }
 
 
     </script>
 </head>
 
-<body >
+<body>
 <#escape x as x?html>
 
 
 
 
 <div class="">
-    <div class="addOrUpdate" >
+    <div class="addOrUpdate">
 
-        <form  id="addOrUpdateForm" class="form-horizontal "  method="post">
+        <form id="addOrUpdateForm" class="form-horizontal " method="post">
 
             <fieldset>
                 <div class="form-bottom">
                     <div class="form-group">
                         <label for="firstname" class="col-sm-1 control-label">角色名</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="rolename" name="rolename" value="${(roleMap.rolename)!''}">
+                            <input type="text" class="form-control" id="rolename" name="rolename"
+                                   value="${(roleMap.rolename)!''}">
                         </div>
                     </div>
 
@@ -138,7 +140,7 @@
                     <div class="form-group">
                         <label for="name" class="col-sm-1 control-label">角色类型</label>
                         <div class="col-sm-2">
-                            <select class="form-control" id="roletype" name="roletype">
+                            <select class="selectpicker form-control" id="roletype" name="roletype">
                                 <option value="1">管理员</option>
                                 <option value="2" selected="selected">普通</option>
                             </select>
@@ -147,7 +149,7 @@
                     <div class="form-group">
                         <label for="name" class="col-sm-1 control-label">有效状态</label>
                         <div class="col-sm-2">
-                            <select class="form-control" id="status" name="status">
+                            <select class="selectpicker form-control" id="status" name="status">
                                 <option value="1" selected="selected">有效</option>
                                 <option value="2">无效</option>
                             </select>
@@ -156,12 +158,13 @@
                     <div class="form-group">
                         <label for="name" class="col-sm-1 control-label">描述</label>
                         <div class="col-sm-2">
-                            <textarea class="form-control" rows="3"  id="roledescription" name="roledescription" >${(roleMap.roledescription)!''}</textarea>
+                            <textarea class="form-control" rows="3" id="roledescription"
+                                      name="roledescription">${(roleMap.roledescription)!''}</textarea>
                         </div>
                     </div>
 
                     <div class="form-group" style="position: relative;top:20px;left: 55%;">
-                        <button class="btn btn-success">提交</button>
+                        <button class="btn btn-success" onclick="saveRole()">提交</button>
                         <button class="btn btn-info" onclick="closeFrame()">关闭</button>
                     </div>
                 </div>

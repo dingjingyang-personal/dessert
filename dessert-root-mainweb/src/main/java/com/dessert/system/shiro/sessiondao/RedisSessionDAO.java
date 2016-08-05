@@ -34,23 +34,24 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     /**
      * save session
+     *
      * @param session
      * @throws UnknownSessionException
      */
-    private void saveSession(Session session) throws UnknownSessionException{
-        if(session == null || session.getId() == null){
+    private void saveSession(Session session) throws UnknownSessionException {
+        if (session == null || session.getId() == null) {
             logger.error("session or session id is null");
             return;
         }
 
         byte[] key = getByteKey(session.getId());
         byte[] value = SerializeUtils.serialize(session);
-        session.setTimeout(redisManager.getExpire()*1000);
+        session.setTimeout(redisManager.getExpire() * 1000);
         this.redisManager.set(key, value, redisManager.getExpire());
     }
 
     public void delete(Session session) {
-        if(session == null || session.getId() == null){
+        if (session == null || session.getId() == null) {
             logger.error("session or session id is null");
             return;
         }
@@ -63,9 +64,9 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         Set<Session> sessions = new HashSet<Session>();
 
         Set<byte[]> keys = redisManager.keys(this.keyPrefix + "*");
-        if(keys != null && keys.size()>0){
-            for(byte[] key:keys){
-                Session s = (Session)SerializeUtils.deserialize(redisManager.get(key));
+        if (keys != null && keys.size() > 0) {
+            for (byte[] key : keys) {
+                Session s = (Session) SerializeUtils.deserialize(redisManager.get(key));
                 sessions.add(s);
             }
         }
@@ -83,21 +84,22 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        if(sessionId == null){
+        if (sessionId == null) {
             logger.error("session id is null");
             return null;
         }
 
-        Session s = (Session)SerializeUtils.deserialize(redisManager.get(this.getByteKey(sessionId)));
+        Session s = (Session) SerializeUtils.deserialize(redisManager.get(this.getByteKey(sessionId)));
         return s;
     }
 
     /**
      * 获得byte[]型的key
-     * @param key
+     *
+     * @param sessionId
      * @return
      */
-    private byte[] getByteKey(Serializable sessionId){
+    private byte[] getByteKey(Serializable sessionId) {
         String preKey = this.keyPrefix + sessionId;
         return preKey.getBytes();
     }
@@ -118,6 +120,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     /**
      * Returns the Redis session keys
      * prefix.
+     *
      * @return The prefix
      */
     public String getKeyPrefix() {
@@ -127,6 +130,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     /**
      * Sets the Redis sessions key
      * prefix.
+     *
      * @param keyPrefix The prefix
      */
     public void setKeyPrefix(String keyPrefix) {

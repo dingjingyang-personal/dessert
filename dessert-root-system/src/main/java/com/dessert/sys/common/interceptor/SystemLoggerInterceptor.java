@@ -19,7 +19,7 @@ public class SystemLoggerInterceptor {
     public void afterThrowingException(JoinPoint joinPoint, Exception e ) {
         logger.error(getException(e));
         for (int i = 0; i < joinPoint.getArgs().length; i++) {
-            System.out.println("-----------------------------"+joinPoint.getArgs()[i]);
+            System.out.println("|____异常相关参数_____>"+joinPoint.getArgs()[i]);
         }
     }
 

@@ -3,6 +3,7 @@ package com.dessert.system.service.user.service;
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.bean.User;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,16 +12,11 @@ import java.util.Set;
  */
 public interface UserService {
 
-    public Map<String,Object> getUserMap(Map<String,Object> params);
+    Map<String,Object> findUserMap(Map<String,Object> params);
 
-    public boolean updateUser(Map<String,Object> params);
+    boolean updateUser(Map<String,Object> params);
 
-    /**
-     * 根据用户名查询角色
-     * @param username
-     * @return
-     */
-    Set<String> findRoles(String username);
+
 
     /**
      * 根据用户名查询权限
@@ -43,4 +39,35 @@ public interface UserService {
      * @return
      */
     Page findUsersPage(Map<String, Object> params);
+
+    /**
+     * 添加用户
+     * @param params
+     * @return
+     */
+    boolean addUser(Map<String, Object> params);
+
+    /**
+     * 删除
+     * @param params
+     * @return
+     */
+    boolean deleteUser(Map<String, Object> params);
+
+    /**
+     * 查询用户角色
+     * @param params
+     * @return
+     */
+    List<Map<String,Object>> findRoles(Map<String, Object> params);
+
+
+    Set<String> findRoles(String username);
+
+    /**
+     * 分配角色
+     * @param params
+     * @return
+     */
+    boolean addAssigningRoles(Map<String, Object> params);
 }

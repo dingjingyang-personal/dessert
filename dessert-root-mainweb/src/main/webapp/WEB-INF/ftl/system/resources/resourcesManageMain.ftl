@@ -13,9 +13,6 @@
     <style type="text/css">
 
 
-        .ui-jqgrid-bdiv {
-            overflow: hidden !important
-        }
 
 
     </style>
@@ -78,9 +75,6 @@
                     selectMenuId = id;
                 },
                 pager: "#jqGridPager"
-            });
-            $('.tree-minus,.tree-plus').click(function () {
-                resizeParentHeight();
             });
 
         });
@@ -161,6 +155,13 @@
 
         //打开新增菜单页面
         function createmenu(flag) {
+            if(flag=="M"){
+                var row = getGridData("treegrid");
+                if(row==null){
+                    layer.msg('请选择一条数据!');
+                    return;
+                }
+            }
             if (!selectMenuId) {
                 selectMenuId = 0;
                 var root = {menuid: 0, menucode: 0, menulevel: 0};
@@ -177,29 +178,23 @@
                 }
             }
             if (menu.menulevel == 3 && flag == "A") {
-                alert("链接节点不能新增菜单");
+                layer.msg('链接节点不能新增菜单!');
                 return;
             }
             var url = "${ctxPath}/system/resources/addOrUpdateResourcesPage.htm";
-//            parent.showDlg({
-//                url: url,
-//                title: (flag == "A" ? "新增" : "修改"),
-//                width: 460,
-//                height: (flag == "A" ? 360 : 380),
-//                id: "createMenuPager",
-//                data: {supmenuid: menu.menuid, flag: flag, menucount: count}
-//            });
 
 
             layer.open({
+                id:"addOrUpdateResourcesPage",
                 title: (flag == "A" ? "新增" : "修改"),
                 type: 2,
-                closeBtn: 0,
                 area: ['550px', '450px'],
-                content: [url, 'no'],
-                data: {supmenuid: menu.menuid, flag: flag, menucount: count}
+                content:['','no'],
+                data:{url: url, data: {supmenuid: menu.menuid, flag: flag, menucount: count}},
             });
+
         }
+
 
         //打开菜单权限管理页面
         function influenceInquiry() {
@@ -227,11 +222,7 @@
             });
         }
 
-        function resizeParentHeight() {
-            if (parent && parent.resizeHeight) {
-                parent.resizeHeight();
-            }
-        }
+
         function putAllMenuId(menu, menuArr) {
             menuArr.push(menu.menuid);
             if (!menu.child || menu.child.length == 0) return;
@@ -258,9 +249,15 @@
             putAllMenuId(temp, menuidArr);
             return menuidArr;
         }
+
+
+        /**
+         * 移动菜单
+         * @param flag
+         */
         function moveMenu(flag) {
             if (!selectMenuId) {
-                alert('请选择菜单');
+                layer.msg('请选择一条数据!');
                 return;
             }
             var menu = menuMap[selectMenuId];
@@ -268,13 +265,13 @@
             var menuid = menu.menuid;
             var menuorder = menu.menuorder;
             if (flag == "up" && menuorder == 10) {
-                alert("不可向上移动");
+                layer.msg('不可向上移动');
                 return;
             }
             var spanList = $("span[pid='" + menupid + "']");
             var len = spanList.length;
             if (len == 1) {
-                alert("不可移动");
+                layer.msg('不可移动');
             }
             var curIndex;
             for (var i = 0; i < len; i++) {
@@ -296,7 +293,7 @@
             }
 
             if (flag == "down" && (curIndex + 1) == len) {
-                alert("不可向下移动");
+                layer.msg('不可向下移动');
                 return;
             }
             var tr1 = $('tr[id="' + menuid + '"]');
@@ -306,7 +303,7 @@
             if (!tr1Menus || !tr2Menus) return;
 
             var datas = {"menuid": menuid, "menuorder": order, "movemenuid": id, "movemenuorder": menuorder};
-            var url = "${ctxPath}/menumanager/updateMenuOrder.action";
+            var url = "${ctxPath}/system/resources/updateMenuOrder.htm";
             ajaxEx({
                 type: "post",
                 async: false,
@@ -328,60 +325,80 @@
                         }
                         // parent.reloadPageWindow();
                     } else {
-                        alert('操作失败');
+                        layer.alert('系统异常,请稍后重试!', {icon: 5});
                     }
                 }
             });
 
         }
 
+
+        /**
+         * 删除
+         * @param flag
+         */
         function deleteMenu(flag) {
 
-            if (!confirm("确认要删除？")) {
-                window.event.returnValue = false;
-                return;
-            }
 
             if (!selectMenuId) {
-                selectMenuId = 0;
-                var root = {menuid: 0, menucode: 0, menulevel: 0};
-                menuMap[0] = root;
-                //alert("请选择！");
-                //return;
-            }
-            var menu = menuMap[selectMenuId];
-            //var supmenucode = menu.menucode;
-            var count = 0;
-            for (var map in menuMap) {
-                if (menu.menuid == menuMap[map].parentid) {
-                    count++;
-                }
-            }
-            if (menu.menulevel == 1 && flag == "D") {
-                alert("此链接节点不能删除");
+                layer.msg('请选择一条数据!');
                 return;
             }
-            if (menu.menulevel == 2 && flag == "D") {
-                alert("此链接节点不能删除");
-                return;
-            }
-            var url = "${ctxPath}/menumanager/deleteMenu.action";
 
-            ajaxEx({
-                url: url,
-                isText: true,
-                data: {supmenuid: menu.menuid, flag: flag, menucount: count},
-                success: function (data) {
-                    if (data == "1") {
-                        alert("删除成功");
-                        parent.reloadPageWindow();
-                        parent.closeDlg();
-                    }
-                    else {
-                        showMessage({text: data, top: 5});
+            layer.confirm('确定要删除此条数据？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+
+
+
+                var menu = menuMap[selectMenuId];
+                //var supmenucode = menu.menucode;
+                var count = 0;
+                for (var map in menuMap) {
+                    if (menu.menuid == menuMap[map].parentid) {
+                        count++;
                     }
                 }
+                if (menu.menulevel == 1 && flag == "D") {
+                    layer.msg('此链接节点不能删除');
+                    return;
+                }
+                if (menu.menulevel == 2 && flag == "D") {
+                    layer.msg('此链接节点不能删除');
+                    return;
+                }
+                var url = "${ctxPath}/system/resources/deleteResources.htm";
+
+                ajaxEx({
+                    url: url,
+                    isText: true,
+                    data: {menuid: menu.menuid, flag: flag, menucount: count},
+                    success: function (data) {
+                        if (data == "1") {
+                            parent.layer.msg('删除成功!  2秒后窗口关闭',{
+                                time:2000,
+                                icon: 1,
+                                shade:0.3,
+                                shadeClose:false
+                            },function(){
+                                window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+                                closeFrame();//关闭窗口
+                            });
+                        }
+                        else {
+                            layer.alert(data, {icon: 5});
+                        }
+                    }
+                });
+
+
+
+
+
+
             });
+
+
         }
 
 
@@ -410,7 +427,7 @@
 <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>用户管理</h5>
+            <h5>资源管理</h5>
 
         </div>
         <div class="ibox-content">
@@ -421,8 +438,14 @@
                 <button id="btnEdit" type="button" class="btn btn-success" onclick="createmenu('M')"><i
                         class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span>编辑</span>
                 </button>
+                <button id="btnEdit" type="button" class="btn btn-info" onclick="moveMenu('up')"><i
+                        class="fa fa-arrow-up"></i>&nbsp;&nbsp;<span>上移</span>
+                </button>
+                <button id="btnEdit" type="button" class="btn btn-primary" onclick="moveMenu('down')"><i
+                        class="fa fa-arrow-down"></i>&nbsp;&nbsp;<span>下移</span>
+                </button>
                 <button id="btnDel" type="button" class="btn btn-danger" onclick="deleteMenu('D')">
-                    <i class="fa fa-trash"></i>&nbsp;&nbsp;<span >删除</span>
+                    <i class="fa fa-trash"></i>&nbsp;&nbsp;<span>删除</span>
                 </button>
             </div>
 

@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dessert.system_role_resMapper" >
-  <resultMap id="BaseResultMap" type="map" >
-    <id column="RMLINKID" property="rmlinkid" jdbcType="INTEGER" />
-    <result column="MENUID" property="menuid" jdbcType="INTEGER" />
-    <result column="ROLEID" property="roleid" jdbcType="INTEGER" />
-    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
-  </resultMap>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+  <select id="selectRoleResources" resultType="map" parameterType="map" >
     select
       RMLINKID        rmlinkid,
       MENUID          menuid,
@@ -28,7 +22,7 @@
     </where>
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="map" >
+  <delete id="delete" parameterType="map" >
     delete from system_role_res
     <where>
       <if test="rmlinkid!=null and rmlinkid!=''">
@@ -60,17 +54,5 @@
     )
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="map" >
-    update system_role_res
-    <set >
-      <if test="menuid != null" >
-        MENUID = #{menuid},
-      </if>
-      <if test="roleid != null" >
-        ROLEID = #{roleid}
-      </if>
-    </set>
-    where RMLINKID = #{rmlinkid}
-  </update>
 
 </mapper>

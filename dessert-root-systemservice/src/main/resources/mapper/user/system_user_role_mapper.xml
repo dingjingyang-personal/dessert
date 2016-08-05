@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dessert.system_user_roleMapper" >
-  <resultMap id="BaseResultMap" type="map" >
-    <id column="USER_ROLE_ID" property="userRoleId" jdbcType="VARCHAR" />
-    <result column="USERID" property="userid" jdbcType="VARCHAR" />
-    <result column="ROLEID" property="roleid" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    USER_ROLE_ID, USERID, ROLEID
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+<mapper namespace="com.dessert.system_user_role" >
+
+
+  <select id="selectByPrimaryKey" resultType="map" parameterType="map" >
     select
       USER_ROLE_ID    user_role_id,
       USERID          userid,
@@ -43,7 +37,7 @@
     </where>
   </delete>
 
-  <insert id="insert" parameterType="map" >
+  <insert id="insert" parameterType="hashmap" >
     insert into system_user_role
     (
       USER_ROLE_ID,
@@ -53,7 +47,7 @@
     )
     values
     (
-      #{userRoleId},
+      #{userroleid},
       #{userid},
       #{roleid},
       now()
@@ -70,7 +64,7 @@
         ROLEID = #{roleid},
       </if>
     </set>
-    where USER_ROLE_ID = #{userRoleId}
+    where USER_ROLE_ID = #{userroleid}
   </update>
 
 </mapper>

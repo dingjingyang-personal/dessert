@@ -35,48 +35,24 @@
 
         $(function(){
 
-            var url;
-            if("${(resourcesMap.menuid)!''}"==null||"${(resourcesMap.menuid)!''}"==''){
-                url = "${ctxPath}/system/resources/addResources.htm";
-            }else {
-                url = "${ctxPath}/system/resources/updateResources.htm?menuid="+"${(resourcesMap.menuid)!''}";
-                $("#roletype").val("${(resourcesMap.menutype)!''}");
-                $("#status").val("${(resourcesMap.status)!''}");
-            }
 
-            $("#addOrUpdateForm").attr("action", url);
+            //若菜单层级为3，则action必填，否则不可以填
+            if(getMenuLevel("${(RequestParameters.flag)!''}")==3){
+                $("#menuaction").attr("disabled",false);
+            }else{
+                $("#menuaction").attr("disabled",true);
+            }
+            <#if MenuMap??>
+                $('#menutype').val(${(MenuMap.menutype)!''});
+                $('#status').val(${(MenuMap.status)!''});
+            </#if>
+
 
 
             // 在键盘按下并释放及提交后验证提交表单
             $("#addOrUpdateForm").validate({
 
-                submitHandler: function(form)
-                {
-                    layer.load(1);
-                    $(form).ajaxSubmit({
-                        type:"post",
-                        isText: true,
-                        success: function (data) {
-                            layer.closeAll('loading');
-                            if (data == "1") {
-                                parent.layer.msg('保存成功!  2秒后窗口关闭',{
-                                    time:2000,
-                                    icon: 1,
-                                    shade:0.3,
-                                    shadeClose:false
-                                },function(){
-                                    window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
-                                    closeFrame();//关闭窗口
-                                });
-
-                            } else {
-                                parent.layer.alert('系统异常,请稍后重试!', {icon: 5});
-                            }
-                        },
-
-                    });
-                },
-
+                debug: true,
 
                 rules: {
                     menuname: {
@@ -84,23 +60,15 @@
                         minlength: 2,
                         maxlength: 10,
 
-                    },
+                    }
 
-                    action: {
-                        url:true,
-                        maxlength: 100,
-                    },
                 },
                 messages: {
                     menuname: {
                         required: "请输入菜单名",
-                        minlength: "菜单名最少 2 个字符!",
-                        maxlength: "菜单名最多 10 个字符!",
-                    },
-                    action: {
-                        url:"请输入正确的URL",
-                        maxlength: "最多输入100个字符!",
-                    },
+                        minlength: "菜单名最少2个字符",
+                        maxlength: "菜单名最多10个字符",
+                    }
                 }
 
             });
@@ -108,6 +76,100 @@
 
         });
 
+
+
+
+        function getMenuLevel(flag){
+            var menuaction = $.trim($("#menuaction").val());
+            var supmenulevel = "";
+            var menulevel = "";
+            if(flag=="A"){
+                supmenulevel = "${(supMenuMap.menulevel)!''}";
+                menulevel = parseInt(supmenulevel) + 1;
+            }else{
+                menulevel = "${(MenuMap.menulevel)!''}";
+            }
+            return menulevel;
+        }
+
+
+
+        //新建菜单
+        function submitCreat(){
+            var supmenuid = "${(supMenuMap.menuid)!''}";
+            var newmenuid = "${(MenuMap.menuid)!''}";
+            var menutype = $.trim($("#menutype").val());
+            var status =  $("#status").val();
+            var menuaction =  $.trim($("#menuaction").val());
+            var menuname =  $.trim($("#menuname").val());
+            var menulevel = getMenuLevel("${(RequestParameters.flag)!''}");
+
+
+            if(menutype==''||status==''||menuname==''){
+                layer.msg('请输入必填项');
+                return;
+            }
+
+            //菜单层级为3，菜单链接必填
+            if(menulevel==3){
+                if(menuaction==""){
+                    layer.msg('请输入菜单链接');
+                    return;
+                }
+
+                var actionleth = menuaction.length;
+                if(actionleth>300){
+                    layer.msg('链接最多300个字符');
+                    return;
+                }
+            }
+
+
+
+            var flag = "${(RequestParameters.flag)!''}";
+            var datas={"supmenuid":supmenuid,"menuid":newmenuid,"menutype":menutype,"status":status,
+                "action":menuaction,"menuname":menuname,"flag":flag,"menucount":"${(RequestParameters.menucount)!''}"};
+            var url ="${ctxPath}/system/resources/addOrUpdateResources.htm";
+            layer.load(1);
+            ajaxEx({
+                type:"post",
+                async: false,
+                data: datas,
+                cache: false,
+                url: url,
+                success: function (result){
+                    layer.closeAll('loading');
+                    if(result == "true"){
+                        if(flag=="A"){
+                            parent.layer.msg('创建成功!  2秒后窗口关闭', {
+                                time: 2000,
+                                icon: 1,
+                                shade: 0.3,
+                                shadeClose: false
+                            }, function () {
+//                                window.parent.$('#treegrid').trigger('reloadGrid');//列表页面刷新数据
+                                parent.location.reload();
+                                closeFrame();//关闭窗口
+                            });
+                        }
+                        if(flag=="M"){
+                            parent.layer.msg('修改成功!  2秒后窗口关闭', {
+                                time: 2000,
+                                icon: 1,
+                                shade: 0.3,
+                                shadeClose: false
+                            }, function () {
+//                                window.parent.$('#treegrid').trigger('reloadGrid');//列表页面刷新数据
+                                parent.location.reload();
+                                closeFrame();//关闭窗口
+                            });
+                        }
+                    }else{
+                        parent.layer.alert('系统异常,请稍后重试!', {icon: 5});
+                    }
+                }
+            });
+        }
 
 
 
@@ -133,21 +195,21 @@
                     <div class="form-group">
                         <label for="firstname" class="col-sm-1 control-label">上级菜单</label>
                         <div class="col-sm-2">
-                            <span>${(resourcesMap.rolename)!''}</span>
+                            <span>${(supMenuMap.menuname)!''}</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="menuname" class="col-sm-1 control-label">菜单名称</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="menuname" name="menuname" value="${(resourcesMap.menuname)!''}">
+                            <input type="text" class="form-control" id="menuname" name="menuname" value="${(MenuMap.menuname)!''}">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="action" class="col-sm-1 control-label">页面链接</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="action" name="action" value="${(resourcesMap.action)!''}">
+                            <input type="text" class="form-control" id="menuaction" name="menuaction" value="${(MenuMap.action)!''}">
                         </div>
                     </div>
 
@@ -155,7 +217,7 @@
                     <div class="form-group">
                         <label for="menutype" class="col-sm-1 control-label">菜单类型</label>
                         <div class="col-sm-2">
-                            <select class="form-control" id="menutype" name="menutype">
+                            <select class="selectpicker form-control" id="menutype" name="menutype">
                                 <option value="1" selected="selected">菜单</option>
                                 <option value="2" >按钮</option>
                             </select>
@@ -164,7 +226,7 @@
                     <div class="form-group">
                         <label for="status" class="col-sm-1 control-label">菜单状态</label>
                         <div class="col-sm-2">
-                            <select class="form-control" id="status" name="status">
+                            <select class="selectpicker form-control" id="status" name="status">
                                 <option value="1" selected="selected">有效</option>
                                 <option value="2">无效</option>
                             </select>
@@ -172,7 +234,7 @@
                     </div>
 
                     <div class="form-group" style="position: relative;top:20px;left: 61%;">
-                        <button class="btn btn-success">提交</button>
+                        <button class="btn btn-success" onclick="submitCreat()">提交</button>
                         <button class="btn btn-info" onclick="closeFrame()">关闭</button>
                     </div>
                 </div>

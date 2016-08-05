@@ -286,30 +286,33 @@
 
             //修改源插件为post提交
 //-------------------------------------------------------
+            if(config.type==2){
 
-            var options = config.data;
-            var iframeId=doms[4] + '' + times ;
-            var dlgDiv;
-            if(config.id!=null&&config.id!=''){ 
-                dlgDiv=$('#'+config.id);
-            }else {
-                dlgDiv = $('.layui-layer-content');
-            }
-            if (!options.url) return;
-            var frm = $("<form id='frmId' name='frmId' action='' method='POST'  />");
-            frm.appendTo(dlgDiv)
-            var tempHidden;
-            if (options.data) {
-                frm.html('');
-                for (var i in options.data) {
-                    tempHidden = $("<input type='hidden' name='" + i + "' />");
-                    tempHidden.val(options.data[i]);
-                    tempHidden.appendTo(frm);
+                var options = config.data;
+                var iframeId=doms[4] + '' + times ;
+                var dlgDiv;
+                if(config.id!=null&&config.id!=''){
+                    dlgDiv=$('#'+config.id);
+                }else {
+                    dlgDiv = $('.layui-layer-content');
                 }
+                if (!options.url) return;
+                var frm = $("<form id='frmId' name='frmId' action='' method='POST'  />");
+                frm.appendTo(dlgDiv)
+                var tempHidden;
+                if (options.data) {
+                    frm.html('');
+                    for (var i in options.data) {
+                        tempHidden = $("<input type='hidden' name='" + i + "' />");
+                        tempHidden.val(options.data[i]);
+                        tempHidden.appendTo(frm);
+                    }
+                }
+                frm.attr('target',iframeId);
+                frm.attr('action', options.url);
+                frm.submit();
             }
-            frm.attr('target',iframeId);
-            frm.attr('action', options.url);
-            frm.submit();
+
 
 //--------------------------------------------------------------
             that.layero = $('#' + doms[0] + times);

@@ -56,7 +56,9 @@ public class RedisManager {
         try{
             value = jedis.get(key);
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
         return value;
     }
@@ -75,7 +77,9 @@ public class RedisManager {
                 jedis.expire(key, this.expire);
             }
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
         return value;
     }
@@ -95,7 +99,9 @@ public class RedisManager {
                 jedis.expire(key, expire);
             }
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
         return value;
     }
@@ -109,7 +115,9 @@ public class RedisManager {
         try{
             jedis.del(key);
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
     }
 
@@ -121,7 +129,9 @@ public class RedisManager {
         try{
             jedis.flushDB();
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
     }
 
@@ -134,7 +144,9 @@ public class RedisManager {
         try{
             dbSize = jedis.dbSize();
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
         return dbSize;
     }
@@ -150,7 +162,9 @@ public class RedisManager {
         try{
             keys = jedis.keys(pattern.getBytes());
         }finally{
-            jedisPool.returnResource(jedis);
+            if(jedis!=null){
+                jedis.close();
+            }
         }
         return keys;
     }

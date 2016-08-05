@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dessert.user.demo">
+<mapper namespace="com.dessert.user">
 
 	<!--查询-->
 	<select id="getUser" parameterType="hashmap" resultType="map">
@@ -17,10 +17,7 @@
 		U.STATUS	   status,
 		date_format(U.CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate",
 		date_format(U.UPDATE,'%Y-%m-%d %H:%i:%s') "update",
-		U.IP		   ip,
-		U.STATE			state,
-		U.ACTICODE		acticode,
-		date_format(U.ACTIVATIONDATE,'%Y-%m-%d %H:%i:%s') "activationdate"
+		U.IP		   ip
 		FROM SYSTEM_USER  U
 		<where>
 			<if test="userid!=null and userid!=''">
@@ -55,10 +52,7 @@
 			STATUS     ,
 			CREATEDATE ,
 			IP         ,
-			MAC			,
-			STATE		,
-			ACTICODE	,
-			ACTIVATIONDATE
+			MAC
 
 		)
 		VALUES
@@ -72,10 +66,7 @@
 			#{status},
 			now(),
 			#{ip},
-			#{mac},
-			#{state},
-			#{acticode},
-			#{activationdate}
+			#{mac}
 		)
 	</insert>
 
@@ -133,8 +124,24 @@
 	</update>
 
 	<delete id="deleteByPrimaryKey" parameterType="hashmap" >
-		delete from SYSTEM_USER U
-		where U.USERID= #{userid}
+		DELETE
+		 FROM SYSTEM_USER
+		WHERE USERID= #{userid}
 	</delete>
+
+
+	<!--查询用户角色-->
+	<select id="getUserRoles" parameterType="hashmap" resultType="map">
+		SELECT
+			UR.USERID userid,
+			UR.ROLEID roleid,
+			R.ROLENAME rolename
+
+		FROM SYSTEM_USER_ROLE  UR
+		LEFT JOIN SYSTEM_ROLE R ON R.ROLEID=UR.ROLEID
+		WHERE UR.USERID=#{userid}
+		ORDER BY UR.CREATEDATE ASC
+	</select>
+
 	
 </mapper>

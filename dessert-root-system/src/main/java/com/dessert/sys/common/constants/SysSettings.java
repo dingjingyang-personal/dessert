@@ -10,9 +10,8 @@
 
 package com.dessert.sys.common.constants;
 
-import org.apache.commons.lang.StringUtils;
 
-
+import org.apache.commons.lang3.StringUtils;
 
 public class SysSettings {
 	public static final String FTP_IP;

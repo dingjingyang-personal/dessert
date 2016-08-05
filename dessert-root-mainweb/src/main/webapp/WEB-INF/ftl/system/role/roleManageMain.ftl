@@ -10,22 +10,9 @@
 
     <style type="text/css">
 
-        .ui-jqgrid-bdiv {
-            overflow: hidden !important
-        }
-
     </style>
 
     <script type="text/javascript">
-
-
-        $(function () {
-
-            $(window).resize(function () {
-                $("#pagelist").setGridWidth($(window).width() * 0.97);
-            });
-
-        });
 
 
         $(function () {
@@ -89,26 +76,21 @@
                         refreshstate: "current",
                         refreshicon: "fa fa-refresh"
                     })
-                    .navButtonAdd('#jqGridPager', {
-                        caption: "自定义",
-                        buttonicon: "ui-icon-add",
-                        onClickButton: function () {
-                            alert("Adding Row");
-                        },
-                        position: "last"
-                    });
 
         }
 
 
         //添加
         function addModel() {
+            var url = "${ctxPath}/system/role/addOrUpdateRolePage.htm";
             layer.open({
+                id:"addOrUpdateRolePage",
                 title: '添加角色',
                 type: 2,
-                closeBtn: 0,
+                closeBtn: 1,
                 area: ['400px', '450px'],
-                content: ['${ctxPath}/system/role/addOrUpdateRolePage.htm','no']
+                content:['','no'],
+                data:{url: url, data: {}},
             });
         }
 
@@ -116,14 +98,17 @@
         //编辑
         function editModel() {
             var row = getGridData("pagelist");
+            var url = "${ctxPath}/system/role/addOrUpdateRolePage.htm";
             if (row != null) {
                 var roleid = row.roleid;
                 layer.open({
+                    id:"addOrUpdateRolePage",
                     title: '修改角色',
                     type: 2,
-                    closeBtn: 0,
+                    closeBtn: 1,
                     area: ['400px', '450px'],
-                    content: ['${ctxPath}/system/role/addOrUpdateRolePage.htm?roleid=' + roleid, 'no']
+                    content:['','no'],
+                    data:{url: url, data: {roleid: roleid}},
                 });
             } else {
                 layer.msg('请选择一条数据!');
@@ -154,12 +139,12 @@
                                 shade:0.3,
                                 shadeClose:false
                             },function(){
-                                window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+                                location.reload();
                                 closeFrame();//关闭窗口
                             });
                         }
                         else{
-                            layer.alert(data, {icon: 5});
+                            layer.alert("系统异常,请稍后重试", {icon: 5});
                         }
                     }});
 
@@ -172,6 +157,27 @@
             }
         }
 
+        
+        function assignPermissionsPage() {
+
+            var row = getGridData("pagelist");
+            if (row != null) {
+                var url = "${ctxPath}/system/role/assignPermissionsPage.htm";
+                var roleid = row.roleid;
+                layer.open({
+                    id:"assignPermissions",
+                    title: '分配权限',
+                    type: 2,
+                    closeBtn: 1,
+                    area: ['860px', '550px'],
+                    content:['','no'],
+                    data:{url: url, data: {roleid: roleid}},
+                });
+            } else {
+                layer.msg('请选择一条数据!');
+            }
+            
+        }
 
     </script>
 </head>
@@ -189,13 +195,15 @@
         <div class="ibox-content">
             <div class="form-group">
                 <button id="btnAdd" type="button" class="btn btn-primary" onclick="addModel()"><i
-                        class="fa fa-plus"></i>&nbsp;添加
+                        class="fa fa-plus"></i>&nbsp;&nbsp;添加
                 </button>
                 <button id="btnEdit" type="button" class="btn btn-success" onclick="editModel()"><i
-                        class="fa fa-pencil-square-o"></i> 编辑
+                        class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;编辑
                 </button>
                 <button id="btnDel" type="button" class="btn btn-danger" onclick="delModel()">
-                    <i class="fa fa-trash"></i>&nbsp;&nbsp;<span class="bold">删除</span>
+                    <i class="fa fa-trash"></i>&nbsp;&nbsp;删除
+                </button>                <button id="btnDel" type="button" class="btn btn-info" onclick="assignPermissionsPage()">
+                    <i class="fa fa-th"></i>&nbsp;&nbsp;分配权限
                 </button>
             </div>
 

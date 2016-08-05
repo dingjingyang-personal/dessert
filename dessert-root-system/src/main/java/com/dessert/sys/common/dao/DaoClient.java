@@ -4,7 +4,7 @@ import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.constants.PropertiesConfig;
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.tool.SysToolHelper;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.BatchExecutor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
@@ -52,12 +52,14 @@ public class DaoClient extends SqlSessionDaoSupport {
      * @return
      */
     public Map<String, Object> selectMap(String sqlId, Map<String, Object> params) {
-        List<Map<String, Object>> list = selectList(sqlId, params);
-        if (list != null && !list.isEmpty()) {
-            if (list.size() == 1) {
-                return list.get(0);
-            } else {
-                return null;
+        if (params != null && !params.isEmpty()) {
+            List<Map<String, Object>> list = selectList(sqlId, params);
+            if (list != null && !list.isEmpty()) {
+                if (list.size() == 1) {
+                    return list.get(0);
+                } else {
+                    return null;
+                }
             }
         }
         return null;
@@ -185,7 +187,7 @@ public class DaoClient extends SqlSessionDaoSupport {
      * @param params
      * @return
      */
-    public boolean batchUpdate(String sqlId, List<Map<String, Object>> params) {
+    public boolean batchUpdate(String sqlId, List<Map<String, Object>> params)  {
         try {
             Configuration c = this.getSqlSession().getConfiguration();
             ManagedTransactionFactory managedTransactionFactory = new ManagedTransactionFactory();
@@ -203,6 +205,7 @@ public class DaoClient extends SqlSessionDaoSupport {
             batchExecutor.doFlushStatements(false);
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }

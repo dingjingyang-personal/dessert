@@ -3,7 +3,7 @@ package com.dessert.sys.remote.service;
 import java.util.Map;
 /**
  * 远程调用
- * @author liwm
+ * @author
  * 功能描述:
  */
 public interface RemoteService {

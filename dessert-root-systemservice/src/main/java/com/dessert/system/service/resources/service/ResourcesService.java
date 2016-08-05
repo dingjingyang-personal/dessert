@@ -50,4 +50,18 @@ public interface ResourcesService {
      * @return
      */
     Map<String,Object> findResource(Map<String, Object> params);
+
+    /**
+     * 资源排序
+     * @param params
+     * @return
+     */
+    boolean updateMenuOrder(Map<String, Object> params);
+
+    /**
+     * 查询资源
+     * @param stringObjectHashMap
+     * @return
+     */
+    List<Map<String,Object>> selectResourcesByrole(Map<String, Object> params);
 }

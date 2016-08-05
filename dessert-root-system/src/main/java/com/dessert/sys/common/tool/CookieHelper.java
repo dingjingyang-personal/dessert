@@ -2,7 +2,7 @@ package com.dessert.sys.common.tool;
 
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.constants.SysSettings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class CookieHelper {
      * 设置cookie 信息
      *
      * @param response
-     * @param cookieName
+     * @param
      * @see [相关类/方法]（可选）
      */
     public void setCookie(HttpServletResponse response, String key, String value, String domain, int maxAge) {
@@ -55,7 +55,7 @@ public class CookieHelper {
      * @param key
      * @param value
      * @param domain
-     * @param maxAge
+     * @param
      */
     public void setCookie(HttpServletResponse response, String key, String value, String domain) {
         Cookie cookie = null;

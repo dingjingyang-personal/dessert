@@ -138,12 +138,9 @@ function validateLen(text,minLen,maxLen){
 }
 function ajaxEx(options)
 {
-	if(options.showWait!==false){
-		showMask(options);
-	}
-	jQuery.ajax({  
+	jQuery.ajax({
         url: options.url||"",  
-        contentType: "application/x-www-form-urlencoded",  
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         type: "post",  cache:false,
         dataType:"text",  
         data:options.data||"",  
@@ -368,12 +365,12 @@ function alertMsg(msg,fn){
     alert(msg);
 }
 function showMask(options)
-{	
+{
 	if(!options){
 		options={};
 	}
 	var wrap=(options&&options.container)||$('body');
-	var msg=(options&&options.loadingMsg)||"正在处理,请稍后。。。";	
+	var msg=(options&&options.loadingMsg)||"正在处理,请稍后。。。";
 	var win=(options&&options.container)||$(window);
 	var width=win.outerWidth();
 	var height=win.outerHeight();

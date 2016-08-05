@@ -3,10 +3,9 @@ package com.dessert.sys.common.tool;
 import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.constants.SysSettings;
 import com.dessert.sys.remote.service.RemoteService;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -255,7 +254,6 @@ public class SysToolHelper {
             obj = m.getValue();
             params.put(m.getKey(), (obj.length > 1) ? obj : obj[0]);
         }
-        params.put(SysConstants.LANGUAGECODE, getMapValue(params, SysConstants.LANGUAGECODE, "zh"));
         return params;
     }
 
@@ -456,23 +454,20 @@ public class SysToolHelper {
     }
 
     /**
-     * 〈json〉 〈功能详细描述〉
-     *
-     * @param list
-     * @param response
+     * 集合转换成json字符串
+     * @param obj
      * @return
-     * @see [相关类/方法]（可选）
-     * @since [产品/模块版本] （可选）
      */
     public static String getJsonOfCollection(Object obj) {
         if (obj == null) {
             return null;
         }
         String rt = null;
+        Gson gson = new Gson();
         if (obj instanceof Map) {
-            rt = JSONObject.fromObject(obj).toString();
+            rt = gson.toJson(obj);
         } else if (obj instanceof List) {
-            rt = JSONArray.fromObject(obj).toString();
+            rt = gson.toJson(obj);
         }
         return rt;
     }
@@ -480,7 +475,7 @@ public class SysToolHelper {
     /**
      * 〈设置session中变量〉 〈功能详细描述〉
      *
-     * @param resquest
+     * @param
      * @param key
      * @param value
      * @see [相关类/方法]（可选）
@@ -619,7 +614,6 @@ public class SysToolHelper {
      * 〈生成in条件格式表达式〉
      *
      * @param array
-     * @param isString
      * @return
      * @see [相关类/方法]（可选）
      * @since [产品/模块版本] （可选）
@@ -664,7 +658,7 @@ public class SysToolHelper {
     /**
      * 〈判断Map是否为空〉
      *
-     * @param list
+     * @param map
      * @return
      * @see [相关类/方法]（可选）
      * @since [产品/模块版本] （可选）
@@ -710,7 +704,7 @@ public class SysToolHelper {
     /**
      * 〈安全使用字符串方法〉
      *
-     * @param map
+     * @param value
      * @return
      * @see [相关类/方法]（可选）
      * @since [产品/模块版本] （可选）
@@ -840,7 +834,7 @@ public class SysToolHelper {
      *
      * @param inputStream
      * @return
-     * @throws ImageServiceException
+     * @throws
      * @see [相关类/方法]（可选）
      * @since [产品/模块版本] （可选）
      */
@@ -992,7 +986,6 @@ public class SysToolHelper {
      * 〈删除文件〉
      *
      * @param filepath
-     * @param ext
      * @return
      * @see [相关类/方法]（可选）
      * @since [产品/模块版本] （可选）
@@ -1189,7 +1182,8 @@ public class SysToolHelper {
     }
 
     public static String getJsonOfObject(Object object) {
-        return JSONObject.fromObject(object).toString();
+        Gson gson = new Gson();
+        return gson.toJson(object);
     }
 
 

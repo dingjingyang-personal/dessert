@@ -26,7 +26,7 @@ import static com.dessert.sys.common.tool.SysToolHelper.encryptPwd;
 /**
  * 登陆、首页类
  *
- * @author liwm
+ * @author
  *         功能描述:
  */
 
@@ -46,7 +46,7 @@ public class HomeServiceImpl implements HomeService {
             return false;
         }
 
-        Map<String, Object> userMap = userService.getUserMap(params);
+        Map<String, Object> userMap = userService.findUserMap(params);
 
         if (SysToolHelper.isEmptyMap(userMap)) {
             params.put("error", "用户不存在");
@@ -108,7 +108,7 @@ public class HomeServiceImpl implements HomeService {
         processregister(params);
 
 
-        return daoClient.update("com.dessert.user.adduser", params) > 0 ? true : false;
+        return daoClient.update("com.dessert.user.adduser", params) > 0 ;
     }
 
     @Override
@@ -170,7 +170,7 @@ public class HomeServiceImpl implements HomeService {
         Map<String,Object> exceptionParams = new HashMap<String, Object>();
 
         //数据访问层，通过email获取用户信息
-        Map<String, Object> userMap = userService.getUserMap(params);
+        Map<String, Object> userMap = userService.findUserMap(params);
         //验证用户是否存在
         if (userMap != null && !userMap.isEmpty()) {
             //验证用户激活状态

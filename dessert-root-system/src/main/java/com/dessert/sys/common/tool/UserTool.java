@@ -2,7 +2,7 @@ package com.dessert.sys.common.tool;
 
 import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.constants.SysConstants;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 

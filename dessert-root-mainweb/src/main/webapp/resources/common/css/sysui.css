@@ -80,3 +80,11 @@ a:visited { text-decoration: none;}
 }
 
 /*按钮*/
+
+
+
+
+/*隐藏jqGrid表格横向滚动条*/
+.ui-jqgrid-bdiv {
+    overflow: hidden !important
+}
