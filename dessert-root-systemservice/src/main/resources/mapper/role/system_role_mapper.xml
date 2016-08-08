@@ -93,7 +93,8 @@
       R.MENUORDER menuorder,
       R.PARENTID parentid,
       R.MENULEVEL menulevel,
-    (SELECT MENUORDER FROM system_resources R1 WHERE R1.MENUID=(SELECT PARENTID FROM system_resources R2 WHERE R2.MENUID=R.PARENTID)) fatherorder,
+    (SELECT MENUORDER FROM system_resources R1 WHERE R1.MENUID=(SELECT PARENTID FROM system_resources R2 WHERE R2.MENUID=R.PARENTID)) fatherfatherorder,
+    (SELECT MENUORDER FROM system_resources R3 WHERE R3.MENUID=R.PARENTID) fatherorder,
     (CASE  WHEN menulevel='1' THEN 'true'
     WHEN menulevel='2' THEN 'true' END) open
     FROM SYSTEM_ROLE_RES RR
@@ -106,7 +107,7 @@
         AND RR.MENUID =#{menuid}
       </if>
     </where>
-    ORDER BY fatherorder ASC
+    ORDER BY fatherfatherorder ASC,fatherorder ASC,menuorder ASC
   </select>
 
 </mapper>

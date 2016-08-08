@@ -60,7 +60,7 @@ public interface ResourcesService {
 
     /**
      * 查询资源
-     * @param stringObjectHashMap
+     * @param params
      * @return
      */
     List<Map<String,Object>> selectResourcesByrole(Map<String, Object> params);

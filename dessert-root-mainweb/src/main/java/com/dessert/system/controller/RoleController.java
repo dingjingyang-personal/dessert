@@ -125,12 +125,17 @@ public class RoleController {
     public String assignPermissionsPage(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        //获取角色拥有的权限
         List<Map<String, Object>> resourcesByRoleList = roleService.findResourcessByRole(params);
+        //获取所有权限
         List<Map<String, Object>> resourcesList = resourcesService.selectResourcesByrole(new HashMap<String, Object>());
-        List<Map<String, Object>> resourcesListClon = Lists.newArrayList(resourcesByRoleList);
 
+        List<Map<String, Object>> resourcesByRoleListClon = Lists.newArrayList(resourcesByRoleList);
+
+        //所有权限的map集合
         Map<String, Map<String, Object>> resourcesListMap = SysToolHelper.listsToMap(resourcesList, "menuid");
-        Map<String, Map<String, Object>> resourcesListClonMap = SysToolHelper.listsToMap(resourcesListClon, "menuid");
+        //角色所拥有权限的map集合
+        Map<String, Map<String, Object>> resourcesByRoleListClonMap = SysToolHelper.listsToMap(resourcesByRoleListClon, "menuid");
 
         Map<String, String> resourceIdMap = Maps.newHashMap();
 
@@ -142,9 +147,9 @@ public class RoleController {
                 while (isParent) {
                     if (!parentId.equals("0")) {
                         Map<String, Object> parnetMap = resourcesListMap.get(parentId);
-                        if(!resourcesListClonMap.containsKey(parnetMap.get("menuid"))){
-                            resourcesListClonMap.put(SysToolHelper.getMapValue(parnetMap,"menuid"), parnetMap);
-                            resourcesListClon.add(parnetMap);
+                        if(!resourcesByRoleListClonMap.containsKey(SysToolHelper.getMapValue(parnetMap,"menuid"))){
+                            resourcesByRoleListClonMap.put(SysToolHelper.getMapValue(parnetMap,"menuid"), parnetMap);
+                            resourcesByRoleListClon.add(parnetMap);
                         }
                         parentId = SysToolHelper.getMapValue(parnetMap, "parentid");
                     } else {
@@ -161,7 +166,7 @@ public class RoleController {
             }
         }
 
-        String resourcesByRoleListStr = SysToolHelper.getJsonOfCollection(resourcesListClon);
+        String resourcesByRoleListStr = SysToolHelper.getJsonOfCollection(resourcesByRoleListClon);
         String noAssigListStr = SysToolHelper.getJsonOfCollection(resourcesList);
 
         request.setAttribute("resourcesByRoleListStr", resourcesByRoleListStr);
