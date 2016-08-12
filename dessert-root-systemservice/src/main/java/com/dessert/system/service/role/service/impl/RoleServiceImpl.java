@@ -80,7 +80,7 @@ public class RoleServiceImpl implements RoleService {
         if(SysToolHelper.isExists(params,"roleid","checkNodes")){
             String roleid = SysToolHelper.getMapValue(params,"roleid");
             String checkNodes = SysToolHelper.getMapValue(params,"checkNodes");
-            String type = SysToolHelper.getMapValue(params,"type");
+            String type = SysToolHelper.getMapValue(params,"typeMode");
             if(checkNodes!=null||checkNodes.equals("")){
                 String[] checkNodesArr = checkNodes.split(",");
                 List<String> checkNodesList = Arrays.asList(checkNodesArr);

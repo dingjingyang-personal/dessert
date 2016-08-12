@@ -70,4 +70,11 @@ public interface UserService {
      * @return
      */
     boolean addAssigningRoles(Map<String, Object> params);
+
+    /**
+     * 查询用户拥有的权限
+     * @param userid
+     * @return
+     */
+    List<Map<String,Object>> findResources(String userid);
 }

@@ -83,7 +83,7 @@
         //添加
         function addModel() {
             var url = "${ctxPath}/system/role/addOrUpdateRolePage.htm";
-            layer.open({
+            parent.layer.open({
                 id:"addOrUpdateRolePage",
                 title: '添加角色',
                 type: 2,
@@ -101,7 +101,7 @@
             var url = "${ctxPath}/system/role/addOrUpdateRolePage.htm";
             if (row != null) {
                 var roleid = row.roleid;
-                layer.open({
+                parent.layer.open({
                     id:"addOrUpdateRolePage",
                     title: '修改角色',
                     type: 2,
@@ -164,7 +164,7 @@
             if (row != null) {
                 var url = "${ctxPath}/system/role/assignPermissionsPage.htm";
                 var roleid = row.roleid;
-                layer.open({
+                parent.layer.open({
                     id:"assignPermissions",
                     title: '分配权限',
                     type: 2,

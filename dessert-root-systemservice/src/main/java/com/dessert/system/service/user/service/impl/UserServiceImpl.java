@@ -9,6 +9,8 @@ import com.dessert.sys.common.tool.MD5Util;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.user.service.UserService;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,9 +60,9 @@ public class UserServiceImpl implements UserService {
         user.setUpdate(SysToolHelper.getMapValue(userMap, "update"));
         user.setIp(SysToolHelper.getMapValue(userMap, "ip"));
         user.setMac(SysToolHelper.getMapValue(userMap, "mac"));
-        user.setState(Integer.parseInt(SysToolHelper.getMapValue(userMap, "state")));
-        user.setActicode(SysToolHelper.getMapValue(userMap, "acticode"));
-        user.setActivationdate(SysToolHelper.getMapValue(userMap, "activationdate"));
+//        user.setState(Integer.parseInt(SysToolHelper.getMapValue(userMap, "state")));
+//        user.setActicode(SysToolHelper.getMapValue(userMap, "acticode"));
+//        user.setActivationdate(SysToolHelper.getMapValue(userMap, "activationdate"));
 
         return user;
     }
@@ -143,6 +145,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<Map<String, Object>> findResources(String userid) {
+        if(!StringUtils.isEmpty(userid)){
+            Map<String,Object> map = Maps.newHashMap();
+            map.put("userid",userid);
+            return daoClient.selectList("com.dessert.user.getUserResources",map);
+        }
+        return null;
     }
 
 

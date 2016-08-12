@@ -127,7 +127,7 @@ public class SysToolHelper {
             return false;
         }
         for (String key : keys) {
-            if (StringUtil.isNullOrEmpty(params.get(key))) {
+            if (StringUtil.isNullOrEmpty(params.get(key).toString())) {
                 return false;
             }
         }
@@ -960,7 +960,7 @@ public class SysToolHelper {
      * @since [产品/模块版本] （可选）
      */
     public static String getImageServerHtml(String filePath, String ext) {
-        if (StringUtil.isNullOrEmpty(filePath)) {
+        if (StringUtils.isEmpty(filePath)) {
             return null;
         }
         HttpGet httpGet = new HttpGet(getFileName(filePath, ext));
@@ -996,7 +996,7 @@ public class SysToolHelper {
     }
 
     public static Object getBean(String beanId) {
-        if (StringUtil.isNullOrEmpty(beanId)) {
+        if (StringUtils.isEmpty(beanId)) {
             return null;
         }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())

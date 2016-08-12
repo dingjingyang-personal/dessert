@@ -1,6 +1,7 @@
 package com.dessert.system.shiro.realm;
 
 import com.dessert.sys.common.bean.User;
+import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.common.tool.ValidateUtils;
 import com.dessert.system.service.user.service.UserService;
 import com.google.common.collect.Maps;
@@ -13,6 +14,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,12 +37,20 @@ public class MainWebRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = (String) principals.getPrimaryPrincipal();
+        if(username!=null){
 
-        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(userService.findRoles(username));
-        authorizationInfo.setStringPermissions(userService.findPermissions(username));
+            String userID = SecurityUtils.getSubject().getSession().getAttribute("userSessionId").toString();
+            List<Map<String,Object>> listResources = userService.findResources(userID);
 
-        return authorizationInfo;
+            // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
+            SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+            for(Map<String,Object> resources :listResources) {
+                authorizationInfo.addStringPermission(SysToolHelper.getMapValue(resources,"menuid"));
+            }
+
+            return authorizationInfo;
+        }
+        return null;
     }
 
 
@@ -78,6 +88,8 @@ public class MainWebRealm extends AuthorizingRealm {
                     getName()  //realm name
             );
             Session session = SecurityUtils.getSubject().getSession();
+            session.setAttribute("userSessionId",user.getUserid());
+
             session.setAttribute("userSession", user);
 
             return authenticationInfo;

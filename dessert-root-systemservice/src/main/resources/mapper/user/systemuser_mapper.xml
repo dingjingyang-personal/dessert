@@ -143,5 +143,17 @@
 		ORDER BY UR.CREATEDATE ASC
 	</select>
 
+	<!--查询用户角色-->
+	<select id="getUserResources" parameterType="hashmap" resultType="map">
+		SELECT
+		DISTINCT  RR.MENUID menuid
+		FROM system_role_res RR
+		WHERE ROLEID in( SELECT ROLEID FROM system_role WHERE ROLEID in( SELECT ROLEID from system_user_role where userid=#{userid}))
+		ORDER BY
+		(SELECT MENUORDER FROM system_resources R1 WHERE R1.MENUID=(SELECT PARENTID FROM system_resources R2 WHERE R2.MENUID=(SELECT R.PARENTID FROM system_resources R WHERE R.MENUID=RR.MENUID ))) ASC,
+		(SELECT MENUORDER FROM system_resources R3 WHERE R3.MENUID=(SELECT R4.PARENTID FROM system_resources R4 WHERE R4.MENUID=RR.MENUID)) ASC,
+		(SELECT MENUORDER FROM system_resources R5 WHERE R5.MENUID=RR.MENUID) ASC
+	</select>
+
 	
 </mapper>

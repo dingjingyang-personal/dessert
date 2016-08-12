@@ -7,7 +7,7 @@
 }
 
 .jquery-accordion-menu {
-	min-width: 220px;
+	min-width: 200px;
 	float: left;
 	position: relative;
 	/*box-shadow: 0 20px 50px #333*/
@@ -109,7 +109,7 @@
 	width: 100%;
 	float: left;
 	font-size: 11px;
-	background: #383838;
+	background: #2F4050;
 	border-top: none;
 	position: relative;
 	border-left: solid 6px transparent;
@@ -203,19 +203,19 @@
 }
 
 .blue.jquery-accordion-menu .jquery-accordion-menu-footer,.blue.jquery-accordion-menu .jquery-accordion-menu-header,.blue.jquery-accordion-menu ul li a {
-	background: #4A89DC
+	background: #2F4050
 }
 
 .blue.jquery-accordion-menu>ul>li.active>a,.blue.jquery-accordion-menu>ul>li:hover>a {
-	background: #3e82da
+	background: #2F4050
 }
 
 .blue.jquery-accordion-menu>ul>li>a {
-	border-bottom-color: #3e82da
+	border-bottom-color: #2F4050
 }
 
 .blue.jquery-accordion-menu ul ul.submenu li:hover>a {
-	border-left-color: #3e82da
+	border-left-color: #2F4050
 }
 
 .green.jquery-accordion-menu .jquery-accordion-menu-footer,.green.jquery-accordion-menu .jquery-accordion-menu-header,.green.jquery-accordion-menu ul li a {
@@ -235,15 +235,16 @@
 }
 
 .red.jquery-accordion-menu .jquery-accordion-menu-footer,.red.jquery-accordion-menu .jquery-accordion-menu-header,.red.jquery-accordion-menu ul li a {
-	background: #1a9ab8
+	background: #2F4050
 }
 
 .red.jquery-accordion-menu>ul>li.active>a,.red.jquery-accordion-menu>ul>li:hover>a {
-	background: #1b586f
+	background: #2F4050
 }
 
+
 .red.jquery-accordion-menu>ul>li>a {
-	border-bottom-color: #2B7F89
+	border-bottom-color: #2F4050
 }
 
 .red.jquery-accordion-menu ul ul.submenu li:hover>a {

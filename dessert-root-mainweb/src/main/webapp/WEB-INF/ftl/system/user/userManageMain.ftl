@@ -85,7 +85,7 @@
         //添加
         function addModel() {
             var url = "${ctxPath}/system/user/addOrUpdateUserPage.htm";
-            layer.open({
+            parent.layer.open({
                 id:"addOrUpdateUserPage",
                 title: '添加用户',
                 type: 2,
@@ -103,7 +103,7 @@
             if (row != null) {
                 var url = "${ctxPath}/system/user/addOrUpdateUserPage.htm";
                 var userid = row.userid;
-                layer.open({
+                parent.layer.open({
                     id:"addOrUpdateUserPage",
                     title: '修改用户',
                     type: 2,
@@ -168,7 +168,7 @@
             if (row != null) {
                 var url = "${ctxPath}/system/user/assigningRolesPage.htm";
                 var userid = row.userid;
-                layer.open({
+                parent.layer.open({
                     id:"assigningRoles",
                     title: '分配角色',
                     type: 2,

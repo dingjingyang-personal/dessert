@@ -39,10 +39,10 @@
             margin-left: 20px;
         }
 
-        .ztree{
+        .ztree {
             width: 320px;
-            height:380px;
-            overflow-y:auto;
+            height: 380px;
+            overflow-y: auto;
         }
 
 
@@ -55,9 +55,8 @@
             check: {
                 enable: true
             },
-
             data: {
-                key: { name: "menuname" },
+                key: {name: "menuname"},
                 simpleData: {
                     enable: true,
                     idKey: "menuid",
@@ -70,7 +69,7 @@
         var noNodes;
         var authoriedNodes;
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             noNodes = ${noAssigListStr};
             authoriedNodes = ${resourcesByRoleListStr};
             $.fn.zTree.init($("#menutree"), setting, noNodes);
@@ -78,15 +77,19 @@
         });
 
 
-        function addOrDeletePermissions(type) {
+        //授权或移除授权
+        function addOrDeletePermissions(typeMode) {
             var data;
-            if(type=="add"){
-                data=getNodes("menutree");
-            }else {
-                data=getNodes("authoriedtree");
+            if (typeMode == "add") {
+                data = getNodes("menutree");
+            } else {
+                data = getNodes("authoriedtree");
             }
 
-            data.type = type;
+            if(data==null){
+                return;
+            }
+            data.typeMode = typeMode;
             data.roleid = "${RequestParameters.roleid!''}";
             var url = "${ctxPath}/system/role/addOrDeletePermissions.htm";
 
@@ -113,38 +116,33 @@
         }
 
 
-
         function getNodes(id) {
-            var data={};
+            var data = {};
             var resourcesIds = [];
             var treeObj = $.fn.zTree.getZTreeObj(id);
             var assignNodes = treeObj.getCheckedNodes(true);
             var count = 0;
             var count1 = 0;
-            for(var i=0;i<assignNodes.length;i++){
+            for (var i = 0; i < assignNodes.length; i++) {
                 var temp = assignNodes[i];
-                if(temp.action!=null||temp.action!=""&&temp.menulevel=="3"){
+                if (temp.action != null && temp.action != "" && temp.menulevel == "3") {
                     resourcesIds.push(temp.menuid);
-                    count ++;
-                }else {
+                    count++;
+                } else {
                     count1++;
                 }
             }
-            if(count1>0&&count==0){
+            if (count1 > 0 && count == 0) {
                 layer.msg('此节点不能授权,请选择正确节点');
                 return;
             }
-            if(count==0){
+            if (count == 0) {
                 layer.msg('请选择权限');
                 return;
             }
-
             data.checkNodes = resourcesIds.toString();
             return data;
         }
-
-
-
 
 
     </script>
@@ -166,25 +164,26 @@
 
 
     <div class="noAssig">
-        <div class="" >
-            <ul id="menutree" class="ztree" ></ul>
+        <div class="">
+            <ul id="menutree" class="ztree"></ul>
         </div>
     </div>
 
     <div class="orerate">
         <div style="margin-top: 10px">
-            <button id="btnAdd" type="button" class="btn btn-success btn-block" onclick="addOrDeletePermissions('add')"><i
-                    class="fa fa-angle-double-right"></i>&nbsp;&nbsp;授权
+            <button id="btnAdd" type="button" class="btn btn-success btn-block" onclick="addOrDeletePermissions('add')">
+                <i
+                        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;授权
             </button>
 
         </div>
         <div style="margin-top: 10px">
-            <button id="btnAdd" type="button" class="btn btn-info btn-block" onclick="addOrDeletePermissions('delete')"><i
-                    class="fa fa-angle-right"></i>&nbsp;&nbsp;移除
+            <button id="btnAdd" type="button" class="btn btn-info btn-block" onclick="addOrDeletePermissions('delete')">
+                <i
+                        class="fa fa-angle-right"></i>&nbsp;&nbsp;移除
             </button>
 
         </div>
-
 
 
         <div style="margin-top: 270px">
@@ -197,7 +196,7 @@
 
     <div class="isAssig">
         <div class="">
-            <ul id="authoriedtree" class="ztree" ></ul>
+            <ul id="authoriedtree" class="ztree"></ul>
         </div>
 
 

@@ -8,7 +8,9 @@ import com.dessert.sys.common.enm.DateStyle;
 import com.dessert.sys.common.tool.*;
 import com.dessert.sys.exception.service.ServiceException;
 import com.dessert.system.service.home.service.HomeService;
+import com.dessert.system.service.resources.service.ResourcesService;
 import com.dessert.system.service.user.service.UserService;
+import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.dessert.sys.common.tool.SysToolHelper.encryptPwd;
@@ -26,14 +29,16 @@ import static com.dessert.sys.common.tool.SysToolHelper.encryptPwd;
 /**
  * 登陆、首页类
  *
- * @author
- *         功能描述:
+ * @author 功能描述:
  */
 
 @Service
 public class HomeServiceImpl implements HomeService {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ResourcesService resourcesService;
 
     @Autowired
     private DaoClient daoClient;
@@ -76,7 +81,7 @@ public class HomeServiceImpl implements HomeService {
     public boolean loginOut(HttpServletRequest request, HttpServletResponse response) {
         UserTool.removeUserCache(request, response);
         Subject subject = SecurityUtils.getSubject();
-        if(subject.isAuthenticated()){
+        if (subject.isAuthenticated()) {
             subject.logout();
         }
         return true;
@@ -108,7 +113,7 @@ public class HomeServiceImpl implements HomeService {
         processregister(params);
 
 
-        return daoClient.update("com.dessert.user.adduser", params) > 0 ;
+        return daoClient.update("com.dessert.user.adduser", params) > 0;
     }
 
     @Override
@@ -117,9 +122,22 @@ public class HomeServiceImpl implements HomeService {
         if (user == null) {
             return false;
         }
+
+        //获取用户拥有的权限ID
+        List<Map<String, Object>> resourcesIdByUserList = userService.findResources(user.getUserid());
+        //获取所有权限
+        List<Map<String, Object>> resourcesList = resourcesService.selectResourcesByrole(new HashMap<String, Object>());
+
+        List<Map<String, Object>> resourcesByUserList = parseMenusList(resourcesIdByUserList,resourcesList);
+
+        String resourcesByUserListStr = SysToolHelper.getJsonOfCollection(resourcesByUserList);
+        request.setAttribute("resourcesByUserListStr",resourcesByUserListStr);
+
         UserTool.setUserCache(request, response, user);
         return true;
     }
+
+
 
 
     /**
@@ -167,7 +185,7 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public void processActivate(Map<String, Object> params) throws ServiceException, ParseException {
 
-        Map<String,Object> exceptionParams = new HashMap<String, Object>();
+        Map<String, Object> exceptionParams = new HashMap<String, Object>();
 
         //数据访问层，通过email获取用户信息
         Map<String, Object> userMap = userService.findUserMap(params);
@@ -189,22 +207,61 @@ public class HomeServiceImpl implements HomeService {
 
                         daoClient.update("com.dessert.user.updateuser", activUserMap);
                     } else {
-                        exceptionParams.put("activateStatus","104");
-                        throw new ServiceException("激活码不正确",exceptionParams);
+                        exceptionParams.put("activateStatus", "104");
+                        throw new ServiceException("激活码不正确", exceptionParams);
                     }
                 } else {
-                    exceptionParams.put("activateStatus","103");
-                    throw new ServiceException("激活码已过期！请重新注册！",exceptionParams);
+                    exceptionParams.put("activateStatus", "103");
+                    throw new ServiceException("激活码已过期！请重新注册！", exceptionParams);
                 }
             } else {
-                exceptionParams.put("activateStatus","102");
-                throw new ServiceException("邮箱已激活，请登录！",exceptionParams);
+                exceptionParams.put("activateStatus", "102");
+                throw new ServiceException("邮箱已激活，请登录！", exceptionParams);
             }
         } else {
-            exceptionParams.put("activateStatus","101");
-            throw new ServiceException("连接已失效,请重新注册！",exceptionParams);
+            exceptionParams.put("activateStatus", "101");
+            throw new ServiceException("连接已失效,请重新注册！", exceptionParams);
         }
 
     }
 
+
+    /**
+     *  整理菜单
+     * @param resourcesIdByUserList
+     * @param resourcesList
+     * @return
+     */
+    private List<Map<String,Object>> parseMenusList(List<Map<String, Object>> resourcesIdByUserList, List<Map<String, Object>> resourcesList) {
+
+        Map<String, Map<String, Object>> resourcesListMap = SysToolHelper.listsToMap(resourcesList, "menuid");
+
+        List<Map<String, Object>> resourcesByUserList = Lists.newArrayList();
+
+        for (Map<String, Object> map : resourcesIdByUserList) {
+            resourcesByUserList.add(resourcesListMap.get(SysToolHelper.getMapValue(map, "menuid")));
+        }
+
+        for (Map<String, Object> resourcesMap : resourcesByUserList) {
+            if (SysToolHelper.getMapValue(resourcesMap, "action") != null && !SysToolHelper.getMapValue(resourcesMap, "action").equals("")) {
+                String parentId = SysToolHelper.getMapValue(resourcesMap, "parentid");
+                boolean isParent = true;
+                while (isParent) {
+                    if (!parentId.equals("0")) {
+                        Map<String, Object> parnetMap = resourcesListMap.get(parentId);
+                        if(SysToolHelper.getMapValue(parnetMap, "menulevel").equals("2")){
+                            resourcesMap.put("parent",parnetMap);
+                        }else if(SysToolHelper.getMapValue(parnetMap, "menulevel").equals("1")){
+                            resourcesMap.put("grandfather",parnetMap);
+                        }
+                        parentId = SysToolHelper.getMapValue(parnetMap, "parentid");
+                    } else {
+                        isParent = false;
+                    }
+                }
+            }
+        }
+
+        return resourcesByUserList;
+    }
 }

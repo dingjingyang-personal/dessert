@@ -52,6 +52,7 @@ public class DaoClient extends SqlSessionDaoSupport {
      * @return
      */
     public Map<String, Object> selectMap(String sqlId, Map<String, Object> params) {
+        params = processParams(params);
         if (params != null && !params.isEmpty()) {
             List<Map<String, Object>> list = selectList(sqlId, params);
             if (list != null && !list.isEmpty()) {
@@ -63,6 +64,20 @@ public class DaoClient extends SqlSessionDaoSupport {
             }
         }
         return null;
+    }
+
+    /**
+     * 处理参数 删除值为空的数据
+     * @param params
+     * @return
+     */
+    private Map<String,Object> processParams(Map<String, Object> params) {
+        for(Map.Entry entry :params.entrySet()){
+            if(entry.getValue()==null||entry.getValue().equals("")){
+                params.remove(entry.getKey());
+            }
+        }
+        return params;
     }
 
 

@@ -24,15 +24,15 @@
                         "response": getMenuTree()
                     },
 
-                    grid = jQuery("#treegrid");
+                    grid = jQuery("#pagelist");
             grid.jqGrid({
                 styleUI: 'Bootstrap',
                 viewrecords: true,
                 datastr: topicjson,
                 datatype: "jsonstring",
                 caption: "菜单列表",
-                autowidth: true,
                 height: "auto",
+                autowidth: true,
                 loadui: "disable",
                 treeGrid: true,
                 treeGridModel: "adjacency",
@@ -156,7 +156,7 @@
         //打开新增菜单页面
         function createmenu(flag) {
             if(flag=="M"){
-                var row = getGridData("treegrid");
+                var row = getGridData("pagelist");
                 if(row==null){
                     layer.msg('请选择一条数据!');
                     return;
@@ -459,7 +459,7 @@
             </div>
 
             <div class="jqGrid_wrapper">
-                <table id="treegrid"></table>
+                <table id="pagelist"></table>
                 <div id="jqGridPager"></div>
             </div>
         </div>

@@ -3,9 +3,9 @@ package com.dessert.sys.log.service.impl;
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.dao.DaoClient;
-import com.dessert.sys.common.tool.StringUtil;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.log.service.SysLogService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Override
     public void error(String item, String content, String username, String ip, String userid) {
-        if (StringUtil.isNullOrEmpty(content) || StringUtil.isNullOrEmpty(item)) {
+        if (StringUtils.isEmpty(content) || StringUtils.isEmpty(item)) {
             return;
         }
         Map<String, Object> map = new HashMap<String, Object>();

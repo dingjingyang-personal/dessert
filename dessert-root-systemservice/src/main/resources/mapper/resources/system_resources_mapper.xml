@@ -58,6 +58,7 @@
         M.MENUORDER menuorder,
         M.PARENTID parentid,
         M.MENULEVEL menulevel,
+        M.ACTION    action,
         M.STATUS status,
         (CASE  WHEN menulevel='1' THEN 'true'
         WHEN menulevel='2' THEN 'true' END) open
@@ -150,10 +151,10 @@
     </delete>
 
     <delete id="deleteRoleMenu" parameterType="hashmap">
-        DELETE
-        SYSTEM_ROLE_RES M
+        DELETE FROM
+        SYSTEM_ROLE_RES
         WHERE
-        M.MENUID =#{menuid}
+        MENUID =#{menuid}
     </delete>
 
 </mapper>

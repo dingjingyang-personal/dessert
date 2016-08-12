@@ -248,7 +248,6 @@ public class HomeController {
             msg = "您没有得到相应的授权";
         }
 
-
         SysToolHelper.outputByResponse(msg, response);
     }
 
@@ -279,10 +278,6 @@ public class HomeController {
         return "redirect:showLoginPage.htm";
     }
 
-    @RequestMapping("/showIndexdemo.htm")
-    public String showIndexdemo(HttpServletRequest request, HttpServletResponse response) {
 
-        return "home/demo";
-    }
 
 }

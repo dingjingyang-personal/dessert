@@ -21,76 +21,147 @@
             overflow: hidden;
         }
 
-        #div1 {
-            width: 100%;
-            height: 100%
-        }
 
-        #div2 {
+
+        #top {
 
             height: 50px;
             width: 100%;
-            background-color: #6b86b8;
+            background-color: #1b586f;
         }
 
-        #div3 {
-
-            overflow-y: auto;
-            overflow-x: hidden;
+        #underColumn {
+            width: 100%;
             height: 620px
         }
 
-        #div4 {
-            float:left;
+        #sidebar {
+            float: left;
+            overflow-y: auto;
+            overflow-x: hidden;
             height: 620px;
-            background-color: #1b6d85;
+            background-color: #2F4050;
         }
 
-        #div5{
-            height: 620px;
-            background-color: #2b542c;
-        }
+        /*#pageBody {*/
+            /*float: left;*/
+            /*height: 620px;*/
+            /*width: 1150px;*/
+            /*background-color: #f0f0f0;*/
+        /*}*/
 
         .content {
-            width: 220px;
+            width: 200px;
             margin: auto, auto;
         }
 
-        .filterinput {
-            background-color: rgba(57, 146, 208, 0);
-            border-radius: 15px;
-            width: 90%;
-            height: 30px;
-            border: thin solid #FFF;
-            text-indent: 0.5em;
-            font-weight: bold;
-            color: #FFF;
+        .footer {
+            background: none repeat scroll 0 0 #f0f0f0;
+            border-top: 1px solid #b0b0b0;
+            overflow: hidden;
+            padding: 10px 30px;
+            margin: 0 -35px;
+            height: 36px;
         }
 
-        #demo-list a {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -o-text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 100%;
-        }
 
     </style>
 
     <script type="text/javascript">
 
+        var menuList =${resourcesByUserListStr!0};
+        var menuMap;
+
+
         jQuery(document).ready(function () {
+            menuMap = menuTreeToMap(menuList);
+            assemblyMenu();
             jQuery("#jquery-accordion-menu").jqueryAccordionMenu();
 
         });
 
         $(function () {
-            //顶部导航切换
-            $("#demo-list li").click(function () {
-                $("#demo-list li.active").removeClass("active")
+            $("#menu-list li").click(function () {
+                $("#menu-list li.active").removeClass("active")
                 $(this).addClass("active");
-            })
+            });
         })
+
+
+        //整理菜单
+        function assemblyMenu() {
+            for (var i = 0; i < menuList.length; i++) {
+                var temp = menuList[i];
+                var grandfather = temp.grandfather;
+                var parent = temp.parent;
+                addGrandfather(grandfather);
+                addparent(parent);
+                addmenu(temp);
+            }
+        }
+
+        //添加一级目录
+        function addGrandfather(menu) {
+            if(menu){
+                var rootMenuid = $("#menu-list");
+                var nodes = $("#"+menu.menuid);
+                if(nodes.length==0){
+                    rootMenuid.append(
+                            '<li id='+ menu.menuid+'><a href="#">' + menu.menuname + '</a>' +
+                            '<ul class="submenu" id='+menu.menuid+'ul'+'>'+'</ul>'+
+                            '</li>'
+                    )
+                }
+            }
+        }
+
+        //添加二级目录
+        function addparent(menu) {
+            if(menu){
+                var parentMenuid = $("#"+menu.parentid+"ul");
+                var nodes = $("#"+menu.menuid);
+                if(nodes.length==0){
+                    parentMenuid.append(
+                            '<li id='+ menu.menuid+'><a href="#">' + menu.menuname + '</a>' +
+                            '<ul class="submenu" id='+menu.menuid+'ul'+'>'+'</ul>'+
+                            '</li>'
+                    )
+                }
+            }
+        }
+
+        //添加三级目录
+        function addmenu(menu) {
+            var parentMenuid = $("#"+menu.parentid+"ul");
+            var nodes = $("#"+menu.menuid);
+            if(nodes.length==0){
+                parentMenuid.append(
+                        '<li id='+ menu.menuid+'><a href="javascript:void(0)" onclick="clilkMenu('+menu.menuid+')">' + menu.menuname + '</a></li>'
+                )
+            }
+        }
+
+        //点击菜单事件
+        function clilkMenu(menuid) {
+            var menu = menuMap[menuid];
+            var position =menu.grandfather.menuname+' > '+menu.parent.menuname+'> '+menu.menuname ;
+            $("#position").html(position);
+            var pagebodyiframe = $("#pagebodyiframe");
+            pagebodyiframe.attr('src',menu.action);
+        }
+
+
+        function menuTreeToMap(Tree) {
+            var temp = {};
+            var menu;
+            for (var i = 0; i < Tree.length; i++) {
+                menu = Tree[i];
+                temp[menu.menuid] = menu;
+            }
+            return temp;
+        }
+
+
 
 
     </script>
@@ -100,61 +171,47 @@
 <body>
 <#escape x as x?html>
 
-<div id="div1">
-<#---->
-    <div id="div2">
-
+<div id="pagebody">
+    <#--信息栏-->
+    <div id="top">
 
 
     </div>
 
-    <div id="div3">
-        <div id="div4" class="content">
+    <div id="underColumn">
+        <#--侧边栏-->
+        <div id="sidebar" class="content">
 
+            <#--菜单栏-->
             <div id="jquery-accordion-menu" class="jquery-accordion-menu red">
-                <ul id="demo-list">
-
-                    <li class="active"><a href="#">一级菜单1 </a></li>
-                    <li><a href="#">一级菜单2 </a></li>
-                    <li><a href="#">一级菜单3 </a></li>
-                    <li><a href="#">一级菜单4 </a>
-                        <ul class="submenu">
-                            <li><a href="#">二级菜单A1 </a></li>
-                            <li><a href="#">二级菜单A2 </a></li>
-                            <li><a href="#">二级菜单A3 </a>
-                                <ul class="submenu">
-                                    <li><a href="#">三级菜单A </a></li>
-                                    <li><a href="#">三级菜单 </a></li>
-                                    <li><a href="#">三级菜单 </a></li>
-                                    <li><a href="#">三级菜单 </a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">二级菜单A4 </a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">一级菜单5 </a></li>
-                    <li><a href="#">一级菜单6 </a>
-                        <ul class="submenu">
-                            <li><a href="#">二级菜单</a></li>
-                            <li><a href="#">二级菜单 </a></li>
-                            <li><a href="#">二级菜单 </a></li>
-                            <li><a href="#">二级菜单 </a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">一级菜单7 </a></li>
-                    <li><a href="#">一级菜单8 </a></li>
+                <ul id="menu-list">
 
                 </ul>
-                <div class="jquery-accordion-menu-footer">
-                    Footer
+                <#--<div class="jquery-accordion-menu-footer">-->
+                    <#--Footer-->
+                <#--</div>-->
+            </div>
+        </div>
+
+
+        <#--菜单连接页面-->
+        <div id="pageBody" style="height: 100%;padding: 0 15px;position: inherit;margin: 0 0 0 220px;min-height: auto;background-color: #f3f3f4;">
+            <div style="height: 30px;width: calc(100% -200px); margin-right: -15px;margin-left: -15px;">
+                <div style="font-size:12px;padding-top: 8px">
+                    <span>当前位置 : </span><span id="position"></span>
+                </div>
+            </div>
+            <div style="height: calc(100% - 75px);overflow: hidden;margin-right: -5px;margin-left: -15px;">
+                <iframe id="pagebodyiframe" frameborder=0 scrolling="auto" width="100%" height="98%" src=""  "></iframe>
+            </div>
+            <div class="footer">
+                <div class="pull-right" style="float: right !important;">
+                    © 2016 - 2016 <a href="" target="_blank">©ding</a>
                 </div>
             </div>
         </div>
 
 
-        <div id="div5">
-
-        </div>
 
     </div>
 
@@ -164,7 +221,6 @@
 
 
 </#escape>
-
 
 
 </body>
