@@ -37,6 +37,32 @@ public interface SysLogService {
 	 * @return
 	 */
 	boolean deleteLog(Map<String, Object> params);
-	
-	
+
+
+	/**
+	 * 添加操作日志
+	 * @param logMap
+     */
+	boolean addOperatingLog(Map<String, Object> logMap);
+
+	/**
+	 * 查询异常日志
+	 * @param params
+	 * @return
+     */
+	Page findErrorLogPage(Map<String, Object> params);
+
+	/**
+	 * 查询操作日志
+	 * @param params
+	 * @return
+     */
+	Page findOperationLogPage(Map<String, Object> params);
+
+	/**查询登录日志
+	 *
+	 * @param params
+	 * @return
+     */
+	Page findLoginLogPage(Map<String, Object> params);
 }

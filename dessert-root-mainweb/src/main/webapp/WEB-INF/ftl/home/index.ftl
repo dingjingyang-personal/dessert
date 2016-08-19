@@ -147,7 +147,7 @@
             var position =menu.grandfather.menuname+' > '+menu.parent.menuname+'> '+menu.menuname ;
             $("#position").html(position);
             var pagebodyiframe = $("#pagebodyiframe");
-            pagebodyiframe.attr('src',menu.action);
+            pagebodyiframe.attr('src',"${ctxPath}"+menu.action);
         }
 
 

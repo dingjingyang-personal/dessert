@@ -19,6 +19,7 @@ public class User implements Serializable{
     private String  loginname;//登录名
     private String  email;//邮件
     private String  userpwd;//密码
+    private String  salt;//密码
     private int  sex;//性别
     private String  tel;//电话
     private String  birthday;//生日
@@ -90,6 +91,14 @@ public class User implements Serializable{
 
     public void setUserpwd(String userpwd) {
         this.userpwd = userpwd;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public int getSex() {

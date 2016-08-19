@@ -11,6 +11,7 @@
 		U.LOGINNAME	   loginname,
 		U.EMAIL		   email,
 		U.USERPWD	   userpwd,
+		U.SALT	   		salt,
 		U.SEX		   sex,
 		U.TEL		   tel,
 		U.BIRTHDAY	   birthday,
@@ -48,6 +49,7 @@
 			LOGINNAME  ,
 			EMAIL      ,
 			USERPWD    ,
+			SALT    ,
 			SEX        ,
 			STATUS     ,
 			CREATEDATE ,
@@ -62,6 +64,7 @@
 			#{loginname},
 			#{email},
 			#{userpwd},
+			#{salt},
 			#{sex},
 			#{status},
 			now(),
@@ -90,6 +93,9 @@
 		</if>
 		<if test="userpwd!=null and userpwd!=''">
 			U.USERPWD=#{userpwd},
+		</if>
+		<if test="salt!=null and salt!=''">
+			U.SALT=#{salt},
 		</if>
 		<if test="sex!=null and sex!=''">
 			U.SEX=#{sex},

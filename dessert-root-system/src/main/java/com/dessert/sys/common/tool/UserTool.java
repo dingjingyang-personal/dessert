@@ -4,13 +4,11 @@ import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.constants.SysConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static com.dessert.sys.common.tool.SysToolHelper.combineString;
-import static com.dessert.sys.common.tool.SysToolHelper.removeValueInSession;
 
 /**
  * Created by ding-Admin on 2016/4/26.
@@ -23,7 +21,6 @@ public class UserTool {
      * @return
      */
     public static boolean isUserLoginForShiro(){
-
         Subject currentUser = SecurityUtils.getSubject();
         if(currentUser.isAuthenticated()){
             return true;
@@ -33,12 +30,12 @@ public class UserTool {
 
 
     /**
-     * 获取登录用户
+     * 从redis获取登录用户
      *
      * @param request
      * @return
      */
-    public static User getUserCache(HttpServletRequest request) {
+    public static User getUserForRedis(HttpServletRequest request) {
         String ticket = CookieHelper.getInstance().getUserTicket(request);
         if (!StringUtils.isEmpty(ticket)) {
             try {
@@ -54,13 +51,23 @@ public class UserTool {
     }
 
     /**
-     * 将USER对象存入缓存
+     * 从shiro中获取USER
+     * @return
+     */
+    public static User getUserForShiro() {
+        Session session = SecurityUtils.getSubject().getSession();
+        User user = (User) session.getAttribute("userSession");
+        return user;
+    }
+
+    /**
+     * 将USER对象存入redis
      *
      * @param request
      * @param response
      * @param user
      */
-    public static void setUserCache(HttpServletRequest request, HttpServletResponse response, User user) {
+    public static void setUserForRedis(HttpServletRequest request, HttpServletResponse response, User user) {
         if (user == null) {
             return;
         }
@@ -68,20 +75,20 @@ public class UserTool {
 
         String ticket = CookieHelper.getInstance().getUserTicket(request);
         if (StringUtils.isEmpty(ticket)) {
-            ticket = combineString(user.getUserno(), uuid);
+            ticket = SysToolHelper.combineString(user.getUserno(), uuid);
         }
         CookieHelper.getInstance().setUserTicket(response, ticket);
         SysRedisTool.setCacheData(ticket, user);
     }
 
     /**
-     * 清除登录用户
+     * 从redis清除登录用户
      *
      * @param request
      * @param response
      */
-    public static void removeUserCache(HttpServletRequest request, HttpServletResponse response) {
-        removeValueInSession(request, SysConstants.EMPLOYEE_KEY);
+    public static void removeUserForRedis(HttpServletRequest request, HttpServletResponse response) {
+        SysToolHelper.removeValueInSession(request, SysConstants.EMPLOYEE_KEY);
         String ticketName = CookieHelper.getInstance().getUserTicket(request);
         if (!StringUtils.isEmpty(ticketName)) {
             CookieHelper.getInstance().clearCookie(request, response, SysConstants.TICKET_NAME);

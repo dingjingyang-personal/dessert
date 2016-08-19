@@ -5,7 +5,7 @@ import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.enm.DateStyle;
 import com.dessert.sys.common.tool.DateUtil;
-import com.dessert.sys.common.tool.MD5Util;
+import com.dessert.sys.common.tool.PasswordUtil;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.user.service.UserService;
 import com.google.common.collect.Lists;
@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setLoginname(SysToolHelper.getMapValue(userMap, "loginname"));
         user.setEmail(SysToolHelper.getMapValue(userMap, "email"));
         user.setUserpwd(SysToolHelper.getMapValue(userMap, "userpwd"));
+        user.setSalt(SysToolHelper.getMapValue(userMap, "salt"));
         user.setSex(Integer.parseInt(SysToolHelper.getMapValue(userMap, "sex")));
         user.setTel(SysToolHelper.getMapValue(userMap, "tel"));
         user.setBirthday(SysToolHelper.getMapValue(userMap, "birthday"));
@@ -81,8 +82,9 @@ public class UserServiceImpl implements UserService {
         params.put("userid", DateUtil.getDateForFormat(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_SSS.getValue()) + userid);
 
 
-        String userpwd = MD5Util.encode2hex(SysToolHelper.getMapValue(params, "userpwd"));
-        params.put("userpwd", userpwd);
+        Map<String,Object> passwordMap = PasswordUtil.encryptPassword(SysToolHelper.getMapValue(params,"userpwd"));
+        params.put("userpwd", SysToolHelper.getMapValue(passwordMap,"password"));
+        params.put("salt", SysToolHelper.getMapValue(passwordMap,"salt"));
         params.put("loginname", "未定义");
 
 

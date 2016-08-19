@@ -1,6 +1,7 @@
 package com.dessert.sys.remote.service.impl;
 
 import com.dessert.sys.common.constants.SysSettings;
+import com.dessert.sys.common.tool.NetUtil;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.remote.service.RemoteService;
 import net.sf.json.JSONObject;
@@ -12,7 +13,6 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dessert.sys.common.tool.NetUtil.postMap;
 
 @Service("remoteService")
 public class RemoteServiceImpl implements RemoteService {
@@ -29,7 +29,7 @@ public class RemoteServiceImpl implements RemoteService {
         if (params != null) {
             temp.put("params", SysToolHelper.getJsonOfCollection(params));
         }
-        String resString = postMap(SysSettings.REMOTE_INVOKE_URL, temp);
+        String resString = NetUtil.postMap(SysSettings.REMOTE_INVOKE_URL, temp);
         try {
             resString = URLDecoder.decode(resString, "utf-8");
         } catch (UnsupportedEncodingException e) {
@@ -43,6 +43,7 @@ public class RemoteServiceImpl implements RemoteService {
         }
         return JSONObject.fromObject(resString);
     }
+
 
 
 }

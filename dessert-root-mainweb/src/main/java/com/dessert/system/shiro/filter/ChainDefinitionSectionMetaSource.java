@@ -1,4 +1,4 @@
-package com.dessert.system.shiro.filterChainDefinitionMap;
+package com.dessert.system.shiro.filter;
 
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.resources.service.ResourcesService;

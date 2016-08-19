@@ -27,7 +27,7 @@ public class SystemIsLoginInterceptor extends HandlerInterceptorAdapter {
         if (url.endsWith(".htm")) {
             return true;
         }
-        User user = UserTool.getUserCache(request);
+        User user = UserTool.getUserForShiro();
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/sys/timeout.htm");
             return false;
@@ -47,7 +47,7 @@ public class SystemIsLoginInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
         if (ex != null) {
-            User user = UserTool.getUserCache(request);
+            User user = UserTool.getUserForShiro();
             String ip = SysToolHelper.getIp(request);
             sysLogService.error(user, ip, ex);
         }

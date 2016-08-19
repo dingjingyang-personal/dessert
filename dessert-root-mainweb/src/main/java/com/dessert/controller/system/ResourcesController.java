@@ -1,5 +1,6 @@
-package com.dessert.system.controller;
+package com.dessert.controller.system;
 
+import com.dessert.sys.common.annotation.SystemOperatingLog;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.resources.service.ResourcesService;
 import com.google.common.collect.Maps;
@@ -29,6 +30,7 @@ public class ResourcesController {
      * @param response
      * @return
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "资源管理-查询资源")
     @RequestMapping("findResources.htm")
     public String findResources(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -77,6 +79,7 @@ public class ResourcesController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "资源管理-添加或修改资源")
     @RequestMapping("addOrUpdateResources.htm")
     public void addOrUpdateResources(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -100,6 +103,7 @@ public class ResourcesController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "资源管理-修改资源序号")
     @RequestMapping("updateMenuOrder.htm")
     public void updateMenuOrder(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -112,6 +116,7 @@ public class ResourcesController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "资源管理-删除资源")
     @RequestMapping("deleteResources.htm")
     public void deleteResources(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);

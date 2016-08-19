@@ -23,9 +23,14 @@
     <mvc:resources location="/resources/" mapping="/resources/**"/>
 
     <!--自动扫描注入-->
-    <context:component-scan
-            base-package="com.dessert.*.service.*,com.dessert.*.*.service.*,com.dessert.*.*.*.service.*,com.dessert.*.controller,com.dessert.*.*.controller,com.dessert.*.*.*.controller"/>
+    <context:component-scan base-package="com.dessert.*.controller,com.dessert.*.*.controller,com.dessert.*.*.*.controller,com.dessert.controller,com.dessert.controller.*,com.dessert.controller.*.*,com.dessert.controller.*.*.*"/>
+    <context:component-scan base-package="com.dessert.*.service.*,com.dessert.*.*.service.*,com.dessert.*.*.*.service.*"/>
+    <context:component-scan base-package="com.dessert.sys.common.aop"/>
 
+
+    <!-- 启动对@AspectJ注解的支持 -->
+    <!--通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <!--配置拦截器-->
     <mvc:interceptors>
@@ -218,5 +223,6 @@
         <property name="exposeSessionAttributes" value="true"/>
         <property name="requestContextAttribute" value="request"/>
     </bean>
+
 
 </beans>

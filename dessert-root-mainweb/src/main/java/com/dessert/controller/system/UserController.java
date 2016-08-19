@@ -1,5 +1,6 @@
-package com.dessert.system.controller;
+package com.dessert.controller.system;
 
+import com.dessert.sys.common.annotation.SystemOperatingLog;
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.common.tool.ValidateUtils;
@@ -38,6 +39,7 @@ public class UserController {
      * @param response
      * @return
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-查询用户")
     @RequestMapping("findUsers.htm")
     public String findUsers(HttpServletRequest request, HttpServletResponse response) {
         return "system/user/userManageMain";
@@ -82,6 +84,7 @@ public class UserController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-添加用户")
     @RequestMapping("addUser.htm")
     public void addUser(HttpServletRequest request, HttpServletResponse response) {
 
@@ -117,6 +120,7 @@ public class UserController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-更新用户")
     @RequestMapping("updateUser.htm")
     public void updateUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -129,6 +133,7 @@ public class UserController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-删除用户")
     @RequestMapping("deleteUser.htm")
     public void deleteUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -173,6 +178,7 @@ public class UserController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-分配角色")
     @RequestMapping("assigningRoles.htm")
     public void assigningRoles(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);

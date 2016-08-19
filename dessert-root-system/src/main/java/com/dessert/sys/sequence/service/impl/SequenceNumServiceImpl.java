@@ -32,7 +32,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
     /**
      * @param seq
      * @param addOwnerAtFirst
-     * @param currentValue
+     * @param
      * @return
      */
     private String joinSeq(Map<String, Object> seq, boolean addOwnerAtFirst) {

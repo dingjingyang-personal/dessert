@@ -40,12 +40,14 @@
                 return;
             }
             var data = {loginnameoremail: loginnameoremail, userpwd: userpwd};
+
             ajaxEx({
                 url: "${ctxPath}/home/login.htm",
                 isText: true,
                 data: data,
                 success: function (data) {
                     if (data == "1") {
+                        $("#logina").html("登录成功,正在跳转到首页");
                         window.location.replace("${ctxPath}/home/showIndex.htm");
                     } else if (data == "2") {
                         showError("登陆失败");
@@ -87,7 +89,7 @@
             </div>
             <div id="msg" style="margin-bottom:0px;text-align:center;text-align:center;line-height:40px;font-size:1.2em;color:red;height:35px;"></div>
             <div class="modal-body">
-                <form class="form col-md-12 center-block">
+                <form class="form col-md-12 center-block" id="loginform">
                     <div class="form-group">
                         <input type="text" class="form-control input-lg" id="loginnameoremail" placeholder="登录名或邮箱">
                     </div>
@@ -98,8 +100,8 @@
                         <a id="logina" class="btn btn-primary btn-lg btn-block" onclick="login()">
                             登录
                         </a>
-                        <span><a href="#">找回密码</a></span>
-                        <span><a href="${ctxPath}/home/showSignUpPage.htm" class="pull-right">注册</a></span>
+                        <#--<span><a href="#">找回密码</a></span>-->
+                        <#--<span><a href="${ctxPath}/home/showSignUpPage.htm" class="pull-right">注册</a></span>-->
                     </div>
                 </form>
             </div>

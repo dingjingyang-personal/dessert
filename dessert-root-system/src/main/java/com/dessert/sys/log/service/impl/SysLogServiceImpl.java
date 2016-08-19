@@ -110,6 +110,30 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
+    public boolean addOperatingLog(Map<String, Object> logMap) {
+        if(SysToolHelper.isExists(logMap,"id","accountname","module","methods")){
+            return daoClient.update("com.dessert.sys_operating_log.insert",logMap)>0;
+        }
+        return false;
+
+    }
+
+    @Override
+    public Page findErrorLogPage(Map<String, Object> params) {
+        return null;
+    }
+
+    @Override
+    public Page findOperationLogPage(Map<String, Object> params) {
+        return null;
+    }
+
+    @Override
+    public Page findLoginLogPage(Map<String, Object> params) {
+        return null;
+    }
+
+    @Override
     public void error(User user, String ip ,Exception e) {
         String item;
         if (e != null && e.getStackTrace() != null

@@ -1,5 +1,6 @@
-package com.dessert.system.controller;
+package com.dessert.controller.system;
 
+import com.dessert.sys.common.annotation.SystemOperatingLog;
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.system.service.resources.service.ResourcesService;
@@ -16,9 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by admin-ding on 2016/6/22.
- */
+
 @Controller
 @RequestMapping("system/role")
 public class RoleController {
@@ -38,6 +37,7 @@ public class RoleController {
      * @param response
      * @return
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-查询角色")
     @RequestMapping("findRoles.htm")
     public String findRoles(HttpServletRequest request, HttpServletResponse response) {
         return "system/role/roleManageMain";
@@ -82,6 +82,7 @@ public class RoleController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-添加角色")
     @RequestMapping("addRole.htm")
     public void addRole(HttpServletRequest request, HttpServletResponse response) {
 
@@ -96,6 +97,7 @@ public class RoleController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-更新角色")
     @RequestMapping("updateRole.htm")
     public void updateRole(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -108,6 +110,7 @@ public class RoleController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-删除角色")
     @RequestMapping("deleteRole.htm")
     public void deleteRole(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -182,6 +185,7 @@ public class RoleController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-授权角色")
     @RequestMapping("addOrDeletePermissions.htm")
     public void addOrDeletePermissions(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);

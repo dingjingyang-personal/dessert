@@ -1,4 +1,4 @@
-package com.dessert.home.controller;
+package com.dessert.controller.home;
 
 import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.constants.SysConstants;
@@ -10,7 +10,6 @@ import com.dessert.system.service.user.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +45,7 @@ public class HomeController {
      * @return
      */
     @RequestMapping("/showSignUpPage.htm")
+    @Deprecated
     public String showSignUpPage(HttpServletRequest request, HttpServletResponse response) {
 
         return "/home/signuppage";
@@ -59,6 +59,7 @@ public class HomeController {
      * @param response
      */
     @RequestMapping("/validateLoginNameOrEmail.htm")
+    @Deprecated
     public void validateLoginName(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
         Map<String, Object> userMap = userService.findUserMap(params);
@@ -87,6 +88,7 @@ public class HomeController {
      * @param response
      */
     @RequestMapping("signup")
+    @Deprecated
     public void signUp(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -130,6 +132,7 @@ public class HomeController {
      * @return
      */
     @RequestMapping("processActivate")
+    @Deprecated
     public String processActivate(HttpServletRequest request, HttpServletResponse response) {
 
 
@@ -168,6 +171,7 @@ public class HomeController {
      * @throws Exception
      */
     @RequestMapping("resendmail")
+    @Deprecated
     public void resendmail(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -191,7 +195,8 @@ public class HomeController {
      */
     @RequestMapping("/showLoginPage.htm")
     public String showLoginPage(HttpServletRequest request) {
-        if (UserTool.getUserCache(request) != null) {
+        User user = UserTool.getUserForShiro();
+        if (user != null) {
             return "redirect:showIndex.htm";
         }
         request.setAttribute("username", CookieHelper.getInstance().getCookieValue(request, SysConstants.COOKIE_USERNO));
@@ -220,10 +225,8 @@ public class HomeController {
         try {
             subject.login(token);
             if (subject.isAuthenticated()) {
-                Session session = SecurityUtils.getSubject().getSession();
-                User user = (User) session.getAttribute("userSession");
+                User user = UserTool.getUserForShiro();
                 if (user != null) {
-                    UserTool.setUserCache(request, response, user);
                     CookieHelper.getInstance().setCookie(response, SysConstants.COOKIE_USERNO, user.getUserno(), SysSettings.COOKIE_DOMAIN, SysConstants.WEEK_SECONDS);
                 }
                 SysToolHelper.outputByResponse("1", response);
@@ -277,6 +280,18 @@ public class HomeController {
         }
         return "redirect:showLoginPage.htm";
     }
+
+    /**
+     * 没有授权时跳转到的页面
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/unauthorizedUrl.htm")
+    public String unauthorizedUrl(HttpServletRequest request, HttpServletResponse response) {
+        return "/common/error/invalidMenuPage";
+    }
+
 
 
 

@@ -44,7 +44,7 @@ public class SysSettings {
 		FILE_SEPARATOR="/";
 		String url=config.getPropByKey("remote.invokeurl");
 		if(StringUtils.isEmpty(url)){
-			REMOTE_INVOKE_URL="http://127.0.0.1:8080/dessert-root-mainweb/remote/invokeMethod.htm";
+			REMOTE_INVOKE_URL="http://127.0.0.1:8080/dessert-root-mainweb/remote/invokeMethod.action";
 		}else {
 			REMOTE_INVOKE_URL=url;
 		}

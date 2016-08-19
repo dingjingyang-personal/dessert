@@ -71,7 +71,6 @@ public class HomeServiceImpl implements HomeService {
 
         Map<String, Object> tempMap = userMap;
 
-        UserTool.setUserCache(request, response, user);
         CookieHelper.getInstance().setCookie(response, SysConstants.COOKIE_USERNO, user.getUserno(), SysSettings.COOKIE_DOMAIN, SysConstants.WEEK_SECONDS);
         return true;
     }
@@ -79,7 +78,6 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public boolean loginOut(HttpServletRequest request, HttpServletResponse response) {
-        UserTool.removeUserCache(request, response);
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
             subject.logout();
@@ -118,7 +116,8 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public boolean setLoginUserInfo(HttpServletRequest request, HttpServletResponse response) {
-        User user = UserTool.getUserCache(request);
+
+        User user = UserTool.getUserForShiro();
         if (user == null) {
             return false;
         }
@@ -128,16 +127,13 @@ public class HomeServiceImpl implements HomeService {
         //获取所有权限
         List<Map<String, Object>> resourcesList = resourcesService.selectResourcesByrole(new HashMap<String, Object>());
 
-        List<Map<String, Object>> resourcesByUserList = parseMenusList(resourcesIdByUserList,resourcesList);
+        List<Map<String, Object>> resourcesByUserList = parseMenusList(resourcesIdByUserList, resourcesList);
 
         String resourcesByUserListStr = SysToolHelper.getJsonOfCollection(resourcesByUserList);
-        request.setAttribute("resourcesByUserListStr",resourcesByUserListStr);
+        request.setAttribute("resourcesByUserListStr", resourcesByUserListStr);
 
-        UserTool.setUserCache(request, response, user);
         return true;
     }
-
-
 
 
     /**
@@ -227,12 +223,13 @@ public class HomeServiceImpl implements HomeService {
 
 
     /**
-     *  整理菜单
+     * 整理菜单
+     *
      * @param resourcesIdByUserList
      * @param resourcesList
      * @return
      */
-    private List<Map<String,Object>> parseMenusList(List<Map<String, Object>> resourcesIdByUserList, List<Map<String, Object>> resourcesList) {
+    private List<Map<String, Object>> parseMenusList(List<Map<String, Object>> resourcesIdByUserList, List<Map<String, Object>> resourcesList) {
 
         Map<String, Map<String, Object>> resourcesListMap = SysToolHelper.listsToMap(resourcesList, "menuid");
 
@@ -249,10 +246,10 @@ public class HomeServiceImpl implements HomeService {
                 while (isParent) {
                     if (!parentId.equals("0")) {
                         Map<String, Object> parnetMap = resourcesListMap.get(parentId);
-                        if(SysToolHelper.getMapValue(parnetMap, "menulevel").equals("2")){
-                            resourcesMap.put("parent",parnetMap);
-                        }else if(SysToolHelper.getMapValue(parnetMap, "menulevel").equals("1")){
-                            resourcesMap.put("grandfather",parnetMap);
+                        if (SysToolHelper.getMapValue(parnetMap, "menulevel").equals("2")) {
+                            resourcesMap.put("parent", parnetMap);
+                        } else if (SysToolHelper.getMapValue(parnetMap, "menulevel").equals("1")) {
+                            resourcesMap.put("grandfather", parnetMap);
                         }
                         parentId = SysToolHelper.getMapValue(parnetMap, "parentid");
                     } else {

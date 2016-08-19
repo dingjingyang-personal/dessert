@@ -1187,4 +1187,16 @@ public class SysToolHelper {
     }
 
 
+    /**
+     * 判断变量是否为空
+     * @param obj
+     * @return
+     */
+    public static boolean isEmpty(String obj) {
+        if (null == obj || "".equals(obj) || "".equals(obj.trim()) || "null".equalsIgnoreCase(obj)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

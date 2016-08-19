@@ -12,6 +12,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -65,6 +66,7 @@ public class MainWebRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
 
         String userAccunt = (String) token.getPrincipal();
+        String userPassword = String.valueOf((char[])token.getCredentials());
 
         Map<String, Object> params = Maps.newHashMap();
 
@@ -83,8 +85,9 @@ public class MainWebRealm extends AuthorizingRealm {
             }
             //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                    user.getUsername(), //用户名
+                    userAccunt, //用户名
                     user.getUserpwd(), //密码
+                    ByteSource.Util.bytes( userPassword + user.getSalt()),// salt=password+salt
                     getName()  //realm name
             );
             Session session = SecurityUtils.getSubject().getSession();

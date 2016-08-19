@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dessert.sys_operating_log">
+
+    <insert id="insert" parameterType="map">
+    insert into sys_operating_log
+    (
+     ID,
+     ACCOUNTNAME,
+     MODULE,
+     METHODS,
+     IP,
+     CREATEDATE,
+     DESCRIPTION
+    )
+    values
+    (
+     #{id},
+     #{accountname},
+     #{module},
+     #{methods},
+     #{ip},
+     now(),
+     #{description}
+    )
+  </insert>
+
+
+</mapper>
