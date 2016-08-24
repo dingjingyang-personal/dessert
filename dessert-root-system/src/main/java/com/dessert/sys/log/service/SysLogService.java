@@ -65,4 +65,11 @@ public interface SysLogService {
 	 * @return
      */
 	Page findLoginLogPage(Map<String, Object> params);
+
+	/**
+	 * 添加登录日志
+	 * @param loginMap
+	 * @return
+     */
+	boolean addLoginLog(Map<String, Object> loginMap);
 }

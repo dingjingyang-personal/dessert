@@ -37,7 +37,6 @@ public class RoleController {
      * @param response
      * @return
      */
-    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-查询角色")
     @RequestMapping("findRoles.htm")
     public String findRoles(HttpServletRequest request, HttpServletResponse response) {
         return "system/role/roleManageMain";
@@ -50,6 +49,7 @@ public class RoleController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "角色管理-查询角色数据")
     @RequestMapping("findRolesJson.htm")
     public void findRolesJson(HttpServletRequest request, HttpServletResponse response) {
 

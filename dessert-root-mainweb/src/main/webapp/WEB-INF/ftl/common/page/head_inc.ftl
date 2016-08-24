@@ -4,7 +4,19 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <#include "./default_cfg.ftl"/>
+
+<link rel="stylesheet" type="text/css" href="${resPath}/plugins/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="${resPath}/plugins/jqGrid/css/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" type="text/css" href="${resPath}/common/css/sysui.css">
+<link rel="stylesheet" type="text/css" href="${resPath}/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
+
 <script type="text/javascript" src="${resPath}/common/js/jquery-1.12.3.js"></script>
-<@includeRes resType="css" resUrl=["plugins/bootstrap/css/bootstrap.css","common/css/sysui.css","plugins/jqGrid/css/ui.jqgrid-bootstrap.css"
-,"plugins/font-awesome-4.6.3/css/font-awesome.min.css"] />
-<@includeRes resUrl=["plugins/bootstrap/js/bootstrap.js","plugins/jqGrid/js/jquery.jqGrid.js","plugins/jqGrid/js/i18n/grid.locale-cn.js","common/js/syscommon.js","common/js/sysui.js","common/js/advPager.js","plugins/layer/layer.js"] />
+<script type="text/javascript" src="${resPath}/plugins/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="${resPath}/plugins/jqGrid/js/jquery.jqGrid.js"></script>
+<script type="text/javascript" src="${resPath}/plugins/jqGrid/js/i18n/grid.locale-cn.js"></script>
+<script type="text/javascript" src="${resPath}/common/js/syscommon.js"></script>
+<script type="text/javascript" src="${resPath}/common/js/sysui.js"></script>
+<script type="text/javascript" src="${resPath}/plugins/layer/layer.js"></script>
+
+<@includeRes resType="css" resUrl=[] />
+<@includeRes resUrl=[] />

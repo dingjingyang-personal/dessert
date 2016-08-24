@@ -35,13 +35,10 @@ public class UserController {
     /**
      * 查询用户
      *
-     * @param request
-     * @param response
      * @return
      */
-    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-查询用户")
     @RequestMapping("findUsers.htm")
-    public String findUsers(HttpServletRequest request, HttpServletResponse response) {
+    public String findUsers() {
         return "system/user/userManageMain";
     }
 
@@ -51,12 +48,12 @@ public class UserController {
      * @param request
      * @param response
      */
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-返回角色数据")
     @RequestMapping("findUsersJson.htm")
     public void findUsersJson(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
         Page userPage = userService.findUsersPage(params);
-        String str = SysToolHelper.getJsonOfObject(userPage);
         SysToolHelper.outputByResponse(SysToolHelper.getJsonOfObject(userPage), response);
     }
 

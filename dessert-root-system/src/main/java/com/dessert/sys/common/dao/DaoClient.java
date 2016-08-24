@@ -16,6 +16,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -72,9 +73,12 @@ public class DaoClient extends SqlSessionDaoSupport {
      * @return
      */
     private Map<String,Object> processParams(Map<String, Object> params) {
-        for(Map.Entry entry :params.entrySet()){
+
+        Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
             if(entry.getValue()==null||entry.getValue().equals("")){
-                params.remove(entry.getKey());
+                iterator.remove();
             }
         }
         return params;

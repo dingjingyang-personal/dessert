@@ -5,8 +5,10 @@ import com.dessert.sys.common.constants.SysConstants;
 import com.dessert.sys.common.constants.SysSettings;
 import com.dessert.sys.common.tool.*;
 import com.dessert.sys.exception.service.ServiceException;
+import com.dessert.sys.log.service.SysLogService;
 import com.dessert.system.service.home.service.HomeService;
 import com.dessert.system.service.user.service.UserService;
+import com.google.common.collect.Maps;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -35,6 +37,9 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SysLogService sysLogService ;
 
 
     /**
@@ -230,6 +235,16 @@ public class HomeController {
                     CookieHelper.getInstance().setCookie(response, SysConstants.COOKIE_USERNO, user.getUserno(), SysSettings.COOKIE_DOMAIN, SysConstants.WEEK_SECONDS);
                 }
                 SysToolHelper.outputByResponse("1", response);
+
+                //添加登录信息
+                Map<String,Object> loginMap = Maps.newHashMap();
+                loginMap.put("loginlogid",SysToolHelper.getUuid());
+                loginMap.put("userid",user.getUserid());
+                loginMap.put("username",user.getUsername());
+                String ip = SysToolHelper.getIp(request);
+                loginMap.put("ip",ip);
+                loginMap.put("mac",SysToolHelper.getMACAddress(ip));
+                sysLogService.addLoginLog(loginMap);
                 return;
             } else {
                 SysToolHelper.outputByResponse("2", response);
@@ -249,6 +264,8 @@ public class HomeController {
             msg = "帐号不存在";
         } catch (UnauthorizedException e) {
             msg = "您没有得到相应的授权";
+        } catch (Exception e) {
+            msg="系统异常";
         }
 
         SysToolHelper.outputByResponse(msg, response);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="log.service">
+<mapper namespace="com.dessert.sys_error_log">
 <!--  -->
 <insert  id="addLog" parameterType="map">
     INSERT INTO SYS_ERROR_LOG
@@ -26,18 +26,22 @@
 </insert>
 <select  id="selectLog" parameterType="map" resultType="map">
    SELECT
-     LOGID      logid,
-     ITEM       item,
-     ERROR      error,
-     IP         ip,
-     CREATEDATE createdate
+     LOGID      "logid",
+     ITEM       "item",
+     ERROR      "error",
+     USERNAME      "username",
+     IP         "ip",
+    date_format(CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate"
    FROM SYS_ERROR_LOG
   <where>
    <if test="item!=null and item!=''">
    AND ITEM LIKE '%'||#{item}||'%'
    </if>
-   <if test="ip!=null and ip!=''">
-   AND ip LIKE #{item}||'%'
+   <if test="username!=null and username!=''">
+   AND USERNAME LIKE '%'||#{username}||'%'
+   </if>
+      <if test="ip!=null and ip!=''">
+   AND IP LIKE '%'||#{ip}||'%'
    </if>
    <if test="createdatebegin!=null and createdatebegin!=''">
    AND CREATEDATE<![CDATA[>=]]>str_to_date(#{createdatebegin},'%Y-%m-%d')

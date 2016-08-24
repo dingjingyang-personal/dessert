@@ -5,6 +5,7 @@ import com.dessert.sys.common.bean.User;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.common.tool.UserTool;
 import com.dessert.sys.log.service.SysLogService;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,28 +21,27 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by admin-ding on 2016/8/16.
- */
 
 @Aspect
 @Component
-public class SystemLogAspect {
+public class SystemOperatingLogAspect {
 
     @Autowired
     private SysLogService sysLogService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SystemLogAspect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SystemOperatingLogAspect.class);
 
     //Controller层切点
+    //对有应用com.dessert.sys.common.annotation.SystemOperatingLog进行注解的方法进行横切面拦截
     @Pointcut("@annotation(com.dessert.sys.common.annotation.SystemOperatingLog)")
-    public  void controllerAspect() {
+    public void controllerAspect() {
 
     }
 
 
     /**
      * 前置通知 用于拦截Controller层记录用户的操作
+     *
      * @param point
      * @return
      */
@@ -54,8 +54,11 @@ public class SystemLogAspect {
         Map<String, Object> logMap = new HashMap<String, Object>();
         Map<String, Object> map = null;
         User user = UserTool.getUserForShiro();
-        String userName = null;
-        String ip = null;
+        String userName;
+        String ip;
+        Long runtime;
+        //创建一个计时器
+        StopWatch watch = new StopWatch();
         try {
             ip = SecurityUtils.getSubject().getSession().getHost();
         } catch (Exception e) {
@@ -70,29 +73,29 @@ public class SystemLogAspect {
         } catch (Exception e) {
             userName = "无法获取登录用户信息！";
         }
-        // 当前用户
         try {
-            map=getControllerMethodDescription(point);
+            map = getControllerMethodDescription(point);
+            //记时开始
+            watch.start();
             result = point.proceed();
+            //记时结束
+            watch.stop();
+            // 获取计时器计时时间
+            runtime = watch.getTime();
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
         try {
-            logMap.put("id",SysToolHelper.getUuid());
-            logMap.put("accountname",userName);
-            logMap.put("module",map.get("module"));
-            logMap.put("methods",map.get("methods"));
-            logMap.put("description",map.get("description"));
-            logMap.put("ip",ip);
+            logMap.put("operatinglogid", SysToolHelper.getUuid());
+            logMap.put("username", userName);
+            logMap.put("module", map.get("module"));
+            logMap.put("methods", map.get("methods"));
+            logMap.put("description", map.get("description"));
+            logMap.put("ip", ip);
+            logMap.put("runtime", runtime.toString());
             //持久化到数据库
             sysLogService.addOperatingLog(logMap);
-            //*========控制台输出=========*//
-            System.out.println("=====通知开始=====");
-            System.out.println("请求方法:" + className + "." + methodName + "()");
-            System.out.println("方法描述:" + map);
-            System.out.println("请求IP:" + ip);
-            System.out.println("=====通知结束=====");
-        }  catch (Exception e) {
+        } catch (Exception e) {
             //记录本地异常日志
             LOGGER.error("====通知异常====");
             LOGGER.error("异常信息:{}", e.getMessage());
@@ -107,7 +110,7 @@ public class SystemLogAspect {
      * @return 方法描述
      * @throws Exception
      */
-    public Map<String, Object> getControllerMethodDescription(JoinPoint joinPoint)  throws Exception {
+    public Map<String, Object> getControllerMethodDescription(JoinPoint joinPoint) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
@@ -121,7 +124,7 @@ public class SystemLogAspect {
                     map.put("module", method.getAnnotation(SystemOperatingLog.class).module());
                     map.put("methods", method.getAnnotation(SystemOperatingLog.class).methods());
                     String de = method.getAnnotation(SystemOperatingLog.class).description();
-                    if(SysToolHelper.isEmpty(de))de="执行成功!";
+                    if (SysToolHelper.isEmpty(de)) de = "执行成功!";
                     map.put("description", de);
                     break;
                 }

@@ -184,7 +184,7 @@
             var url = "${ctxPath}/system/resources/addOrUpdateResourcesPage.htm";
 
 
-            layer.open({
+            parent.layer.open({
                 id:"addOrUpdateResourcesPage",
                 title: (flag == "A" ? "新增" : "修改"),
                 type: 2,

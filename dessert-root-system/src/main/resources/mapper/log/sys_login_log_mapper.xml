@@ -1,55 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dessert.sys_operating_log">
+<mapper namespace="com.dessert.sys_login_log">
 
     <insert id="insert" parameterType="map">
-    insert into SYS_OPERATING_LOG
+    insert into SYS_LOGIN_LOG
     (
-     OPERATINGLOGID,
-     USERNAME,
-     MODULE,
-     METHODS,
-     IP,
-     RUNTIME,
-     CREATEDATE,
-     DESCRIPTION
+       LOGINLOGID,
+       USERID,
+       USERNAME,
+       IP,
+       MAC,
+       CREATEDATE
     )
     values
     (
-     #{operatinglogid},
-     #{username},
-     #{module},
-     #{methods},
-     #{ip},
-     #{runtime},
-     now(),
-     #{description}
+       #{loginlogid},
+       #{userid},
+       #{username},
+       #{ip},
+       #{mac},
+       now()
     )
   </insert>
 
     <select  id="selectLog" parameterType="map" resultType="map">
         SELECT
-           OPERATINGLOGID      "operatinglogid",
+           LOGINLOGID       "loginlogid",
+           USERID           "userid",
            USERNAME         "username",
-           MODULE              "module",
-           METHODS             "methods",
-           IP                  "ip",
-           RUNTIME             "runtime",
-           date_format(CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate",
-           DESCRIPTION         "description"
-        FROM SYS_OPERATING_LOG
+           IP               "ip",
+           MAC               "mac",
+           date_format(CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate"
+        FROM SYS_LOGIN_LOG
         <where>
             <if test="username!=null and username!=''">
                 AND USERNAME LIKE '%'||#{username}||'%'
             </if>
-            <if test="module!=null and module!=''">
-                AND MODULE LIKE '%'||#{module}||'%'
-            </if>
-            <if test="methods!=null and methods!=''">
-                AND METHODS LIKE '%'||#{methods}||'%'
-            </if>
             <if test="ip!=null and ip!=''">
-                AND IP LIKE #{ip}||'%'
+                AND IP LIKE '%'||#{ip}||'%'
             </if>
             <if test="createdatebegin!=null and createdatebegin!=''">
                 AND CREATEDATE<![CDATA[>=]]>str_to_date(#{createdatebegin},'%Y-%m-%d')

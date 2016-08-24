@@ -160,7 +160,7 @@
                                 shadeClose: false
                             }, function () {
 //                                window.parent.$('#treegrid').trigger('reloadGrid');//列表页面刷新数据
-                                parent.location.reload();
+                                location.reload();
                                 closeFrame();//关闭窗口
                             });
                         }

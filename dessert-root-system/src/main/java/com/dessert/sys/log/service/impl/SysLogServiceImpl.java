@@ -15,13 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 @Service
 public class SysLogServiceImpl implements SysLogService {
 
     private DaoClient daoClient;
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     public void setDaoClient(DaoClient daoClient) {
         this.daoClient = daoClient;
     }
@@ -51,7 +50,7 @@ public class SysLogServiceImpl implements SysLogService {
         map.put("ip", ip == null ? "" : ip);
         map.put("username", username == null ? "" : username);
         map.put("userid", userid == null ? "" : userid);
-        String sql = "log.service.addLog";
+        String sql = "com.dessert.sys_error_log.addLog";
         try {
             daoClient.update(sql, map);
         } catch (RuntimeException e) {
@@ -111,8 +110,8 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Override
     public boolean addOperatingLog(Map<String, Object> logMap) {
-        if(SysToolHelper.isExists(logMap,"id","accountname","module","methods")){
-            return daoClient.update("com.dessert.sys_operating_log.insert",logMap)>0;
+        if (SysToolHelper.isExists(logMap, "operatinglogid", "username", "module", "methods")) {
+            return daoClient.update("com.dessert.sys_operating_log.insert", logMap) > 0;
         }
         return false;
 
@@ -120,21 +119,29 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Override
     public Page findErrorLogPage(Map<String, Object> params) {
-        return null;
+        return daoClient.selectPage("com.dessert.sys_error_log.selectLog",params);
     }
 
     @Override
     public Page findOperationLogPage(Map<String, Object> params) {
-        return null;
+        return daoClient.selectPage("com.dessert.sys_operating_log.selectLog",params);
     }
 
     @Override
     public Page findLoginLogPage(Map<String, Object> params) {
-        return null;
+        return daoClient.selectPage("com.dessert.sys_login_log.selectLog",params);
     }
 
     @Override
-    public void error(User user, String ip ,Exception e) {
+    public boolean addLoginLog(Map<String, Object> loginMap) {
+        if (SysToolHelper.isExists(loginMap, "loginlogid")) {
+            return daoClient.update("com.dessert.sys_login_log.insert", loginMap) > 0;
+        }
+        return false;
+    }
+
+    @Override
+    public void error(User user, String ip, Exception e) {
         String item;
         if (e != null && e.getStackTrace() != null
                 && e.getStackTrace().length > 0) {
