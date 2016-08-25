@@ -33,6 +33,7 @@
     <script type="text/javascript">
 
 
+
         $(function () {
 
             $("#sex").val("${(userMap.sex)!'1'}");
@@ -133,7 +134,7 @@
                             shade: 0.3,
                             shadeClose: false
                         }, function () {
-                            parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+                            refreshJqGrid();//刷新数据
                             closeFrame();//关闭窗口
                         });
                     }

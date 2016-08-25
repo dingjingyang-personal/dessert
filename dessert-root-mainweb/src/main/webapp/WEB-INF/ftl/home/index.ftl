@@ -65,6 +65,8 @@
         }
 
 
+
+
     </style>
 
     <script type="text/javascript">
@@ -164,6 +166,19 @@
 
 
 
+
+        function getPageWindow(){
+            return getIframeWindow("pagebodyiframe");
+        }
+        function reloadPageWindow(){
+            var win=getPageWindow();
+            if(win){
+                win.location.reload();
+            }
+            win=null;
+        }
+
+
     </script>
 
 </head>
@@ -173,7 +188,7 @@
 
 <div id="pagebody">
     <#--信息栏-->
-    <div id="top">
+    <div id="top" >
 
 
     </div>
@@ -187,9 +202,7 @@
                 <ul id="menu-list">
 
                 </ul>
-                <#--<div class="jquery-accordion-menu-footer">-->
-                    <#--Footer-->
-                <#--</div>-->
+
             </div>
         </div>
 

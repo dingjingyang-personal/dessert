@@ -68,7 +68,7 @@ public class DaoClient extends SqlSessionDaoSupport {
     }
 
     /**
-     * 处理参数 删除值为空的数据
+     * 处理参数 删除值为空的参数
      * @param params
      * @return
      */

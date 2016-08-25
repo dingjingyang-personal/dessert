@@ -6,3 +6,15 @@ $(function () {
     });
 
 });
+
+
+function getIframeWindow(id){
+    var win=null;
+    if(document.frames)
+        win = document.frames[id];
+    if(!win&&document.getElementById){
+        var frm= document.getElementById(id);
+        return frm.contentWindow?frm.contentWindow:frm.contentDocument;
+    }
+    return win;
+}

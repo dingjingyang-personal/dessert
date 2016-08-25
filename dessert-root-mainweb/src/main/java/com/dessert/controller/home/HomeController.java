@@ -205,7 +205,7 @@ public class HomeController {
             return "redirect:showIndex.htm";
         }
         request.setAttribute("username", CookieHelper.getInstance().getCookieValue(request, SysConstants.COOKIE_USERNO));
-        return "/home/login";
+        return "home/login1";
     }
 
     /**

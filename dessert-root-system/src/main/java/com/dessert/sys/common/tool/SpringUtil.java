@@ -7,6 +7,7 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -71,7 +72,7 @@ public class SpringUtil implements ApplicationContextAware {
 	/**
 	 * 获取想要的bean
 	 * 
-	 * @param beanName
+	 * @param beanId
 	 *            spring配置文件中bean 的 id
 	 * @return
 	 */
@@ -82,7 +83,7 @@ public class SpringUtil implements ApplicationContextAware {
 	/**
 	 * 获取想要的bean
 	 * 
-	 * @param beanName
+	 * @param beanId
 	 *            spring配置文件中bean 的 id
 	 * @param clazz
 	 *            类型
@@ -173,11 +174,11 @@ public class SpringUtil implements ApplicationContextAware {
 		}
 		return httpServletRequest;
 	}
-	//
-	// /**
-	// * 刷新spring容器
-	// */
-	// public static void reloadApplicationContext(boolean reloadDataSource) {
-	// ((ConfigurableApplicationContext) applicationContext).refresh();
-	// }
+
+	 /**
+	 * 刷新spring容器
+	 */
+	 public static void reloadApplicationContext(boolean reloadDataSource) {
+	 ((ConfigurableApplicationContext) applicationContext).refresh();
+	 }
 }

@@ -497,3 +497,10 @@ function closeFrame() {
     var index = parent.layer.getFrameIndex(window.name);
     parent.layer.close(index);
 }
+
+//刷新jqGrid数据
+function  refreshJqGrid() {
+    var iframe = window.parent.frames["pagebodyiframe"];
+    var iframeWindow = iframe.contentWindow;//获取iframe里的window对象
+    iframeWindow.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+}

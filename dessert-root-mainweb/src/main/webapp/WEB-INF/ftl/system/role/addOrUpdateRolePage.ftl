@@ -96,7 +96,7 @@
                             shade: 0.3,
                             shadeClose: false
                         }, function () {
-                            window.parent.$('#pagelist').trigger('reloadGrid');//列表页面刷新数据
+                            refreshJqGrid();//刷新数据
                             closeFrame();//关闭窗口
                         });
                     }
