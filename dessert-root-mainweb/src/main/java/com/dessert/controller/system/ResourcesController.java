@@ -85,7 +85,7 @@ public class ResourcesController {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
 
         String flag = SysToolHelper.getMapValue(params, "flag");
-        boolean result=false;
+        boolean result;
 
         //A代表新建菜单
         if("A".equals(flag)){

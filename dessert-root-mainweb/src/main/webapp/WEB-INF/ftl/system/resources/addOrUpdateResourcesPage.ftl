@@ -96,6 +96,7 @@
             var newmenuid = "${(MenuMap.menuid)!''}";
             var menutype = $.trim($("#menutype").val());
             var status = $("#status").val();
+            var menuicon = $("#menuicon").val();
             var menuaction = $.trim($("#menuaction").val());
             var menuname = $.trim($("#menuname").val());
             var menulevel = getMenuLevel("${(RequestParameters.flag)!''}");
@@ -127,6 +128,7 @@
                 "menuid": newmenuid,
                 "menutype": menutype,
                 "status": status,
+                "menuicon": menuicon,
                 "action": menuaction,
                 "menuname": menuname,
                 "flag": flag,
@@ -230,6 +232,15 @@
                                 <option value="1" selected="selected">有效</option>
                                 <option value="2">无效</option>
                             </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="menuicon" class="col-sm-1 control-label">菜单图标</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="menuicon" name="menuicon"
+                                   value="${(MenuMap.menuicon)!''}">
                         </div>
                     </div>
 

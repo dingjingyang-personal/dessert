@@ -13,6 +13,7 @@
         M.MENULEVEL menulevel,
         M.ACTION action,
         M.STATUS status,
+        M.MENUICON menuicon,
         M.CREATEDATE createdate,
         M.UPDATEDATE updatedate
         FROM SYSTEM_RESOURCES M
@@ -60,6 +61,7 @@
         M.MENULEVEL menulevel,
         M.ACTION    action,
         M.STATUS status,
+        M.MENUICON menuicon,
         (CASE  WHEN menulevel='1' THEN 'true'
         WHEN menulevel='2' THEN 'true' END) open
         FROM SYSTEM_RESOURCES M
@@ -85,6 +87,7 @@
            MENULEVEL,
            ACTION,
            STATUS,
+           MENUICON,
            CREATEDATE
         )VALUES
         (
@@ -96,6 +99,7 @@
            #{menulevel},
            #{action},
            #{status},
+           #{menuicon},
            now()
         )
     </insert>
@@ -123,6 +127,9 @@
             </if>
             <if test="status != null">
                 STATUS = #{status},
+            </if>
+            <if test="menuicon != null">
+                MENUICON = #{menuicon},
             </if>
             UPDATEDATE = now()
         </set>

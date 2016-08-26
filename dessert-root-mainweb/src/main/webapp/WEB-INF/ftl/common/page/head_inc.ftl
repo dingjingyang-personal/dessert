@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="${resPath}/plugins/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="${resPath}/plugins/jqGrid/css/ui.jqgrid-bootstrap.css">
 <link rel="stylesheet" type="text/css" href="${resPath}/common/css/sysui.css">
-<link rel="stylesheet" type="text/css" href="${resPath}/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
+
 
 <script type="text/javascript" src="${resPath}/common/js/jquery-1.12.3.js"></script>
 <script type="text/javascript" src="${resPath}/plugins/bootstrap/js/bootstrap.js"></script>
