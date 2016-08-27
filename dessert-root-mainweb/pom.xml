@@ -8,7 +8,7 @@
         <relativePath>../dessert-root/pom.xml</relativePath>
     </parent>
     <artifactId>dessert-root-mainweb</artifactId>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
