@@ -4,7 +4,7 @@
 <head>
 
 <#include "/common/page/head_inc.ftl">
-<@includeRes resType="css" resUrl=["common/css/signup/signup-form-elements.css","common/css/signup/signup-style.css","plugins/bootstrap/css/bootstrap-select.css"] />
+<@includeRes resType="css" resUrl=["page/singup/css/signup-form-elements.css","page/singup/css/signup-style.css","plugins/bootstrap/css/bootstrap-select.css"] />
 <@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js"] />
 
     <title>用户注册</title>
@@ -36,7 +36,7 @@
             /*
                 背景图片
             */
-            $.backstretch("/dessert-root-mainweb/resources/common/images/signup/background001.jpg");
+            $.backstretch("/dessert-root-mainweb/resources/page/singup/images/background001.jpg");
 
             $('#top-navbar-1').on('shown.bs.collapse', function () {
                 $.backstretch("resize");

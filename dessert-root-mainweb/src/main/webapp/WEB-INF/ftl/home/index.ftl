@@ -4,8 +4,8 @@
 <head>
 
 <#include "/common/page/head_inc.ftl">
-<@includeRes resType="css" resUrl=["common/index/css/jquery-accordion-menu.css"] />
-<@includeRes resUrl=["common/index/js/jquery-accordion-menu.js"] />
+<@includeRes resType="css" resUrl=["page/index/css/jquery-accordion-menu.css"] />
+<@includeRes resUrl=["page/index/js/jquery-accordion-menu.js"] />
     <title>主页</title>
 
     <style type="text/css">
@@ -22,10 +22,9 @@
         }
 
         #top {
-
-            top: 0;
             width: 100%;
-            margin: 0;
+            padding:0;
+            margin:0;
             border-width: 0;
             border-radius: 0;
             height: 50px;
@@ -150,7 +149,7 @@
         //点击菜单事件
         function clilkMenu(menuid) {
             var menu = menuMap[menuid];
-            var position = menu.grandfather.menuname + ' > ' + menu.parent.menuname + '> ' + menu.menuname;
+            var position = menu.grandfather.menuname + ' <i class="fa fa-angle-double-right"></i> ' + menu.parent.menuname + ' <i class="fa fa-angle-double-right"></i> ' + menu.menuname;
             $("#position").html(position);
             var pagebodyiframe = $("#pagebodyiframe");
             pagebodyiframe.attr('src', "${ctxPath}" + menu.action);
@@ -190,7 +189,7 @@
 <div id="page">
 <#--信息栏-->
     <div class="app-header navbar" id="top">
-        <div class="navbar-header bg-dark">
+        <div class="navbar-header bg-dark" style="float: left">
 
             <div class="navbar-brand text-lt" style="width: 200px">
                 <i class="fa fa-envira"></i>
@@ -199,33 +198,31 @@
         </div>
 
 
-        <div style="margin-top: 15px;float: left" >
+        <div style="margin-top:15px;width:40%;float: left" >
             <span>当前位置 : </span><span id="position"></span>
 
         </div>
 
 
-        <div class="">
-        <#--<div class="nav navbar-nav hidden-xs">-->
-        <#--<div  class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">-->
-        <#--<i class="fa fa-dedent fa-fw text" ></i>-->
-        <#--<i class="fa fa-indent fa-fw text-active"></i>-->
-        <#--</div>-->
-        <#--<div  class="btn no-shadow navbar-btn" data-toggle="class:show" data-target="#aside-user">-->
-        <#--<i class="icon-user fa-fw"></i>-->
-        <#--</div>-->
-        <#--</div>-->
+    <#--<div class="nav navbar-nav hidden-xs">-->
+    <#--<div  class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">-->
+    <#--<i class="fa fa-dedent fa-fw text" ></i>-->
+    <#--<i class="fa fa-indent fa-fw text-active"></i>-->
+    <#--</div>-->
+    <#--<div  class="btn no-shadow navbar-btn" data-toggle="class:show" data-target="#aside-user">-->
+    <#--<i class="icon-user fa-fw"></i>-->
+    <#--</div>-->
+    <#--</div>-->
 
-            <div class="nav navbar-nav hidden-xs" style="float: right;">
-                <a class="btn no-shadow navbar-btn">
-                    <i class="fa fa-user"></i> 管理员
-                </a>
-                <a class="btn no-shadow navbar-btn">
-                    <i class="fa fa-sign-out"></i> 退出
-                </a>
-            </div>
-
+        <div class="" style="float: right;width: 15%" >
+            <a class="btn  navbar-btn">
+                <i class="fa fa-user"></i> 管理员
+            </a>
+            <a class="btn ">
+                <i class="fa fa-sign-out"></i> 退出
+            </a>
         </div>
+
     </div>
 
 
@@ -248,11 +245,11 @@
 <#--菜单连接页面-->
     <div id="pageBody"
          style="height: 100%;padding: 0 0px;position: inherit;margin: 0 0 0 220px;min-height: auto;background-color: #f3f3f4;">
-        <#--<div style="height: 30px;width: calc(100% -200px); margin-right: -15px;margin-left: -15px;">-->
-            <#--<div style="font-size:12px;padding-top: 8px">-->
-                <#--<span>当前位置 : </span><span id="position"></span>-->
-            <#--</div>-->
-        <#--</div>-->
+    <#--<div style="height: 30px;width: calc(100% -200px); margin-right: -15px;margin-left: -15px;">-->
+    <#--<div style="font-size:12px;padding-top: 8px">-->
+    <#--<span>当前位置 : </span><span id="position"></span>-->
+    <#--</div>-->
+    <#--</div>-->
         <div style="height: calc(100% - 75px);overflow: hidden;margin-right: -5px;margin-left: -15px;">
             <iframe id="pagebodyiframe" frameborder=0 scrolling="auto" width="100%" height="99%" src=""
             "></iframe>
