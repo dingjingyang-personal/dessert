@@ -24,15 +24,17 @@ public class SystemIsLoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURI();
+        if(url.contains("JSESSIONID")){
+            int index = url.indexOf(";JSESSIONID");
+            String newUrl = url.substring(0,index);
+            response.sendRedirect(newUrl);
+            return false;
+        }
         if (url.endsWith(".htm")) {
             return true;
         }
-//        User user = UserTool.getUserForShiro();
-//        if (user == null) {
-//            response.sendRedirect(request.getContextPath() + "/sys/timeout.htm");
-//            return false;
-//        }
         return false;
+
     }
 
 

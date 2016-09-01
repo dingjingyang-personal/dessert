@@ -137,6 +137,9 @@
 
 
         $(function () {
+
+            checkCookieSupport();
+
             //得到焦点
             $("#userpwd").focus(function () {
                 $("#left_hand").animate({
@@ -222,6 +225,23 @@
                 login();
             }
         };
+
+
+
+
+        function checkCookieSupport(){
+            var isSupport = false;
+            if(typeof(navigator.cookieEnabled) != 'undefined')
+                isSupport = navigator.cookieEnabled;
+            else{
+                document.cookie = 'test';
+                isSupport = document.cookie == 'test';
+                document.cookie = '';
+            }
+            if(!isSupport){
+                showError("浏览器禁用了Cookie,此系统需要浏览器支持Cookie。");
+            }
+        }
 
     </script>
 

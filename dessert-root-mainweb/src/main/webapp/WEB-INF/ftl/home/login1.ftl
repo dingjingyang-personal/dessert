@@ -4,8 +4,8 @@
 <head>
 
 <#include "/common/page/head_inc_t.ftl">
-<@includeRes resType="css" resUrl=["common/singup/css/style.css"] />
-<@includeRes resUrl=["common/singup/js/Particleground.js"] />
+<@includeRes resType="css" resUrl=["page/singup/css/style.css"] />
+<@includeRes resUrl=["page/singup/js/Particleground.js"] />
     <title>用户登录</title>
 
     <style type="text/css">
@@ -22,6 +22,8 @@
                 dotColor: '#5cbdaa',
                 lineColor: '#5cbdaa'
             });
+
+            checkCookieSupport();
         });
 
 
@@ -79,6 +81,21 @@
                 login();
             }
         };
+
+
+        function checkCookieSupport(){
+            var isSupport = false;
+            if(typeof(navigator.cookieEnabled) != 'undefined')
+                isSupport = navigator.cookieEnabled;
+            else{
+                document.cookie = 'test';
+                isSupport = document.cookie == 'test';
+                document.cookie = '';
+            }
+            if(!isSupport){
+                showError("浏览器禁用了Cookie,此系统需要浏览器支持Cookie。");
+            }
+        }
 
 
     </script>
