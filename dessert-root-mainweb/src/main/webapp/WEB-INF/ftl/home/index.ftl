@@ -42,7 +42,7 @@
             float: left;
             overflow-y: auto;
             overflow-x: hidden;
-            height: 620px;
+            height: 100%;
             background-color: #2F4050;
         }
 
@@ -61,14 +61,13 @@
         }
 
         a {
-            color: #ffffff;
+            color: #95f9f6;
             text-decoration: none;
             cursor: pointer;
         }
 
-        .navbar-top-links li {
-            display: inline-block;
-        }
+
+
 
     </style>
 
@@ -252,7 +251,7 @@
     <#--</div>-->
         <div style="height: calc(100% - 75px);overflow: hidden;margin-right: -5px;margin-left: -15px;">
             <iframe id="pagebodyiframe" frameborder=0 scrolling="auto" width="100%" height="99%" src=""
-            "></iframe>
+            ></iframe>
         </div>
         <div class="footer">
             <div class="pull-right" style="float: right !important;">

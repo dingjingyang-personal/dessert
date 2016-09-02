@@ -1,7 +1,6 @@
 package com.dessert.controller.log;
 
 
-import com.dessert.sys.common.annotation.SystemOperatingLog;
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.tool.SysToolHelper;
 import com.dessert.sys.log.service.SysLogService;
@@ -35,7 +34,7 @@ public class SysLogController {
      * @param request
      * @param response
      */
-    @SystemOperatingLog(module = "系统管理-日志管理",methods = "异常日志-查询异常日志数据")
+//    @SystemOperatingLog(module = "系统管理-日志管理",methods = "异常日志-查询异常日志数据")
     @RequestMapping("findErrorLogJson.htm")
     public void findErrorLogJson(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -59,7 +58,7 @@ public class SysLogController {
      * @param request
      * @param response
      */
-    @SystemOperatingLog(module = "系统管理-日志管理",methods = "异常日志-查询操作日志数据")
+//    @SystemOperatingLog(module = "系统管理-日志管理",methods = "异常日志-查询操作日志数据")
     @RequestMapping("findOperationLogJson.htm")
     public void findOperationLogJson(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
@@ -83,7 +82,7 @@ public class SysLogController {
      * @param request
      * @param response
      */
-    @SystemOperatingLog(module = "系统管理-日志管理",methods = "登录日志-查询登录日志数据")
+//    @SystemOperatingLog(module = "系统管理-日志管理",methods = "登录日志-查询登录日志数据")
     @RequestMapping("findLoginLogJson.htm")
     public void findLoginLogJson(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
