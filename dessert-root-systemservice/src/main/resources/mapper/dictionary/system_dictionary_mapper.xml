@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dessert.dictionary">
+
+	<!--查询-->
+	<select id="getDictionary" parameterType="hashmap" resultType="map">
+		SELECT
+		    D.DICID           "dicid",
+		    D.DICCODE         "diccode",
+		    D.DICVALUE        "dicvalue",
+		    D.DICLANG         "diclang",
+		    D.DICTYPE         "dictype",
+		    D.STATUS          "status",
+			date_format(D.CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate",
+			date_format(D.UPDATEDATE,'%Y-%m-%d %H:%i:%s') "updatedate"
+		FROM SYSTEM_DICTIONARY  D
+		<where>
+			<if test="dicid!=null and dicid!=''">
+				AND D.DICID =#{dicid}
+			</if>
+			<if test="diccode!=null and diccode!=''">
+				AND D.DICCODE LIKE '%'||#{diccode}||'%'
+			</if>
+			<if test="dicvalue!=null and dicvalue!=''">
+				AND D.DICVALUE LIKE '%'||#{dicvalue}||'%'
+			</if>
+			<if test="dictype!=null and dictype!=''">
+				AND D.DICTYPE =#{dictype}
+			</if>
+		</where>
+		ORDER BY D.CREATEDATE DESC
+	</select>
+
+	<!--添加-->
+	<insert id="addDictionary" parameterType="hashmap">
+		INSERT INTO SYSTEM_DICTIONARY
+		(
+			DICID,
+			DICCODE,
+			DICVALUE,
+			DICLANG,
+			DICTYPE,
+			STATUS,
+			CREATEDATE
+		)
+		VALUES
+		(
+			#{dicid},
+			#{diccode},
+			#{dicvalue},
+			#{diclang},
+			#{dictype},
+			#{status},
+			now()
+		)
+	</insert>
+
+
+	<!-- 更新	-->
+	<update id="updateDictionary" parameterType="hashmap">
+		UPDATE
+		SYSTEM_DICTIONARY D
+		SET
+		<if test="diccode!=null and diccode!=''">
+			D.DICCODE=#{diccode},
+		</if>
+		<if test="dicvalue!=null and dicvalue!=''">
+			D.DICVALUE=#{dicvalue},
+		</if>
+		<if test="diclang!=null and diclang!=''">
+			D.DICLANG=#{diclang},
+		</if>
+		<if test="dictype!=null and dictype!=''">
+			D.DICTYPE=#{dictype},
+		</if>
+		<if test="status!=null and status!=''">
+			D.STATUS=#{status},
+		</if>
+			D.UPDATEDATE=now()
+		WHERE
+		D.DICID =#{dicid}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="hashmap" >
+		DELETE
+		 FROM SYSTEM_DICTIONARY
+		WHERE DICID= #{dicid}
+	</delete>
+
+
+</mapper>

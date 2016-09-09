@@ -3,6 +3,7 @@ package com.dessert.sys.sequence.service.impl;
 import com.dessert.sys.common.bean.Page;
 import com.dessert.sys.common.dao.DaoClient;
 import com.dessert.sys.common.tool.SysToolHelper;
+import com.dessert.sys.common.tool.UserTool;
 import com.dessert.sys.log.service.SysLogService;
 import com.dessert.sys.sequence.service.SequenceNumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,36 +122,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
         return null;
     }
 
-    @Override
-    public Page<?> getSeqPage(Map<String, Object> params) {
-        String sqlId = "SequenceNumService.selectSeq";
-        return daoClient.selectPage(sqlId, params);
-    }
 
-    @Override
-    public Map<String, Object> getSequence(Map<String, Object> params) {
-        if (!SysToolHelper.isExists(params, "seqkey")) {
-            return null;
-        }
-        String sqlId = "SequenceNumService.selectSeq";
-        return daoClient.selectMap(sqlId, params);
-    }
-
-    @Override
-    public boolean addOrUpdateSequence(Map<String, Object> params) {
-        String operType = String.valueOf(params.get("operType"));
-        if (!SysToolHelper.equal(operType, "1", "2")
-                || !SysToolHelper.isExists(params, "seqkey", "seqdesc")) {
-            return false;
-        }
-        String sqlId;
-        if ("1".equals(operType)) {
-            sqlId = "SequenceNumService.addSeq";
-        } else {
-            sqlId = "SequenceNumService.updateSeq";
-        }
-        return daoClient.update(sqlId, params) > 0;
-    }
 
     @Override
     public boolean addOrUpdateSetting(Map<String, Object> params) {
@@ -172,11 +144,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
         return daoClient.update(sqlId, params) > 0;
     }
 
-    @Override
-    public Page<?> getSeqSettingPage(Map<String, Object> params) {
-        String sqlId = "SequenceNumService.getSetting";
-        return daoClient.selectPage(sqlId, params);
-    }
+
 
     @Override
     public Page<?> getSeqValuePage(Map<String, Object> params) {
@@ -269,5 +237,68 @@ public class SequenceNumServiceImpl implements SequenceNumService {
         String seq = readSeqBySeqKeyAndOwner(seqKey, owner, addOwnerAtFirst);
         temp.put("seqnum", seq);
         return temp;
+    }
+
+
+
+
+
+
+    @Override
+    public Page<?> getSeqPage(Map<String, Object> params) {
+        String sqlId = "com.dessert.sequence.selectSeq";
+        return daoClient.selectPage(sqlId, params);
+    }
+
+
+    @Override
+    public Map<String, Object> getSequence(Map<String, Object> params) {
+        if (SysToolHelper.isExists(params, "seqid")) {
+            return null;
+        }
+        String sqlId = "com.dessert.sequence.selectSeq";
+        return daoClient.selectMap(sqlId, params);
+    }
+
+    @Override
+    public boolean addSequence(Map<String, Object> params) {
+        if (SysToolHelper.isExists(params, "seqkey", "seqdesc")) {
+            return false;
+        }
+        params.put("seqid",SysToolHelper.getUuid());
+        params.put("createuser", UserTool.getUserForShiro().getUsername());
+        return daoClient.update("com.dessert.sequence.addSeq", params) > 0;
+    }
+
+    @Override
+    public boolean updatSequence(Map<String, Object> params) {
+        if (SysToolHelper.isExists(params, "seqid")) {
+            return false;
+        }
+        return daoClient.update("com.dessert.sequence.updateSeq",params)>0;
+    }
+
+
+    @Override
+    public Page<?> getSeqSettingPage(Map<String, Object> params) {
+        String sqlId = "com.dessert.sequence.getSetting";
+        return daoClient.selectPage(sqlId, params);
+    }
+
+    @Override
+    public boolean addSettingSequence(Map<String, Object> params) {
+        if(SysToolHelper.isExists(params,"seqid","seqtype","seqorder","seqtypevalue")){
+            return false;
+        }
+        params.put("seqsetingid",SysToolHelper.getUuid());
+        return daoClient.update("com.dessert.sequence.addSetting",params)>0;
+    }
+
+    @Override
+    public boolean updateSettingSequence(Map<String, Object> params) {
+        if(SysToolHelper.isExists(params,"seqsetingid")){
+            return false;
+        }
+        return daoClient.update("com.dessert.sequence.updateSetting",params)>0;
     }
 }

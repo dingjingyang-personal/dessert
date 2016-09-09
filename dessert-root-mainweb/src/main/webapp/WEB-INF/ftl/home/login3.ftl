@@ -136,6 +136,10 @@
     <script type="text/javascript">
 
 
+        if (window != top){
+            top.location.href = location.href;
+        }
+
         $(function () {
 
             checkCookieSupport();

@@ -9,9 +9,6 @@ import org.junit.Test;
 
 import java.util.Map;
 
-/**
- * Created by admin-ding on 2016/8/16.
- */
 public class PasswordUtil {
 
     private static RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();

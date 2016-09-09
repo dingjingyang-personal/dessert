@@ -127,7 +127,7 @@ public class SysToolHelper {
             return false;
         }
         for (String key : keys) {
-            if (StringUtil.isNullOrEmpty(params.get(key).toString())) {
+            if (StringUtil.isNullOrEmpty(getMapValue(params,"key").toString())) {
                 return false;
             }
         }
@@ -455,6 +455,7 @@ public class SysToolHelper {
 
     /**
      * 集合转换成json字符串
+     *
      * @param obj
      * @return
      */
@@ -1189,6 +1190,7 @@ public class SysToolHelper {
 
     /**
      * 判断变量是否为空
+     *
      * @param obj
      * @return
      */
@@ -1198,5 +1200,18 @@ public class SysToolHelper {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 判断map是否为null 或 size为0
+     *
+     * @param map
+     * @return
+     */
+    public static boolean mapIsEmpty(Map<String, Object> map) {
+        if (map == null || map.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

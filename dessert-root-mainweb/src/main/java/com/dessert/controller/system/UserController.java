@@ -48,7 +48,7 @@ public class UserController {
      * @param request
      * @param response
      */
-    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-返回角色数据")
+    @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-返回用户数据")
     @RequestMapping("findUsersJson.htm")
     public void findUsersJson(HttpServletRequest request, HttpServletResponse response) {
 
@@ -84,8 +84,8 @@ public class UserController {
     @SystemOperatingLog(module = "系统管理-权限管理",methods = "用户管理-添加用户")
     @RequestMapping("addUser.htm")
     public void addUser(HttpServletRequest request, HttpServletResponse response) {
-
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
+
         boolean isnull = SysToolHelper.isExists(params, "username", "email", "userpwd");
         if (!isnull) {
             SysToolHelper.outputByResponse("2", response);
@@ -159,8 +159,6 @@ public class UserController {
                     }
                 }
             }
-
-
         }
         String allRolesListStr = SysToolHelper.getJsonOfCollection(allRolesList);
         request.setAttribute("allRolesListStr", allRolesListStr);
@@ -181,6 +179,28 @@ public class UserController {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
         SysToolHelper.outputByResponse(userService.addAssigningRoles(params) ? "1" : "2", response);
     }
+
+
+
+
+    /**
+     * 校验登录名或邮箱
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/validateLoginNameOrEmail.htm")
+    public void validateLoginName(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        boolean isExist=userService.validateLoginNameOrEmail(params);
+        if(isExist){
+            SysToolHelper.outputByResponse("true", response);
+        }else {
+            SysToolHelper.outputByResponse("false", response);
+        }
+
+    }
+
 
 
 }

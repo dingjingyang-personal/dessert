@@ -4,43 +4,10 @@ import com.dessert.sys.common.bean.Page;
 
 import java.util.Map;
 
-
-
-/**
- * 
- * @author Administrator
- *
- */
 public interface SequenceNumService {
-	/**
-	 * 
-	 * getSeqPage:分页查询 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	Page<?> getSeqPage(Map<String, Object> params);
-	
-	/**
-	 * 
-	 * getSequence:查询 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	Map<String,Object> getSequence(Map<String, Object> params);
-	
-	/**
-	 * 
-	 * addOrUpdateSequence:添加、修改 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	boolean addOrUpdateSequence(Map<String, Object> params);
+
+
+
 	
 	/**
 	 * 
@@ -52,15 +19,7 @@ public interface SequenceNumService {
 	 */
 	boolean addOrUpdateSetting(Map<String, Object> params);
 	
-	/**
-	 * 
-	 * getSeqSettingPage:分页查询 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	Page<?> getSeqSettingPage(Map<String, Object> params);
+
 	
 	/**
 	 * 
@@ -119,7 +78,6 @@ public interface SequenceNumService {
     * @author Administrator 
     * @param seqKey
     * @param owner
-    * @param addOwner
     * @return
     */
    String readSeqBySeqKeyAndOwner(String seqKey, String owner, boolean addOwnerAtFirst);
@@ -138,5 +96,55 @@ public interface SequenceNumService {
    String getSeqBySeqKey(String seqKey);
    
    Map<String,Object> getNextSeqNum(Map<String, Object> params);
-   
+
+
+	/**
+	 * 分页查询
+	 * @param params
+	 * @return
+	 */
+	Page<?> getSeqPage(Map<String, Object> params);
+
+	/**
+	 * 查询单个seq
+	 * @param params
+	 * @return
+	 */
+	Map<String,Object> getSequence(Map<String, Object> params);
+
+	/**
+	 * 添加seq
+	 * @param params
+	 * @return
+     */
+	boolean addSequence(Map<String, Object> params);
+
+	/**
+	 * 修改seq
+	 * @param params
+	 * @return
+     */
+	boolean updatSequence(Map<String, Object> params);
+
+
+	/**
+	 * 查询序列配置
+	 * @param params
+	 * @return
+     */
+	Page<?> getSeqSettingPage(Map<String, Object> params);
+
+	/**
+	 * 添加序列配置
+	 * @param params
+	 * @return
+     */
+	boolean addSettingSequence(Map<String, Object> params);
+
+	/**
+	 * 修改序列配置
+	 * @param params
+	 * @return
+     */
+	boolean updateSettingSequence(Map<String, Object> params);
 }

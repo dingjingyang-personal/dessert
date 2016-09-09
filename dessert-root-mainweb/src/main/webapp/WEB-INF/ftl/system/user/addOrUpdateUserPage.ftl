@@ -53,6 +53,24 @@
                         required: true,
                         minlength: 2,
                         maxlength: 10,
+                        remote: {
+                            url: "${ctxPath}/system/user/validateLoginNameOrEmail.htm",     //后台处理程序
+                            type: "post",               //数据发送方式
+                            dataType: "html",           //接受数据格式
+                            data: {                     //要传递的数据
+                                username: function() {
+                                    return $("#username").val();
+                                }
+                            },
+                            dataFilter: function (data) {　　　　//判断控制器返回的内容
+                                if (data == "true") {
+                                    return true;
+                                }
+                                else {
+                                    return false;
+                                }
+                            }
+                        }
 
                     },
                     userpwd: {
@@ -73,7 +91,25 @@
 
                     email: {
                         required: true,
-                        email:true
+                        email:true,
+                        remote: {
+                            url: "${ctxPath}/system/user/validateLoginNameOrEmail.htm",     //后台处理程序
+                            type: "post",               //数据发送方式
+                            dataType: "html",           //接受数据格式
+                            data: {                     //要传递的数据
+                                email: function() {
+                                    return $("#email").val();
+                                }
+                            },
+                            dataFilter: function (data) {　　　　//判断控制器返回的内容
+                                if (data == "true") {
+                                    return true;
+                                }
+                                else {
+                                    return false;
+                                }
+                            }
+                        }
                     },
                 },
                 messages: {
@@ -81,6 +117,7 @@
                         required: "请输入用户名",
                         minlength: "用户名最少 2 个字符!",
                         maxlength: "用户名最多 10 个字符!",
+                        remote:"此用户名已存在"
                     },
                     userpwd: {
                         required: "请输入密码",
@@ -98,7 +135,8 @@
                     },
                     email:{
                         required: "请输入邮箱",
-                        meail:"请输入正确的邮箱地址"
+                        meail:"请输入正确的邮箱地址",
+                        remote:"此邮箱已存在"
                     }
 
                 }
@@ -139,7 +177,7 @@
                         });
                     }
                     else{
-                        parent.layer.alert('系统异常,请稍后重试!', {icon: 5});
+                        parent.layer.alert(data, {icon: 5});
                     }
                 }});
 

@@ -63,6 +63,10 @@
     </bean>
 
 
+    <!--<bean id="IsLoginFilter" class="com.dessert.system.shiro.filter.IsLoginFilter">-->
+        <!--<property name="redirectUrl" value="/sys/timeout.html"/>-->
+    <!--</bean>-->
+
     <!-- 过滤链配置 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -71,6 +75,11 @@
         <property name="unauthorizedUrl" value="/sys/showInvalidMenuPage.htm"/>
         <!-- shiro 连接约束配置,在这里使用自定义的动态获取资源类 -->
         <property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource"/>
+        <!--<property name="filters">-->
+            <!--<util:map>-->
+                <!--<entry key="anon" value-ref="IsLoginFilter"/>-->
+            <!--</util:map>-->
+        <!--</property>-->
 
     </bean>
 
@@ -83,6 +92,7 @@
                 /resources/** = anon
                 /sys/** = anon
                 /remote/invokeMethod.htm = anon
+                /home/showLoginPage.htm = anon
                 /home/login.htm = anon
 
             </value>

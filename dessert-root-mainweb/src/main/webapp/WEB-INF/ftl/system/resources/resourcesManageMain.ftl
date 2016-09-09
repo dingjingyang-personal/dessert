@@ -427,7 +427,7 @@
 <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>资源管理</h5>
+            <h3>资源管理</h3>
 
         </div>
         <div class="ibox-content">

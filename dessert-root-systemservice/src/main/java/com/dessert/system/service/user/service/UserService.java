@@ -77,4 +77,11 @@ public interface UserService {
      * @return
      */
     List<Map<String,Object>> findResources(String userid);
+
+    /**
+     * 校验用户名和邮箱是否存在
+     * @param params
+     * @return
+     */
+    boolean validateLoginNameOrEmail(Map<String, Object> params);
 }

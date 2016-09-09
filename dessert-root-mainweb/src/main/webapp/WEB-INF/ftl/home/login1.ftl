@@ -16,6 +16,13 @@
 
     <script type="text/javascript">
 
+
+        if (window != top){
+            top.location.href = location.href;
+        }
+
+
+
         $(document).ready(function() {
             //粒子背景特效
             $('body').particleground({

@@ -4,7 +4,7 @@
     <head>
 
         <#include "/common/page/head_inc.ftl">
-        <title>响应超时</title>
+        <title>会话超时</title>
 
 
         <script type="text/javascript">
@@ -24,6 +24,11 @@
                 setTimeout("delayURL('" + url + "')", 1000)
             }
 
+
+            function reLogin() {
+                alert("wqwqwq");
+            }
+
         </script>
 
     </head>
@@ -32,7 +37,7 @@
 
         <div class="jumbotron" >
             <p class="text-center">会话已过期或超时,请重新<a href="javascript:void(0)" onclick="reLogin()">登陆</a>!</p>
-            <p class="text-center" style="font-size: 16px"><span id="time">5</span>秒钟之后自动跳转首页</p>
+            <p class="text-center" style="font-size: 16px"><span id="time">10</span>秒钟之后自动跳转首页</p>
         </div>
 
 

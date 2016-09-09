@@ -9,7 +9,6 @@ import java.util.Map;
 public interface RemoteService {
 	  /**
 	   * 功能描述: 调用远程方法
-	   * author:liwm
 	   * @param benId
 	   * @param methodName
 	   * @param params

@@ -30,11 +30,15 @@ public class SystemIsLoginInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect(newUrl);
             return false;
         }
-        if (url.endsWith(".htm")) {
-            return true;
-        }
-        return false;
 
+//        if(url.endsWith(".html")){
+//            return true;
+//        }
+//        if(!UserTool.isUserLoginForShiro()){
+//            response.sendRedirect(request.getContextPath()+"/sys/timeout.html");
+//            return false;
+//        }
+        return true;
     }
 
 

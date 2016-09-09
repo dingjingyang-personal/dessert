@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="SequenceNumService.demo">
+<mapper namespace="com.dessert.sequence">
+
+
     <select id="selectSeq" resultType="hashmap" parameterType="hashmap">
         SELECT
+        SEQID   "seqid",
         SEQKEY  "seqkey",
         SEQDESC   "seqdesc",
         CREATEUSER  "createuser",
         date_format(CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate"
         FROM SYS_SEQ_MAIN
         <where>
+            <if test="seqid!=null and seqid!=''">
+                AND SEQID=#{seqid}
+            </if>
             <if test="seqkey!=null and seqkey!=''">
                 AND SEQKEY=#{seqkey}
             </if>
         </where>
         ORDER BY CREATEDATE DESC
     </select>
+
+
     <insert id="addSeq" parameterType="hashmap">
         INSERT INTO SYS_SEQ_MAIN
         (
+            SEQID,
             SEQKEY,
             SEQDESC,
             CREATEUSER,
@@ -25,6 +34,7 @@
         )
         VALUES
         (
+            #{seqid},
             #{seqkey},
             #{seqdesc},
             #{createuser},
@@ -35,36 +45,68 @@
         UPDATE SYS_SEQ_MAIN
         SET
         <if test="seqdesc!=null and seqdesc!=''">
-            AND SEQDESC=#{seqdesc}
+            SEQDESC=#{seqdesc}
         </if>
-        WHERE SEQKEY=#{seqkey}
+        WHERE SEQID=#{seqid}
     </update>
+
+
+    <select id="getSetting" resultType="hashmap" parameterType="hashmap">
+        SELECT
+             S.SEQSETINGID         "seqsetingid",
+             S.SEQID               "seqid",
+             S.SEQTYPE             "seqtype",
+             S.SEQORDER            "seqorder",
+             S.SEQTYPEVALUE        "seqtypevalue"
+        FROM SYS_SEQ_SETTING S
+        <where>
+            <if test="seqsetingid!=null and seqsetingid!=''">
+                AND S.SEQSETINGID=#{seqsetingid}
+            </if>
+            <if test="seqid!=null and seqid!=''">
+                AND S.SEQID=#{seqid}
+            </if>
+            <if test="seqtype!=null and seqtype!=''">
+                AND S.SEQTYPE=#{seqtype}
+            </if>
+            <if test="seqorder!=null and seqorder!=''">
+                AND S.SEQORDER=#{seqorder}
+            </if>
+            <if test="seqtypevalue!=null and seqtypevalue!=''">
+                AND S.SEQTYPEVALUE=#{seqtypevalue}
+            </if>
+        </where>
+        ORDER BY S.SEQORDER ASC
+    </select>
+
     <insert id="addSetting" parameterType="hashmap">
         INSERT INTO SYS_SEQ_SETTING
         (
-            SEQID,
-            SEQKEY,
-            SEQTYPE,
-            SEQORDER,
-            SEQTYPEVALUE
+           SEQSETINGID,
+           SEQID,
+           SEQTYPE,
+           SEQORDER,
+           SEQTYPEVALUE
         )
         VALUES
         (
-            SEQ_SETTING_ID.NEXTVAL,
-            #{seqkey},
-            #{seqtype},
-            #{seqorder},
-            #{seqtypevalue}
+          #{seqsetingid},
+          #{seqid},
+          #{seqtype},
+          #{seqorder},
+          #{seqtypevalue}
         )
     </insert>
     <update id="updateSetting" parameterType="hashmap">
         UPDATE SYS_SEQ_SETTING
         SET
-        SEQTYPE=#{seqtype},
-        SEQORDER=#{seqorder},
-        SEQTYPEVALUE=#{seqtypevalue}
-        WHERE SEQID=#{seqid}
+          SEQTYPE=#{seqtype},
+          SEQORDER=#{seqorder},
+          SEQTYPEVALUE=#{seqtypevalue}
+        WHERE SEQID=#{seqsetingid}
     </update>
+
+
     <select id="getValuePage" resultType="hashmap" parameterType="hashmap">
         SELECT
         SEQKEY "seqkey"
@@ -80,33 +122,7 @@
     <update id="updateValue" parameterType="hashmap">
         UPDATE SYS_SEQ_VALUE SET SEQVALUE=#{seqvalue} WHERE SEQKEY=#{seqkey} AND SEQOWNER=#{seqowner}
     </update>
-    <select id="getSetting" resultType="hashmap" parameterType="hashmap">
-        SELECT
-            SEQID "seqid",
-            SEQTYPE "seqtype",
-            SEQORDER "seqorder",
-            SEQTYPEVALUE "seqtypevalue",
-            SEQKEY "seqkey"
-        FROM SYS_SEQ_SETTING
-        <where>
-            <if test="seqtype!=null and seqtype!=''">
-                AND SEQTYPE=#{seqtype}
-            </if>
-            <if test="seqorder!=null and seqorder!=''">
-                AND SEQORDER=#{seqorder}
-            </if>
-            <if test="seqtypevalue!=null and seqtypevalue!=''">
-                AND SEQTYPEVALUE=#{seqtypevalue}
-            </if>
-            <if test="seqkey!=null and seqkey!=''">
-                AND SEQKEY=#{seqkey}
-            </if>
-            <if test="seqid!=null and seqid!=''">
-                AND SEQID=#{seqid}
-            </if>
-        </where>
-        ORDER BY SEQORDER ASC
-    </select>
+
     <select id="getSeqNum" resultType="hashmap" parameterType="hashmap">
         SELECT
         A.SEQKEY "seqkey",

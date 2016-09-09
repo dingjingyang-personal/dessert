@@ -131,6 +131,7 @@ public class HomeServiceImpl implements HomeService {
 
         String resourcesByUserListStr = SysToolHelper.getJsonOfCollection(resourcesByUserList);
         request.setAttribute("resourcesByUserListStr", resourcesByUserListStr);
+        request.setAttribute(SysConstants.USER_KEY, user);
 
         return true;
     }

@@ -30,7 +30,7 @@
                 datatype: "json",
                 caption: "异常日志",
                 rowNum: 10,
-                rownumbers: false,
+                rownumbers: true,
                 autowidth: true,
                 height: "auto",
                 loadui: "enable",
@@ -93,7 +93,7 @@
 <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>登录日志</h5>
+            <h3>登录日志</h3>
 
         </div>
         <div class="ibox-content">

@@ -28,9 +28,9 @@
                 viewrecords: true,
                 emptyrecords: "没有查询到相关数据!",
                 datatype: "json",
-                caption: "异常日志",
+                caption: "操作日志",
                 rowNum: 10,
-                rownumbers: false,
+                rownumbers: true,
                 autowidth: true,
                 height: "auto",
                 loadui: "enable",
@@ -95,7 +95,7 @@
 <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>操作日志</h5>
+            <h3>操作日志</h3>
 
         </div>
         <div class="ibox-content">

@@ -7,6 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="${resPath}/plugins/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="${resPath}/plugins/jqGrid/css/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" type="text/css" href="${resPath}/plugins/font-awesome/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="${resPath}/common/css/sysui.css">
 
 

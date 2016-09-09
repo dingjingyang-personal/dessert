@@ -88,7 +88,7 @@ public class UserTool {
      * @param response
      */
     public static void removeUserForRedis(HttpServletRequest request, HttpServletResponse response) {
-        SysToolHelper.removeValueInSession(request, SysConstants.EMPLOYEE_KEY);
+        SysToolHelper.removeValueInSession(request, SysConstants.USER_KEY);
         String ticketName = CookieHelper.getInstance().getUserTicket(request);
         if (!StringUtils.isEmpty(ticketName)) {
             CookieHelper.getInstance().clearCookie(request, response, SysConstants.TICKET_NAME);

@@ -10,63 +10,98 @@
 
     <style type="text/css">
 
-        * {
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            -webkit-box-sizing: border-box;
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
         }
 
-        body {
-            background: #f0f0f0;
-            overflow: hidden;
+        #page {
+            width: 100%;
+            height: 100%;
         }
 
         #top {
-            width: 100%;
-            padding:0;
-            margin:0;
-            border-width: 0;
-            border-radius: 0;
             height: 50px;
-            background-color: #1b586f;
+            width: 100%;
             color: #ffffff;
+            background-color: #1b586f;
+        }
 
+        #logo {
+            float: left;
+            width: 200px;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        #positionF {
+            float: left;
+            margin-top: 15px;
+        }
+
+        #userinfo {
+            float: right;
         }
 
         #underColumn {
+            height: calc(100% - 50px);
             width: 100%;
-            height: 620px
         }
 
         #sidebar {
-            float: left;
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: 100%;
-            background-color: #2F4050;
-        }
-
-        .content {
             width: 200px;
-            margin: auto, auto;
+            height: 100%;
+            float: left;
+            background-color: #2F4050
         }
 
-        .footer {
-            background: none repeat scroll 0 0 #f0f0f0;
-            border-top: 1px solid #b0b0b0;
-            overflow: hidden;
-            padding: 10px 30px;
-            margin: 0 -35px;
-            height: 36px;
+        #pageBody {
+            float: left;
+            width: calc(100% - 200px);
+            height: 100%;
+        }
+
+        #pageMain {
+            float: left;
+            width: 100%;
+            height: calc(100% - 30px);
+            margin: 0px;
+        }
+
+        #footer {
+            width: 100%;
+            height: 30px;
+            clear: both;
+            background-color: #e9e9e9;
         }
 
         a {
-            color: #95f9f6;
-            text-decoration: none;
-            cursor: pointer;
+            color: #ffffff;
         }
 
+        /* 未访问的链接 */
+        a:link {
+            color: #ffffff
+        }
 
+        /* 已访问的链接 */
+        a:visited {
+            color: #ffffff
+        }
+
+        /* 鼠标移动到链接上 */
+        a:hover {
+            color: #ffffff
+        }
+
+        /* 选定的链接 */
+        a:active {
+            color: #ffffff
+        }
 
 
     </style>
@@ -148,7 +183,7 @@
         //点击菜单事件
         function clilkMenu(menuid) {
             var menu = menuMap[menuid];
-            var position = menu.grandfather.menuname + ' <i class="fa fa-angle-double-right"></i> ' + menu.parent.menuname + ' <i class="fa fa-angle-double-right"></i> ' + menu.menuname;
+            var position = menu.grandfather.menuname + ' / ' + menu.parent.menuname + ' / ' + menu.menuname;
             $("#position").html(position);
             var pagebodyiframe = $("#pagebodyiframe");
             pagebodyiframe.attr('src', "${ctxPath}" + menu.action);
@@ -187,81 +222,80 @@
 
 <div id="page">
 <#--信息栏-->
-    <div class="app-header navbar" id="top">
-        <div class="navbar-header bg-dark" style="float: left">
-
-            <div class="navbar-brand text-lt" style="width: 200px">
-                <i class="fa fa-envira"></i>
-                <span class="hidden-folded m-l-xs">DESSERT</span>
-            </div>
+    <div id="top">
+        <div id="logo" class="">
+            <i class="fa fa-envira"></i>
+            <span class="">DESSERT</span>
         </div>
 
 
-        <div style="margin-top:15px;width:40%;float: left" >
+        <div id="positionF">
             <span>当前位置 : </span><span id="position"></span>
 
         </div>
 
 
-    <#--<div class="nav navbar-nav hidden-xs">-->
-    <#--<div  class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">-->
-    <#--<i class="fa fa-dedent fa-fw text" ></i>-->
-    <#--<i class="fa fa-indent fa-fw text-active"></i>-->
-    <#--</div>-->
-    <#--<div  class="btn no-shadow navbar-btn" data-toggle="class:show" data-target="#aside-user">-->
-    <#--<i class="icon-user fa-fw"></i>-->
-    <#--</div>-->
-    <#--</div>-->
+        <div id="userinfo" style="margin-top: 15px;margin-right: 20px">
+            <a>
+                <i class="fa fa-user"></i>&nbsp;<span id="username">${USER_KEY.username}</span>
+            </a>
+            &nbsp; &nbsp; &nbsp;
 
-        <div class="" style="float: right;width: 15%" >
-            <a class="btn  navbar-btn">
-                <i class="fa fa-user"></i> 管理员
+            <a href="${ctxPath}/home/loginOut.htm">
+                <i class="fa fa-sign-out"></i>&nbsp;<span>退出</span>
             </a>
-            <a class="btn ">
-                <i class="fa fa-sign-out"></i> 退出
-            </a>
+
+
+        <#--<div class="dropdown"  style="margin-top: 15px;margin-right: 30px">-->
+        <#--<div data-toggle="dropdown">-->
+        <#--<i class="fa fa-user"></i>-->
+        <#--<span >管理员</span>-->
+        <#--<i class="fa fa-angle-down"></i>-->
+        <#--</div>-->
+        <#--<ul class="dropdown-menu" role="menu" style="position: absolute;" >-->
+        <#--<li><a href="#"><span class="fa fa-wrench" style="margin-right: 15px"></span>设置</a></li>-->
+        <#--<li class="divider"></li>-->
+        <#--<li><a href="#"><span class="fa fa-paper-plane-o" style="margin-right: 15px"></span>退出</a></li>-->
+        <#--</ul>-->
+        <#--</div>-->
+
+
+
+
         </div>
 
     </div>
 
 
-</div>
+    <div id="underColumn">
+    <#--侧边栏-->
+        <div id="sidebar">
 
-<div id="underColumn">
-<#--侧边栏-->
-    <div id="sidebar" class="content">
+        <#--菜单栏-->
+            <div id="jquery-accordion-menu" class="jquery-accordion-menu red">
+                <ul id="menu-list">
 
-    <#--菜单栏-->
-        <div id="jquery-accordion-menu" class="jquery-accordion-menu red">
-            <ul id="menu-list">
+                </ul>
 
-            </ul>
-
-        </div>
-    </div>
-
-
-<#--菜单连接页面-->
-    <div id="pageBody"
-         style="height: 100%;padding: 0 0px;position: inherit;margin: 0 0 0 220px;min-height: auto;background-color: #f3f3f4;">
-    <#--<div style="height: 30px;width: calc(100% -200px); margin-right: -15px;margin-left: -15px;">-->
-    <#--<div style="font-size:12px;padding-top: 8px">-->
-    <#--<span>当前位置 : </span><span id="position"></span>-->
-    <#--</div>-->
-    <#--</div>-->
-        <div style="height: calc(100% - 75px);overflow: hidden;margin-right: -5px;margin-left: -15px;">
-            <iframe id="pagebodyiframe" frameborder=0 scrolling="auto" width="100%" height="99%" src=""
-            ></iframe>
-        </div>
-        <div class="footer">
-            <div class="pull-right" style="float: right !important;">
-                © 2016 - 2016 <a href="" target="_blank">©ding</a>
             </div>
         </div>
+
+
+        <div id="pageBody">
+        <#--菜单连接页面-->
+            <div id="pageMain">
+                <iframe id="pagebodyiframe" frameborder=0 scrolling="auto" height="100%" width="100%" src=""></iframe>
+            </div>
+        <#--底栏-->
+            <div id="footer">
+                <div class="pull-right" style="float: right;margin-top: 8px;margin-right: 20px">
+                    © 2016 - 2016 <a href="#" target="_blank" style="color: #0a68b4">© DING</a>
+                </div>
+            </div>
+        </div>
+
+
     </div>
-
-
-</div>
 
 
 </div>
@@ -270,7 +304,7 @@
 
 </#escape>
 
-<link rel="stylesheet" type="text/css" href="${resPath}/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="${resPath}/plugins/font-awesome/css/font-awesome.min.css">
 </body>
 
 </html>

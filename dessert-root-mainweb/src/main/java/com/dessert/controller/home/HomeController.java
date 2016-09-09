@@ -15,7 +15,6 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,33 +56,6 @@ public class HomeController {
     }
 
 
-    /**
-     * 校验登录名或邮箱
-     *
-     * @param request
-     * @param response
-     */
-    @RequestMapping("/validateLoginNameOrEmail.htm")
-    @Deprecated
-    public void validateLoginName(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        Map<String, Object> userMap = userService.findUserMap(params);
-
-        String loginname = getMapValue(params, "loginname");
-        String email = getMapValue(params, "email");
-
-        if (userMap == null || userMap.isEmpty()) {
-            SysToolHelper.outputByResponse("true", response);
-        } else {
-            String userLoginName = getMapValue(userMap, "loginname");
-            String userEmail = getMapValue(userMap, "email");
-            if (loginname.equals(userLoginName) || email.equals(userEmail)) {
-                SysToolHelper.outputByResponse("false", response);
-            } else {
-                SysToolHelper.outputByResponse("true", response);
-            }
-        }
-    }
 
 
     /**
@@ -199,13 +171,20 @@ public class HomeController {
      * @return
      */
     @RequestMapping("/showLoginPage.htm")
-    public String showLoginPage(HttpServletRequest request) {
+    public String showLoginPage(HttpServletRequest request,HttpServletResponse response ) {
         User user = UserTool.getUserForShiro();
         if (user != null) {
             return "redirect:showIndex.htm";
         }
-        request.setAttribute("username", CookieHelper.getInstance().getCookieValue(request, SysConstants.COOKIE_USERNO));
+//        request.setAttribute("username", CookieHelper.getInstance().getCookieValue(request, SysConstants.COOKIE_USERNO));
         return "home/login3";
+    }
+
+    @RequestMapping("/showLoginPageOut.htm")
+    public void showLoginPageOut(HttpServletRequest request,HttpServletResponse response ) {
+        StringBuilder stb = new StringBuilder();
+        stb.append("");
+        SysToolHelper.outputByResponse(stb,response);
     }
 
     /**
@@ -215,7 +194,7 @@ public class HomeController {
      * @param response
      */
     @RequestMapping("/login.htm")
-    public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public void login(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
 

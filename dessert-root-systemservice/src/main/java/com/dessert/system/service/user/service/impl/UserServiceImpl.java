@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.dessert.sys.common.tool.SysToolHelper.getMapValue;
+
 /**
  * Created by ding-Admin on 2016/4/21.
  */
@@ -157,6 +159,26 @@ public class UserServiceImpl implements UserService {
             return daoClient.selectList("com.dessert.user.getUserResources",map);
         }
         return null;
+    }
+
+    @Override
+    public boolean validateLoginNameOrEmail(Map<String, Object> params) {
+        Map<String, Object> userMap = findUserMap(params);
+
+        String username = getMapValue(params, "username");
+        String email = getMapValue(params, "email");
+
+        if (userMap == null || userMap.isEmpty()) {
+            return true;
+        } else {
+            String existUsername = getMapValue(userMap, "username");
+            String userEmail = getMapValue(userMap, "email");
+            if (username.equals(existUsername) || email.equals(userEmail)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
 

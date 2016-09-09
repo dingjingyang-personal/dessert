@@ -93,6 +93,10 @@
         <filter-name>CharacterEncoding</filter-name>
         <url-pattern>*.htm</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>CharacterEncoding</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
 
 
     <!-- SpringMVC核心分发器 -->
@@ -113,6 +117,10 @@
         <servlet-name>appServlet</servlet-name>
         <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
@@ -120,19 +128,19 @@
 
     <error-page>
         <error-code>403</error-code>
-        <location>/sys/403.htm</location>
+        <location>/sys/403.html</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/sys/404.htm</location>
+        <location>/sys/404.html</location>
     </error-page>
     <error-page>
         <error-code>405</error-code>
-        <location>/sys/405.htm</location>
+        <location>/sys/405.html</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/sys/500.htm</location>
+        <location>/sys/500.html</location>
     </error-page>
 
 </web-app>
