@@ -33,7 +33,7 @@
 <div class="jumbotron"  >
 
     <h3 class="text-center">禁止访问!</h3>
-    <p class="text-center" style="font-size: 16px"><span id="time">100</span>秒钟之后自动跳转首页</p>
+    <p class="text-center" style="font-size: 16px"><span id="time">5</span>秒钟之后自动跳转首页</p>
 </div>
 
 

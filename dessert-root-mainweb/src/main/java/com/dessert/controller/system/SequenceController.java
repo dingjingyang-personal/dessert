@@ -91,10 +91,7 @@ public class SequenceController {
      * @return
      */
     @RequestMapping("settingSequencePage.htm")
-    public String settingSequencePage(HttpServletRequest request ) {
-        Map<String,Object> params = SysToolHelper.getRequestParams(request);
-        request.setAttribute("params",params);
-
+    public String settingSequencePage() {
         return "system/sequence/settingSequence";
     }
 
@@ -123,7 +120,7 @@ public class SequenceController {
     @RequestMapping("addOrupdateSettingSequence.htm")
     public String addOrupdateSettingSequence(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
-        Map<String, Object> settingSequenceMap = sequenceNumService.getSequence(params);
+        Map<String, Object> settingSequenceMap = sequenceNumService.getSeqSetting(params);
         if (!SysToolHelper.mapIsEmpty(settingSequenceMap)) {
             request.setAttribute("settingSequenceMap", settingSequenceMap);
         }
@@ -132,7 +129,7 @@ public class SequenceController {
 
 
     /**
-     * 添加序列
+     * 添加序列配置
      *
      * @param request
      * @param response
@@ -144,7 +141,7 @@ public class SequenceController {
     }
 
     /**
-     * 修改序列
+     * 修改序列配置
      *
      * @param request
      * @param response
@@ -154,6 +151,64 @@ public class SequenceController {
         Map<String, Object> params = SysToolHelper.getRequestParams(request);
         SysToolHelper.outputByResponse(sequenceNumService.updateSettingSequence(params)? "1" : "2",response);
     }
+
+
+
+    /**
+     * 当前序列值页面
+     * @return
+     */
+    @RequestMapping("sequenceValuePage.htm")
+    public String sequenceValuePage() {
+        return "system/sequence/sequenceValuePage";
+    }
+
+
+    /**
+     * 当前序列值数据
+     * @param request
+     * @param response
+     */
+    @RequestMapping("findSequenceValueJson.htm")
+    public void findSequenceValueJson(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        params.put("pageSize",6);
+        Page settingSequencePage = sequenceNumService.getSeqValuePage(params);
+        SysToolHelper.outputByResponse(SysToolHelper.getJsonOfObject(settingSequencePage), response);
+    }
+
+
+    /**
+     * 修改序列值页面
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("updateSequenceValuePage.htm")
+    public String updateSequenceValuePage(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        Map<String, Object> sequenceValueMap = sequenceNumService.getSeqValue(params);
+        if (!SysToolHelper.mapIsEmpty(sequenceValueMap)) {
+            request.setAttribute("sequenceValueMap", sequenceValueMap);
+        }
+        return "system/sequence/updateSequenceValuePage";
+    }
+
+
+
+    /**
+     * 修改序列值
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping("updateSequenceValue.htm")
+    public void updateSequenceValue(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = SysToolHelper.getRequestParams(request);
+        SysToolHelper.outputByResponse(sequenceNumService.updateSeqValue(params)? "1" : "2",response);
+    }
+
 
 
 

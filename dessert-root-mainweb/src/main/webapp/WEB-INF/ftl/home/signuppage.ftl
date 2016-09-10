@@ -4,8 +4,8 @@
 <head>
 
 <#include "/common/page/head_inc.ftl">
-<@includeRes resType="css" resUrl=["page/singup/css/signup-form-elements.css","page/singup/css/signup-style.css","plugins/bootstrap/css/bootstrap-select.css"] />
-<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js"] />
+<@includeRes resType="css" resUrl=["page/singup/css/signup-form-elements.css","page/singup/css/signup-style.css","plugins/bootstrap-select/css/bootstrap-select.css"] />
+<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap-select/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js"] />
 
     <title>用户注册</title>
 

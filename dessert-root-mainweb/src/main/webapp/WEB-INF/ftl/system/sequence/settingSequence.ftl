@@ -24,12 +24,12 @@
             jQuery("#pagelist").jqGrid({
                 url: "${ctxPath}/system/sequence/findSettingSequenceJson.htm",
                 mtype: "POST",
-                postData:{seqid:"${params.seqid}"},
+                postData:{seqkey:"${RequestParameters.seqkey}"},
                 styleUI: 'Bootstrap',
                 viewrecords: true,
                 emptyrecords: "没有查询到相关数据!",
                 datatype: "json",
-                caption: "序列列表",
+                caption: "序列配置",
                 rowNum: 10,
                 rownumbers: false,
                 autowidth: true,
@@ -49,9 +49,9 @@
                 },
 
 
-                colNames: [ "seqsetingid","类型", "类型值",  "顺序"],
+                colNames: [ "seqsettingid","类型", "类型值",  "顺序"],
                 colModel: [
-                    {name: "seqsetingid", hidden: true, key: true},
+                    {name: "seqsettingid", hidden: true, key: true},
                     {
                         name: "seqtype", width: 150, sortable: false, editable: false, formatter: function (v, x, r) {
                             if(r['seqtype']=="1"){
@@ -86,15 +86,15 @@
 
         //添加
         function addModel() {
-            var url = "${ctxPath}/system/sequence/addOrupdateSequence.htm";
-            parent.layer.open({
-                id:"addOrUpdateSequence",
-                title: '添加序列',
+            var url = "${ctxPath}/system/sequence/addOrupdateSettingSequence.htm";
+            layer.open({
+                id:"addOrupdateSettingSequence",
+                title: '添加序列配置',
                 type: 2,
                 closeBtn: 1,
-                area: ['500px', '250px'],
+                area: ['500px', '300px'],
                 content:['','no'],
-                data:{url: url, data: {}},
+                data:{url: url, data: {seqkey: "${RequestParameters.seqkey!''}"}},
             });
         }
 
@@ -103,16 +103,16 @@
         function editModel() {
             var row = getGridData("pagelist");
             if (row != null) {
-                var url = "${ctxPath}/system/sequence/addOrupdateSequence.htm";
-                var seqid = row.seqid;
-                parent.layer.open({
-                    id:"addOrupdateSequence",
-                    title: '修改序列',
+                var url = "${ctxPath}/system/sequence/addOrupdateSettingSequence.htm";
+                var seqsettingid = row.seqsettingid;
+                layer.open({
+                    id:"addOrupdateSettingSequence",
+                    title: '修改序列配置',
                     type: 2,
                     closeBtn: 1,
-                    area: ['500px', '250px'],
+                    area: ['500px', '300px'],
                     content:['','no'],
-                    data:{url: url, data: {seqid: seqid}},
+                    data:{url: url, data: {seqsettingid: seqsettingid}},
                 });
             } else {
                 layer.msg('请选择一条数据!');

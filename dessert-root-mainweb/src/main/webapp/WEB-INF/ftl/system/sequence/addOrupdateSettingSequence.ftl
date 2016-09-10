@@ -4,8 +4,8 @@
 <head>
 
 <#include "/common/page/head_inc.ftl">
-<@includeRes resType="css" resUrl=["plugins/bootstrap/css/bootstrap-select.css"] />
-<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js","plugins/jquery-validation/validate-methods.js"] />
+<@includeRes resType="css" resUrl=["plugins/bootstrap-select/css/bootstrap-select.css"] />
+<@includeRes resUrl=["plugins/bootstrap-select/js/bootstrap-select.js","common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js","plugins/jquery-validation/validate-methods.js"] />
 
     <title></title>
 
@@ -42,28 +42,28 @@
 
                 debug: true,
                 rules: {
-                    seqkey: {
-                        required: true,
-                        minlength: 2,
-                        maxlength: 20
-                    },
-                    seqdesc: {
+                    seqtypevalue: {
                         required: true,
                         minlength: 1,
-                        maxlength: 50
+                        maxlength: 10
+                    },
+                    seqorder: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 2
                     }
                     
                 },
                 messages: {
-                    seqkey: {
-                        required: "请输入流水号KEY",
-                        minlength: "流水号KEY最少 2 个字符!",
-                        maxlength: "流水号KEY最多 20 个字符!",
+                    seqtypevalue: {
+                        required: "请输入类型值",
+                        minlength: "类型值最少 1 个字符!",
+                        maxlength: "类型值最多 10 个字符!",
                     },
-                    seqdesc: {
-                        required: "请输入描述",
-                        minlength: "描述长度不能小于 1 个字母",
-                        maxlength: "描述长度不能大于 50 个字母"
+                    seqorder: {
+                        required: "请输入顺序",
+                        minlength: "顺序长度不能小于 1 个字母",
+                        maxlength: "顺序长度不能大于 2 个字母"
                     }
                 }
 
@@ -74,18 +74,19 @@
 
 
         //保存
-        function saveSequence() {
+        function saveModel() {
             var isValidate = $("#addOrUpdateForm").valid();
             if (isValidate) {
 
-                var data = getAllInputValue("#addOrUpdateForm");
                 var url;
+                var data = getAllInputValue("#addOrUpdateForm");
+                    data.seqkey = "${RequestParameters.seqkey!''}";
 
-                <#if sequenceMap??&&sequenceMap.seqid??>
-                    data.seqid='${(sequenceMap.seqid)!''}';
-                    url="${ctxPath}/system/sequence/updateSequence.htm";
+                <#if settingSequenceMap??&&settingSequenceMap.seqsettingid??>
+                    data.seqsettingid='${(settingSequenceMap.seqsettingid)!''}';
+                    url="${ctxPath}/system/sequence/updateSettingSequence.htm";
                 <#else>
-                    url="${ctxPath}/system/sequence/addSequence.htm";
+                    url="${ctxPath}/system/sequence/addSettingSequence.htm";
                 </#if>
 
                 layer.load(1);
@@ -98,7 +99,7 @@
                             shade: 0.3,
                             shadeClose: false
                         }, function () {
-                            refreshJqGrid();//刷新数据
+                            parent.$('#pagelist').trigger('reloadGrid');//刷新数据
                             closeFrame();//关闭窗口
                         });
                     }
@@ -131,24 +132,30 @@
             <fieldset>
                 <div class="form-bottom">
                     <div class="form-group">
-                        <label for="seqkey" class="col-sm-1 control-label">流水号KEY</label>
+                        <label for="seqtype" class="col-sm-1 control-label">类型值</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="seqkey" name="seqkey"
-                                <#if sequenceMap??&&sequenceMap.seqid??>
-                                   disabled
-                                </#if>
-                                   value="${(sequenceMap.seqkey)!''}">
+                            <select class="selectpicker form-control" id="seqtype" name="seqtype">
+                                <option value="1" selected="selected">静态文本</option>
+                                <option value="2" >日期格式</option>
+                                <option value="3" >流水号位数</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="seqdesc" class="col-sm-1 control-label">描述</label>
+                        <label for="seqtypevalue" class="col-sm-1 control-label">类型值</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control ignore" id="seqdesc" name="seqdesc" value="${(sequenceMap.seqdesc)!''}" >
+                            <input type="text" class="form-control" id="seqtypevalue" name="seqtypevalue" value="${(settingSequenceMap.seqtypevalue)!''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="seqorder" class="col-sm-1 control-label">顺序</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control ignore" id="seqorder" name="seqorder" value="${(settingSequenceMap.seqorder)!''}" >
                         </div>
                     </div>
 
                     <div class="form-group" style="position: relative;top:20px;left: 55%;">
-                        <button class="btn btn-success" onclick="saveSequence()">提交</button>
+                        <button class="btn btn-success" onclick="saveModel()">提交</button>
                         <button class="btn btn-info" onclick="closeFrame()">关闭</button>
                     </div>
                 </div>

@@ -127,7 +127,7 @@ public class SysToolHelper {
             return false;
         }
         for (String key : keys) {
-            if (StringUtil.isNullOrEmpty(getMapValue(params,"key").toString())) {
+            if (StringUtil.isNullOrEmpty(getMapValue(params,key))) {
                 return false;
             }
         }

@@ -4,8 +4,8 @@
 <head>
 
 <#include "/common/page/head_inc.ftl">
-<@includeRes resType="css" resUrl=["plugins/bootstrap/css/bootstrap-select.css"] />
-<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js","plugins/jquery-validation/validate-methods.js"] />
+<@includeRes resType="css" resUrl=["plugins/bootstrap-select/css/bootstrap-select.css"] />
+<@includeRes resUrl=["common/js/retina-1.3.0.js","common/js/jquery.backstretch.js","common/js/jquery.form.js","plugins/bootstrap-select/js/bootstrap-select.js","plugins/jquery-validation/jquery.validate.js","plugins/jquery-validation/messages_zh.js","plugins/jquery-validation/validate-methods.js"] />
 
     <title></title>
 
@@ -81,8 +81,8 @@
                 var data = getAllInputValue("#addOrUpdateForm");
                 var url;
 
-                <#if sequenceMap??&&sequenceMap.seqid??>
-                    data.seqid='${(sequenceMap.seqid)!''}';
+                <#if sequenceMap??&&sequenceMap.seqkey??>
+                    data.seqkey='${(sequenceMap.seqkey)!''}';
                     url="${ctxPath}/system/sequence/updateSequence.htm";
                 <#else>
                     url="${ctxPath}/system/sequence/addSequence.htm";
@@ -134,7 +134,7 @@
                         <label for="seqkey" class="col-sm-1 control-label">流水号KEY</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="seqkey" name="seqkey"
-                                <#if sequenceMap??&&sequenceMap.seqid??>
+                                <#if sequenceMap??&&sequenceMap.seqkey??>
                                    disabled
                                 </#if>
                                    value="${(sequenceMap.seqkey)!''}">

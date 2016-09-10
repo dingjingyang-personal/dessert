@@ -5,16 +5,12 @@
 
     <select id="selectSeq" resultType="hashmap" parameterType="hashmap">
         SELECT
-        SEQID   "seqid",
         SEQKEY  "seqkey",
         SEQDESC   "seqdesc",
         CREATEUSER  "createuser",
         date_format(CREATEDATE,'%Y-%m-%d %H:%i:%s') "createdate"
         FROM SYS_SEQ_MAIN
         <where>
-            <if test="seqid!=null and seqid!=''">
-                AND SEQID=#{seqid}
-            </if>
             <if test="seqkey!=null and seqkey!=''">
                 AND SEQKEY=#{seqkey}
             </if>
@@ -26,7 +22,6 @@
     <insert id="addSeq" parameterType="hashmap">
         INSERT INTO SYS_SEQ_MAIN
         (
-            SEQID,
             SEQKEY,
             SEQDESC,
             CREATEUSER,
@@ -34,7 +29,6 @@
         )
         VALUES
         (
-            #{seqid},
             #{seqkey},
             #{seqdesc},
             #{createuser},
@@ -47,24 +41,24 @@
         <if test="seqdesc!=null and seqdesc!=''">
             SEQDESC=#{seqdesc}
         </if>
-        WHERE SEQID=#{seqid}
+        WHERE SEQKEY=#{seqkey}
     </update>
 
 
     <select id="getSetting" resultType="hashmap" parameterType="hashmap">
         SELECT
-             S.SEQSETINGID         "seqsetingid",
-             S.SEQID               "seqid",
+             S.SEQSETTINGID         "seqsettingid",
+             S.SEQKEY               "seqkey",
              S.SEQTYPE             "seqtype",
              S.SEQORDER            "seqorder",
              S.SEQTYPEVALUE        "seqtypevalue"
         FROM SYS_SEQ_SETTING S
         <where>
-            <if test="seqsetingid!=null and seqsetingid!=''">
-                AND S.SEQSETINGID=#{seqsetingid}
+            <if test="seqsettingid!=null and seqsettingid!=''">
+                AND S.SEQSETTINGID=#{seqsettingid}
             </if>
-            <if test="seqid!=null and seqid!=''">
-                AND S.SEQID=#{seqid}
+            <if test="seqkey!=null and seqkey!=''">
+                AND S.SEQKEY=#{seqkey}
             </if>
             <if test="seqtype!=null and seqtype!=''">
                 AND S.SEQTYPE=#{seqtype}
@@ -82,16 +76,16 @@
     <insert id="addSetting" parameterType="hashmap">
         INSERT INTO SYS_SEQ_SETTING
         (
-           SEQSETINGID,
-           SEQID,
+           SEQSETTINGID,
+           SEQKEY,
            SEQTYPE,
            SEQORDER,
            SEQTYPEVALUE
         )
         VALUES
         (
-          #{seqsetingid},
-          #{seqid},
+          #{seqsettingid},
+          #{seqkey},
           #{seqtype},
           #{seqorder},
           #{seqtypevalue}
@@ -103,25 +97,58 @@
           SEQTYPE=#{seqtype},
           SEQORDER=#{seqorder},
           SEQTYPEVALUE=#{seqtypevalue}
-        WHERE SEQID=#{seqsetingid}
+        WHERE SEQSETTINGID=#{seqsettingid}
     </update>
 
 
-    <select id="getValuePage" resultType="hashmap" parameterType="hashmap">
+
+
+
+    <select id="getValue" resultType="hashmap" parameterType="hashmap">
         SELECT
-        SEQKEY "seqkey"
-        ,SEQOWNER "seqowner"
-        ,SEQVALUE "seqvalue"
-        ,date_format(CREATEDATE,'%Y-%m-%d') "createdate"
+           SEQKEY           "seqkey",
+           SEQOWNER        "seqowner",
+           SEQVALUE        "seqvalue",
+           date_format(CREATEDATE,'%Y-%m-%d %H:%i:%s')  "createdate"
         FROM SYS_SEQ_VALUE
-        where SEQKEY=#{seqkey}
-        <if test="seqowner!=null and seqowner!=''">
-            AND SEQOWNER=#{seqowner}
-        </if>
+        where
+        SEQKEY=#{seqkey}
+          <if test="seqowner!=null and seqowner!=''">
+              AND SEQOWNER=#{seqowner}
+          </if>
     </select>
+
+
+
+
+    <insert id="addSeqVal" parameterType="hashmap">
+        INSERT INTO SYS_SEQ_VALUE
+        (
+            SEQKEY,
+            SEQOWNER,
+            SEQVALUE,
+            CREATEDATE
+        )
+        VALUES
+        (
+            #{seqkey},
+            #{seqowner},
+            0,
+            now()
+        )
+    </insert>
+
     <update id="updateValue" parameterType="hashmap">
-        UPDATE SYS_SEQ_VALUE SET SEQVALUE=#{seqvalue} WHERE SEQKEY=#{seqkey} AND SEQOWNER=#{seqowner}
+        UPDATE SYS_SEQ_VALUE
+        SET
+          SEQVALUE=#{seqvalue}
+        WHERE
+        SEQKEY=#{seqkey} AND SEQOWNER=#{seqowner}
     </update>
+
+
+
+
 
     <select id="getSeqNum" resultType="hashmap" parameterType="hashmap">
         SELECT
@@ -136,10 +163,7 @@
         FROM SYS_SEQ_MAIN A
         WHERE A.SEQKEY=#{seqkey}
     </select>
-    <insert id="addSeqVal" parameterType="hashmap">
-        INSERT INTO SYS_SEQ_VALUE(SEQKEY,SEQOWNER,SEQVALUE,CREATEDATE)
-        VALUES(#{seqkey},#{seqowner},0,now())
-    </insert>
+
     <update id="updateSeqNum" parameterType="hashmap">
         UPDATE SYS_SEQ_VALUE A
         SET

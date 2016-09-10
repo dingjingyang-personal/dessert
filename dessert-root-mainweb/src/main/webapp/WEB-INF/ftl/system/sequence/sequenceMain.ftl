@@ -48,24 +48,25 @@
                 },
 
 
-                colNames: [ "seqid","流水号KEY", "描述",  "创建用户","创建时间","操作"],
+                colNames: [ "流水号KEY", "描述",  "创建用户","创建时间","操作"],
                 colModel: [
-                    {name: "seqid", hidden: true, key: true},
                     {name: "seqkey", width: 100, sortable: false},
                     {name: "seqdesc", width: 200, sortable: false},
                     {name: "createuser", width: 100, sortable: false, editable: false},
                     {name: "createdate", width: 100, sortable: false, editable: false,formatter:"date",formatoptions: {srcformat:'Y-m-d H:i:s',newformat:'Y-m-d H:i:s'}},
                     {
-                        name: "操作", width: 150, sortable: false, editable: false,
+                        name: "操作", width: 100, sortable: false, editable: false,
                         formatter: function (cellvalue, options, rowObject) {
-                            var deploy="<a href=\"#\"  onclick=\"settingSequence(" + rowObject.seqid + ")\">配置</a>";
-                            var currentValue="<a href=\"#\"  onclick=\"currentValue(" + rowObject.seqid + ")\">当前序列值</a>";
+                            var deploy= "<a href='#' onclick=\"settingSequence('"+rowObject.seqkey+"')\">配置</a>";
+                            var currentValue= "<a href='#' onclick=\"currentValue('"+rowObject.seqkey+"')\">当前序列值</a>";
                             return deploy+"&nbsp&nbsp&nbsp"+currentValue;
                         }
                     }
                 ],
 
-                pager: "#jqGridPager"
+
+
+            pager: "#jqGridPager"
             });
             jQuery("#pagelist")
                     .jqGrid("navGrid", "#jqGridPager", {
@@ -101,7 +102,7 @@
             var row = getGridData("pagelist");
             if (row != null) {
                 var url = "${ctxPath}/system/sequence/addOrupdateSequence.htm";
-                var seqid = row.seqid;
+                var seqkey = row.seqkey;
                 parent.layer.open({
                     id:"addOrupdateSequence",
                     title: '修改序列',
@@ -109,7 +110,7 @@
                     closeBtn: 1,
                     area: ['500px', '250px'],
                     content:['','no'],
-                    data:{url: url, data: {seqid: seqid}},
+                    data:{url: url, data: {seqkey: seqkey}},
                 });
             } else {
                 layer.msg('请选择一条数据!');
@@ -118,9 +119,9 @@
 
 
         //配置
-        function settingSequence(seqiddate) {
+        function settingSequence(seqkey) {
             var url = "${ctxPath}/system/sequence/settingSequencePage.htm";
-            var seqid = seqiddate;
+            var seqkey = seqkey;
             parent.layer.open({
                 id:"settingSequencePage",
                 title: '序列配置',
@@ -128,14 +129,24 @@
                 closeBtn: 1,
                 area: ['600px', '500px'],
                 content:['','no'],
-                data:{url: url, data: {seqid:seqid}},
+                data:{url: url, data: {seqkey:seqkey}},
             });
             
         }
 
         //当前序列值
-        function currentValue(seqid) {
-            alert(seqid);
+        function currentValue(seqkey) {
+            var url = "${ctxPath}/system/sequence/sequenceValuePage.htm";
+            var seqkey = seqkey;
+            parent.layer.open({
+                id:"settingSequencePage",
+                title: '序列值',
+                type: 2,
+                closeBtn: 1,
+                area: ['600px', '500px'],
+                content:['','no'],
+                data:{url: url, data: {seqkey:seqkey}},
+            });
 
         }
         

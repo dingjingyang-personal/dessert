@@ -21,45 +21,11 @@ public interface SequenceNumService {
 	
 
 	
-	/**
-	 * 
-	 * getSeqSetting:一句话描述这个方法的作用 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	Map<String,Object> getSeqSetting(Map<String, Object> params);
+
+
+
 	
-	/**
-	 * 
-	 * getSeqValuePage:一句话描述这个方法的作用 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	Page<?> getSeqValuePage(Map<String, Object> params);
-	
-	/**
-	 * 
-	 * getSeqValue:一句话描述这个方法的作用 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	Map<String,Object> getSeqValue(Map<String, Object> params);
-	
-	/**
-	 * 
-	 * updateSeqValue:修改序列值 <br/> 
-	 * 
-	 * @author Administrator 
-	 * @param params
-	 * @return
-	 */
-	boolean updateSeqValue(Map<String, Object> params);
+
 	/**
 	 * 
 	 * getSeqBySeqKeyAndOwner:获取流水号 
@@ -96,6 +62,13 @@ public interface SequenceNumService {
    String getSeqBySeqKey(String seqKey);
    
    Map<String,Object> getNextSeqNum(Map<String, Object> params);
+
+
+
+
+
+
+
 
 
 	/**
@@ -135,6 +108,13 @@ public interface SequenceNumService {
 	Page<?> getSeqSettingPage(Map<String, Object> params);
 
 	/**
+	 * 查询单个序列配置
+	 * @param params
+	 * @return
+	 */
+	Map<String,Object> getSeqSetting(Map<String, Object> params);
+
+	/**
 	 * 添加序列配置
 	 * @param params
 	 * @return
@@ -147,4 +127,27 @@ public interface SequenceNumService {
 	 * @return
      */
 	boolean updateSettingSequence(Map<String, Object> params);
+
+
+	/**
+	 * 查询序列值页面
+	 * @param params
+	 * @return
+	 */
+	Page<?> getSeqValuePage(Map<String, Object> params);
+
+
+	/**
+	 * 查询序列值
+	 * @param params
+	 * @return
+	 */
+	Map<String,Object> getSeqValue(Map<String, Object> params);
+
+	/**
+	 * 修改序列值
+	 * @param params
+	 * @return
+	 */
+	boolean updateSeqValue(Map<String, Object> params);
 }
