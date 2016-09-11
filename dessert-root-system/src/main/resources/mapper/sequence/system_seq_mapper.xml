@@ -148,8 +148,6 @@
 
 
 
-
-
     <select id="getSeqNum" resultType="hashmap" parameterType="hashmap">
         SELECT
         A.SEQKEY "seqkey",
@@ -176,6 +174,7 @@
             AND A.SEQVALUE=#{seqnum}
         </if>
     </update>
+
     <select id="getSeqSetting" resultType="hashmap" parameterType="hashmap">
         SELECT (
             CASE
@@ -188,4 +187,5 @@
         WHERE A.SEQKEY=#{seqkey}
         ORDER BY A.SEQORDER ASC
     </select>
+
 </mapper>
