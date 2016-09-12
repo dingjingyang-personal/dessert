@@ -150,9 +150,9 @@
 
     <select id="getSeqNum" resultType="hashmap" parameterType="hashmap">
         SELECT
-        A.SEQKEY "seqkey",
-        A.SEQDESC "seqdesc",
-        date_format(A.CREATEDATE,'%Y-%m-%d') "createdate",
+        A.SEQKEY      "seqkey",
+        A.SEQDESC     "seqdesc",
+        date_format(A.CREATEDATE,'%Y-%m-%d')   "createdate",
         (SELECT B.SEQVALUE FROM SYS_SEQ_VALUE B
         WHERE B.SEQKEY=A.SEQKEY
         <if test="seqowner!=null and seqowner!=''">

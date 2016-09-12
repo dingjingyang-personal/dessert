@@ -18,6 +18,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Service("seqService")
 public class SequenceNumServiceImpl implements SequenceNumService {
+
+
     @Autowired
     private DaoClient daoClient;
     private Lock lock = new ReentrantLock();
@@ -37,7 +39,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
      * @return
      */
     private String joinSeq(Map<String, Object> seq, boolean addOwnerAtFirst) {
-        String sqlId = "SequenceNumService.getSeqSetting";
+        String sqlId = "com.dessert.sequence.getSeqSetting";
         List<Map<String, Object>> list = daoClient.selectList(sqlId, seq);
         if (list == null || list.isEmpty()) {
             return null;
@@ -57,7 +59,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
     }
 
     private void addSeqVal(Map<String, Object> params) {
-        String sqlId = "SequenceNumService.addSeqVal";
+        String sqlId = "com.dessert.sequence.addSeqVal";
         if (!SysToolHelper.isExists(params, "seqvalue")) {
             params.put("seqvalue", 0);
         }
@@ -80,7 +82,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
         if (!SysToolHelper.isExists(params, "seqkey", "seqowner")) {
             return -1;
         }
-        String sqlId = "SequenceNumService.getSeqNum";
+        String sqlId = "com.dessert.sequence.getSeqNum";
         Map<String, Object> temp = daoClient.selectMap(sqlId, params);
         long value = SysToolHelper.getLong(temp, "seqvalue");
         if (value <= 0) {//没有记录
@@ -88,7 +90,7 @@ public class SequenceNumServiceImpl implements SequenceNumService {
             value = 0;
         }
         params.put("seqnum", value);
-        sqlId = "SequenceNumService.updateSeqNum";
+        sqlId = "com.dessert.sequence.updateSeqNum";
         return daoClient.update(sqlId, params) > 0 ? (value + 1) : -1;
     }
 
@@ -133,13 +135,13 @@ public class SequenceNumServiceImpl implements SequenceNumService {
         }
         String sqlId;
         if ("1".equals(operType)) {
-            sqlId = "SequenceNumService.addSetting";
+            sqlId = "com.dessert.sequence.addSetting";
             params.put("seqid", readSeqBySeqKeyAndOwner("NOPREFIX", "SEQID", false));
         } else {
             if (!SysToolHelper.isExists(params, "seqid")) {
                 return false;
             }
-            sqlId = "SequenceNumService.updateSetting";
+            sqlId = "com.dessert.sequence.updateSetting";
         }
         return daoClient.update(sqlId, params) > 0;
     }
